@@ -1,6 +1,9 @@
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import { SessionProvider } from 'next-auth/react';
+import { ConfigProvider } from 'antd';
+import esES from 'antd/locale/es_ES';
 import '@/styles/globals.css';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -15,5 +18,9 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 	// Use the layout defined at the page level, if available
 	const getLayout = Component.getLayout ?? ((page) => page);
 
-	return getLayout(<Component {...pageProps} />);
+	return (
+		<SessionProvider>
+			<ConfigProvider locale={esES}>{getLayout(<Component {...pageProps} />)}</ConfigProvider>
+		</SessionProvider>
+	);
 }

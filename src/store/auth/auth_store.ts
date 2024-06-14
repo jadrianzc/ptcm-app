@@ -1,7 +1,10 @@
 import { create } from 'zustand';
-import { IAuthState } from './interfaces';
+import { IAuthStore } from './interfaces';
 
-export const useAuthStore = create<IAuthState>()((set) => ({
+export const useStoreAuth = create<IAuthStore>()((set) => ({
 	user: null,
-	setUser: (userData) => set(() => ({ user: userData })),
+	roles: [],
+
+	login: (user) => set({ user }),
+	logout: () => set({ user: null }),
 }));

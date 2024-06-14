@@ -1,3 +1,92 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* GLOBALS STYLES */
+/* Works for Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Works for Firefox */
+input[type='number'] {
+	appearance: textfield;
+}
+
+/* SCROLL BAR BODY */
+body::-webkit-scrollbar {
+	-webkit-appearance: none;
+}
+
+body::-webkit-scrollbar:vertical {
+	width: 0px;
+}
+
+/* SCROLL BAR MODALS */
+.modal-container-content::-webkit-scrollbar {
+	-webkit-appearance: none;
+}
+
+.modal-container-content::-webkit-scrollbar:vertical {
+	width: 0px;
+}
+
+.modal-container-content::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2) !important; /* color of the scroll thumb */
+	border: none !important; /* creates padding around scroll thumb */
+}
+
+.modal-container-content::-webkit-scrollbar-button:increment,
+.modal-container-content::-webkit-scrollbar-button {
+	display: none;
+}
+
+.modal-container-content::-webkit-scrollbar:horizontal {
+	height: 10px;
+}
+
+.modal-container-content::-webkit-scrollbar-thumb {
+	background-color: #797979;
+	border-radius: 20px;
+	border: 2px solid #f1f2f3;
+}
+
+.modal-container-content::-webkit-scrollbar-track {
+	border-radius: 10px;
+}
+
+/* ANT CUSTOM */
+.ant-drawer-header,
+.ant-drawer-body {
+	padding: 0px !important;
+	border: none !important;
+}
+
+.ant-spin-dot-item {
+	background-color: orange !important;
+}
+
+.modal-container div:nth-child(2),
+.ant-modal-content,
+.ant-modal-body {
+	height: 100% !important;
+}
+
+.ant-modal-footer {
+	display: none;
+}
+
+.ant-breadcrumb-link,
+.ant-breadcrumb-separator {
+	height: 100% !important;
+	/* padding: 5px !important; */
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+
+.rc-virtual-list-scrollbar-show {
+	display: block !important;
+}
