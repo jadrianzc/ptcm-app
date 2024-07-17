@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 import { Raleway } from 'next/font/google';
 import { IWrapperComponent } from '../interfaces';
 import { IUser } from '@/store/auth/interfaces';
-import { Menu } from '@/components/ui';
 import { useStoreLoading, useStoreMessage, useStoreAuth } from '@/store';
 
 const raleway = Raleway({ subsets: ['latin'] });
@@ -32,8 +31,8 @@ export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 	return (
 		<>
 			<Head>
-				<title>Órdenes de compras</title>
-				<meta name="description" content="Generador de órdenes de comrpas" />
+				<title>PTCM</title>
+				<meta name="description" content="Padel Training Club Manta" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
@@ -50,7 +49,7 @@ export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 
 					<Spin spinning={loading} fullscreen size="large" />
 
-					<Menu>{children}</Menu>
+					{children}
 				</ConfigProvider>
 			</main>
 		</>
