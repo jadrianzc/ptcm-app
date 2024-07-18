@@ -2,8 +2,7 @@ import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
-import { ConfigProvider } from 'antd';
-import esES from 'antd/locale/es_ES';
+import { ConfigTheme } from '@/theme';
 import '@/styles/globals.css';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -20,7 +19,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
 	return (
 		<SessionProvider>
-			<ConfigProvider locale={esES}>{getLayout(<Component {...pageProps} />)}</ConfigProvider>
+			<ConfigTheme>{getLayout(<Component {...pageProps} />)}</ConfigTheme>
 		</SessionProvider>
 	);
 }

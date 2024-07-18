@@ -90,3 +90,12 @@ body::-webkit-scrollbar:vertical {
 .rc-virtual-list-scrollbar-show {
 	display: block !important;
 }
+
+/* MENU */
+.ant-menu {
+	background: inherit !important;
+}
+
+.ant-menu-submenu-popup.ant-menu-submenu {
+	background: #146586 !important;
+}

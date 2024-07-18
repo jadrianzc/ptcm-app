@@ -3,7 +3,7 @@ import { NextPageWithLayout } from './_app';
 import { MainLayout } from '@/components/layouts';
 
 const HomePage: NextPageWithLayout = () => {
-	return <div className={`flex flex-col items-center justify-between`}>Hola</div>;
+	return <div className={`flex flex-col items-center justify-between`}>hola</div>;
 };
 
 HomePage.getLayout = function getLayout(page: ReactElement) {

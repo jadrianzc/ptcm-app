@@ -6,6 +6,7 @@ import { Raleway } from 'next/font/google';
 import { IWrapperComponent } from '../interfaces';
 import { IUser } from '@/store/auth/interfaces';
 import { useStoreLoading, useStoreMessage, useStoreAuth } from '@/store';
+import { Sidebar } from '@/components/menu';
 
 const raleway = Raleway({ subsets: ['latin'] });
 
@@ -37,7 +38,7 @@ export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main className={`w-full h-auto ${raleway.className}`}>
+			<main className={`w-full min-h-screen ${raleway.className}`}>
 				<ConfigProvider
 					theme={{
 						token: {
@@ -46,10 +47,9 @@ export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 					}}
 				>
 					{contextHolder}
-
 					<Spin spinning={loading} fullscreen size="large" />
 
-					{children}
+					<Sidebar>{children}</Sidebar>
 				</ConfigProvider>
 			</main>
 		</>
