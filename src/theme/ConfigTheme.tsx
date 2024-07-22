@@ -8,7 +8,8 @@ export const ConfigTheme: React.FC<IWrapperComponent> = ({ children }) => {
 			locale={esES}
 			theme={{
 				token: {
-					fontFamily: 'Raleway, Roboto, Helvetica, sans-serif',
+					fontFamily: 'Poppins, sans-serif',
+					colorPrimary: '#146586',
 				},
 				components: {
 					Menu: {},

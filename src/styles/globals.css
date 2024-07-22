@@ -99,3 +99,9 @@ body::-webkit-scrollbar:vertical {
 .ant-menu-submenu-popup.ant-menu-submenu {
 	background: #146586 !important;
 }
+
+/* DIVIDER */
+.ant-divider-vertical {
+	height: 1.5em;
+	border-inline-start: 2px solid rgb(165, 170, 173);
+}

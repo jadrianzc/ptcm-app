@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import { ConfigProvider, Spin, message } from 'antd';
+import { Spin, message } from 'antd';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
-import { Raleway } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import { IWrapperComponent } from '../interfaces';
 import { IUser } from '@/store/auth/interfaces';
 import { useStoreLoading, useStoreMessage, useStoreAuth } from '@/store';
 import { Sidebar } from '@/components/menu';
 
-const raleway = Raleway({ subsets: ['latin'] });
+const raleway = Poppins({ subsets: ['latin'], weight: ['400', '700'] });
 
 export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 	const { data, status } = useSession();
@@ -39,18 +39,10 @@ export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 			</Head>
 
 			<main className={`w-full min-h-screen ${raleway.className}`}>
-				<ConfigProvider
-					theme={{
-						token: {
-							fontFamily: 'Raleway, Roboto, Helvetica, sans-serif',
-						},
-					}}
-				>
-					{contextHolder}
-					<Spin spinning={loading} fullscreen size="large" />
+				{contextHolder}
+				<Spin spinning={loading} fullscreen size="large" />
 
-					<Sidebar>{children}</Sidebar>
-				</ConfigProvider>
+				<Sidebar>{children}</Sidebar>
 			</main>
 		</>
 	);

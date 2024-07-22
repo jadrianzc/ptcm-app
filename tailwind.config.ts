@@ -10,10 +10,15 @@ const config: Config = {
 		extend: {
 			textColor: {
 				title: '#575755',
-				gray: '#575757',
+				gray: '#A5AAAD',
+				main: '#3F6380',
 			},
 			backgroundColor: {
-				menu: '#146586',
+				content: '#F7F7F7',
+				blue: '#146586',
+				red: '#D14747',
+				green: '#609D56',
+				darkblue: '#0E5373',
 			},
 		},
 	},
