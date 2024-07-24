@@ -9,17 +9,18 @@ import { IoNotificationsOutline } from 'react-icons/io5';
 import { Dashboard, Icon, Logo, PadelIcon, UserIcon } from '@/icons';
 import Link from 'next/link';
 import { Actions } from './Actions';
+import SvgDashboard from '@/icons/SvgDashboard';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 const items: MenuItem[] = [
-	{ key: '1', icon: <Dashboard />, label: 'Option 1' },
-	{ key: '2', icon: <Dashboard />, label: 'Option 2' },
+	{ key: '1', icon: <SvgDashboard className="w-8 h-8" />, label: 'Option 1' },
+	{ key: '2', icon: <SvgDashboard className="w-8 h-8" />, label: 'Option 2' },
 	{ key: '3', icon: <BiBarChartAlt2 className="!text-white" />, label: 'Option 3' },
 	{
 		key: 'sub1',
 		label: 'Navigation One',
-		icon: <BiBarChartAlt2 className="text-white" />,
+		icon: <BiBarChartAlt2 className="text-white w-8 h-8" />,
 		children: [
 			{ key: '5', label: 'Option 5' },
 			{ key: '6', label: 'Option 6' },
@@ -74,7 +75,7 @@ export const Sidebar: React.FC<IWrapperComponent> = ({ children }) => {
 						<Icon />
 					</div>
 					<Menu
-						defaultSelectedKeys={['1']}
+						// defaultSelectedKeys={['1']}
 						mode="inline"
 						inlineCollapsed={true}
 						items={items}

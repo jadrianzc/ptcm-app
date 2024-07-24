@@ -12,6 +12,7 @@ const config: Config = {
 				title: '#575755',
 				gray: '#A5AAAD',
 				main: '#3F6380',
+				blue: '#146586',
 			},
 			backgroundColor: {
 				content: '#F7F7F7',

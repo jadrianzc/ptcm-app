@@ -105,3 +105,11 @@ body::-webkit-scrollbar:vertical {
 	height: 1.5em;
 	border-inline-start: 2px solid rgb(165, 170, 173);
 }
+
+/* .ant-menu-item {
+	display: grid !important;
+	justify-content: center;
+	justify-items: center;
+	align-items: center;
+	align-self: center;
+} */
