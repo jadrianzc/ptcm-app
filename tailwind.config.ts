@@ -12,6 +12,7 @@ const config: Config = {
 				title: '#575755',
 				gray: '#A5AAAD',
 				gray2: '#393939',
+				gray3: '#6D6D6D',
 				main: '#3F6380',
 				blue: '#146586',
 			},
