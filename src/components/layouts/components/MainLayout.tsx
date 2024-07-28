@@ -6,7 +6,9 @@ import { Poppins } from 'next/font/google';
 import { IWrapperComponent } from '../interfaces';
 import { IUser } from '@/store/auth/interfaces';
 import { useStoreLoading, useStoreMessage, useStoreAuth } from '@/store';
-import { Sidebar } from '@/components/menu';
+
+import { Footer } from '@/components/global/components';
+import { Menu } from '@/components/menu';
 
 const raleway = Poppins({ subsets: ['latin'], weight: ['400', '700'] });
 
@@ -40,9 +42,13 @@ export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 
 			<main className={`w-full min-h-screen ${raleway.className}`}>
 				{contextHolder}
+
 				<Spin spinning={loading} fullscreen size="large" />
 
-				<Sidebar>{children}</Sidebar>
+				<Menu>
+					{children}
+					<Footer />
+				</Menu>
 			</main>
 		</>
 	);

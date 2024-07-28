@@ -1,5 +1,6 @@
-import * as React from 'react';
-const SvgDashboard = (props: React.SVGProps<SVGSVGElement>) => (
+import React from 'react';
+
+export const PortadaIcon = (props: React.SVGProps<SVGSVGElement>) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		id="dashboard_svg__Capa_2"
@@ -34,4 +35,3 @@ const SvgDashboard = (props: React.SVGProps<SVGSVGElement>) => (
 		</g>
 	</svg>
 );
-export default SvgDashboard;

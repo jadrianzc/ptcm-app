@@ -106,6 +106,10 @@ body::-webkit-scrollbar:vertical {
 	border-inline-start: 2px solid rgb(165, 170, 173);
 }
 
+.ant-tooltip .ant-tooltip-content {
+	height: 100%;
+}
+
 /* .ant-menu-item {
 	display: grid !important;
 	justify-content: center;

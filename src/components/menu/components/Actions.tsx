@@ -3,12 +3,12 @@ import React from 'react';
 
 export const Actions = () => {
 	return (
-		<div className="flex justify-between items-center space-x-4">
+		<div className="hidden sm:grid sm:gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
 			<ButtonCustom
 				type="primary"
 				color="#146586"
 				size="large"
-				className="rounded-sm w-1/5 h-[57px]"
+				className="rounded-sm h-[57px]"
 			>
 				Tabla
 			</ButtonCustom>
@@ -17,7 +17,7 @@ export const Actions = () => {
 				type="primary"
 				color="#D14747"
 				size="large"
-				className="rounded-sm w-1/5 h-[57px]"
+				className="rounded-sm h-[57px]"
 			>
 				Convocatoria
 			</ButtonCustom>
@@ -26,7 +26,7 @@ export const Actions = () => {
 				type="primary"
 				color="#609D56"
 				size="large"
-				className="rounded-sm w-1/5 h-[57px]"
+				className="rounded-sm h-[57px]"
 			>
 				Palmarés
 			</ButtonCustom>
@@ -35,7 +35,7 @@ export const Actions = () => {
 				type="primary"
 				color="#146586"
 				size="large"
-				className="rounded-sm w-1/5 h-[57px]"
+				className="rounded-sm h-[57px]"
 			>
 				Grupos
 			</ButtonCustom>
@@ -44,7 +44,7 @@ export const Actions = () => {
 				type="primary"
 				color="#146586"
 				size="large"
-				className="rounded-sm w-1/5 h-[57px]"
+				className="rounded-sm h-[57px]"
 			>
 				Avisos
 			</ButtonCustom>

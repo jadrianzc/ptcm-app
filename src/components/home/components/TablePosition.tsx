@@ -98,11 +98,11 @@ export const TablePosition: React.FC = () => {
 	];
 
 	return (
-		<div className="w-full flex flex-wrap justify-between items-center space-y-6">
-			<div className="w-[30%]">
+		<div className="w-full grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
+			<div className="">
 				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
-						xd
+					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+						<span className="text-white italic font-black text-sm">E</span>
 					</div>
 					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
 				</div>
@@ -110,17 +110,7 @@ export const TablePosition: React.FC = () => {
 				<Table columns={columns} dataSource={data} pagination={false} />
 			</div>
 
-			<div className="w-[30%]">
-				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
-						xd
-					</div>
-					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
-				</div>
-				<Table columns={columns} dataSource={data} pagination={false} />
-			</div>
-
-			<div className="w-[30%]">
+			<div className="">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
 						xd
@@ -130,7 +120,7 @@ export const TablePosition: React.FC = () => {
 				<Table columns={columns} dataSource={data} pagination={false} />
 			</div>
 
-			<div className="w-[30%]">
+			<div className="">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
 						xd
@@ -139,7 +129,8 @@ export const TablePosition: React.FC = () => {
 				</div>
 				<Table columns={columns} dataSource={data} pagination={false} />
 			</div>
-			<div className="w-[30%]">
+
+			<div className="">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
 						xd
@@ -148,7 +139,16 @@ export const TablePosition: React.FC = () => {
 				</div>
 				<Table columns={columns} dataSource={data} pagination={false} />
 			</div>
-			<div className="w-[30%]">
+			<div className="">
+				<div className="flex justify-start items-center space-x-5">
+					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
+						xd
+					</div>
+					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
+				</div>
+				<Table columns={columns} dataSource={data} pagination={false} />
+			</div>
+			<div className="">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
 						xd
