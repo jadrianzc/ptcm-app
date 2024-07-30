@@ -15,6 +15,7 @@ const config: Config = {
 				gray3: '#6D6D6D',
 				main: '#3F6380',
 				blue: '#146586',
+				skyBlue: '#C7D9E0',
 			},
 			backgroundColor: {
 				content: '#F7F7F7',
