@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { Divider, Drawer, Tooltip } from 'antd';
-
-import { HeaderActions } from './';
-import { menuItems } from '../helpers';
-import { IWrapperComponent } from '@/components/layouts/interfaces';
-import { Icon, IconWhite } from '@/icons';
 import Link from 'next/link';
+import { Drawer, Tooltip } from 'antd';
 import { IoMenuOutline } from 'react-icons/io5';
+
+import { menuItems } from '../helpers';
+import { HeaderActions } from './';
+import { Icon, IconWhite } from '@/icons';
+import { IWrapperComponent } from '@/components/layouts/interfaces';
 
 export const Sidebar: React.FC<IWrapperComponent> = ({ children }) => {
 	const [open, setOpen] = useState(false);
 
 	const showDrawer = () => {
 		setOpen(true);
-		console.log('click');
 	};
 
 	const onClose = () => {

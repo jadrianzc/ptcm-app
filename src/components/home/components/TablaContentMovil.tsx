@@ -1,12 +1,4 @@
-import React, { useState } from 'react';
-import type { TableColumnsType, TableProps } from 'antd';
-import { Button, Space, Table } from 'antd';
-
-type OnChange = NonNullable<TableProps<DataType>['onChange']>;
-type Filters = Parameters<OnChange>[1];
-
-type GetSingle<T> = T extends (infer U)[] ? U : never;
-type Sorts = GetSingle<Parameters<OnChange>[2]>;
+import { Collapse, CollapseProps, Table, TableColumnsType } from 'antd';
 
 interface DataType {
 	key: string;
@@ -116,7 +108,7 @@ const data: DataType[] = [
 	},
 ];
 
-export const TablePosition: React.FC = () => {
+export const TablaContentMovil = () => {
 	const columns: TableColumnsType<DataType> = [
 		{
 			key: 'key',
@@ -168,74 +160,106 @@ export const TablePosition: React.FC = () => {
 		},
 	];
 
+	const items: CollapseProps['items'] = [
+		{
+			key: '1',
+			label: (
+				<div className="flex justify-start items-center space-x-5">
+					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+						<span className="text-white italic font-black text-sm">E</span>
+					</div>
+					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
+				</div>
+			),
+			children: (
+				<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
+					<div className="flex justify-start items-center space-x-5">
+						<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+							<span className="text-white italic font-black text-sm">E</span>
+						</div>
+						<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
+					</div>
+
+					<Table
+						columns={columns}
+						dataSource={data}
+						pagination={false}
+						scroll={{ y: 310 }}
+					/>
+				</div>
+			),
+		},
+		{
+			key: '2',
+			label: (
+				<div className="flex justify-start items-center space-x-5">
+					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+						<span className="text-white italic font-black text-sm">E</span>
+					</div>
+					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
+				</div>
+			),
+			children: (
+				<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
+					<div className="flex justify-start items-center space-x-5">
+						<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+							<span className="text-white italic font-black text-sm">E</span>
+						</div>
+						<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
+					</div>
+
+					<Table
+						columns={columns}
+						dataSource={data}
+						pagination={false}
+						scroll={{ y: 310 }}
+					/>
+				</div>
+			),
+		},
+		{
+			key: '3',
+			label: (
+				<div className="flex justify-start items-center space-x-5">
+					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+						<span className="text-white italic font-black text-sm">E</span>
+					</div>
+					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
+				</div>
+			),
+			children: (
+				<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
+					<div className="flex justify-start items-center space-x-5">
+						<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+							<span className="text-white italic font-black text-sm">E</span>
+						</div>
+						<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
+					</div>
+
+					<Table
+						columns={columns}
+						dataSource={data}
+						pagination={false}
+						scroll={{ y: 310 }}
+					/>
+				</div>
+			),
+		},
+	];
+
+	const onChange = (key: string | string[]) => {
+		console.log(key);
+	};
+
 	return (
-		// grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3
 		<div className="w-full flex flex-wrap gap-3">
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
-				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
-						<span className="text-white italic font-black text-sm">E</span>
-					</div>
-					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
-				</div>
-
-				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
-			</div>
-
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
-				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
-						<span className="text-white italic font-black text-sm">E</span>
-					</div>
-					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
-				</div>
-
-				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
-			</div>
-
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
-				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
-						<span className="text-white italic font-black text-sm">E</span>
-					</div>
-					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
-				</div>
-
-				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
-			</div>
-
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
-				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
-						<span className="text-white italic font-black text-sm">E</span>
-					</div>
-					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
-				</div>
-
-				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
-			</div>
-
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
-				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
-						<span className="text-white italic font-black text-sm">E</span>
-					</div>
-					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
-				</div>
-
-				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
-			</div>
-
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
-				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
-						<span className="text-white italic font-black text-sm">E</span>
-					</div>
-					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
-				</div>
-
-				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
-			</div>
+			<Collapse
+				items={items}
+				defaultActiveKey={['1']}
+				onChange={onChange}
+				expandIconPosition="end"
+				className="w-full"
+			/>
 		</div>
 	);
 };

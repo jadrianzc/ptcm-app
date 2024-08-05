@@ -14,7 +14,7 @@ export const HeaderActions: React.FC<IWrapperComponent> = ({ children }) => {
 	return (
 		<div className="flex-grow overflow-y-auto bg-content space-y-5 px-5 py-9 lg:px-[58px] lg:py-[45px]">
 			<Breadcrumb
-				className="flex justify-start text-sm"
+				className="hidden justify-start text-sm lg:flex"
 				items={[
 					{
 						title: (
