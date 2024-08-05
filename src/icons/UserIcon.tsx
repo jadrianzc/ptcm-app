@@ -1,8 +1,14 @@
 import React from 'react';
 
-export const UserIcon = () => {
+export const UserIcon = (props: React.SVGProps<SVGSVGElement>) => {
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38">
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width="38"
+			height="38"
+			viewBox="0 0 38 38"
+			{...props}
+		>
 			<path
 				id="Trazado_19"
 				data-name="Trazado 19"

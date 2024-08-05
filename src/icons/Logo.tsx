@@ -1,12 +1,13 @@
 import React from 'react';
 
-export const Logo = () => {
+export const Logo = (props: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="118.823"
 			height="35.639"
 			viewBox="0 0 118.823 35.639"
+			{...props}
 		>
 			<path
 				id="Trazado_1"

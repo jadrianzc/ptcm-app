@@ -6,9 +6,135 @@ dayjs.extend(duration);
 import { ButtonCustom } from '@/components/ui/components';
 import { ConvocatoriaIcon } from '@/icons';
 import { ICountdown } from '../interfaces';
+import { Divider } from 'antd';
 
 export const Announcement = () => {
 	const [timeLeft, setTimeLeft] = useState<ICountdown | null>(null);
+	const convocados = [
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+	];
+
+	const convocados2 = [
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+	];
+
+	const convocados3 = [
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+		{
+			name: 'Nombre del Jugador',
+		},
+	];
 
 	useEffect(() => {
 		// TODO: Cambiar fecha por la fecha de creación convocatoria
@@ -90,6 +216,105 @@ export const Announcement = () => {
 				>
 					Unirme
 				</ButtonCustom>
+
+				<div className="w-full h-auto bg-white rounded-xl px-5 py-6 space-y-5 shadow-sm">
+					<div className="content-convocatoria">
+						<span className="text-sm text-gray2 font-medium">Convocatoria de hoy</span>
+						<Divider type="vertical" />
+						<span className="text-sm text-gray2 font-medium">Liga Cñor Marisco</span>
+						<Divider type="vertical" />
+						<span className="text-sm text-gray2 font-medium">Fecha 7</span>
+						<Divider type="vertical" />
+						<span className="text-sm text-gray2 font-medium">
+							Miercoles 12 de junio a las 20:00pm
+						</span>
+					</div>
+
+					<div className="flex">
+						<div className="w-auto h-full grid grid-rows-6 grid-flow-col gap-x-5">
+							{convocados.map((convocado, index) => (
+								<div
+									key={index}
+									className={`text-sm flex justify-between items-center py-1 px-2 space-x-7 ${
+										(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
+									}`}
+								>
+									<span className="text-gray4">{index + 1}</span>
+									<span className="text-blue">{convocado.name}</span>
+								</div>
+							))}
+						</div>
+						<div className="w-[26px] bg-tableContent mx-3 border border-y-0 border-r-[3px] border-r-blue"></div>
+						<div className="w-auto h-full grid grid-rows-6 grid-flow-col gap-x-5">
+							<div className={`border-b-2`}>
+								<span className="text-blue text-base font-bold italic">
+									Suplentes
+								</span>
+							</div>
+							{convocados2.map((convocado, index) => (
+								<div
+									key={index}
+									className={`text-sm flex justify-between items-center py-1 px-2 space-x-7 ${
+										(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
+									}`}
+								>
+									<span className="text-gray4">{index + 1}</span>
+									<span className="text-blue">{convocado.name}</span>
+								</div>
+							))}
+						</div>
+						<div className="w-[26px] bg-tableContent mx-3 border border-y-0 border-r-[3px] border-r-blue"></div>
+						<div className="w-auto h-full grid grid-rows-6 grid-flow-col gap-x-5">
+							<div className={`border-b-2`}>
+								<span className="text-blue text-base font-bold italic">
+									Suplentes 2
+								</span>
+							</div>
+							{convocados3.map((convocado, index) => (
+								<div
+									key={index}
+									className={`text-sm flex justify-between items-center py-1 px-2 space-x-7 ${
+										(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
+									}`}
+								>
+									<span className="text-gray4">{index + 1}</span>
+									<span className="text-blue">{convocado?.name}</span>
+								</div>
+							))}
+						</div>
+					</div>
+
+					<div className="flex space-x-6">
+						<div className="flex space-x-2">
+							<ButtonCustom
+								type="primary"
+								className="w-[328px] h-[57px] rounded-md"
+								color="#D14747"
+							>
+								Bajarme
+							</ButtonCustom>
+
+							<ButtonCustom
+								type="primary"
+								className="w-[328px] h-[57px] rounded-md"
+								color="#609D56"
+							>
+								Unirme
+							</ButtonCustom>
+						</div>
+
+						<div className="flex flex-col text-sm justify-center">
+							<span className="w-fit text-gray3 border-b border-gray3">
+								Recuerda que tienes 00:00 horas para bajarte de la convocatoria sin
+								multa.
+							</span>
+							<span className="w-fit text-gray4 border-b border-gray4">
+								Se agotó el tiempo para bajarte de la convocatoria sin multa. A
+								partir de este momento la multa es la siguiente: --------
+							</span>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

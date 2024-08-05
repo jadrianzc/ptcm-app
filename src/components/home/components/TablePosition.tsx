@@ -58,6 +58,62 @@ const data: DataType[] = [
 		score: 1,
 		effectiveness: '100%',
 	},
+	{
+		key: '6',
+		name: 'Nombre del Jugador',
+		game: 1,
+		challenge: 1,
+		score: 1,
+		effectiveness: '100%',
+	},
+	{
+		key: '7',
+		name: 'Nombre del Jugador',
+		game: 1,
+		challenge: 1,
+		score: 1,
+		effectiveness: '100%',
+	},
+	{
+		key: '8',
+		name: 'Nombre del Jugador',
+		game: 1,
+		challenge: 1,
+		score: 1,
+		effectiveness: '100%',
+	},
+	{
+		key: '9',
+		name: 'Nombre del Jugador',
+		game: 1,
+		challenge: 1,
+		score: 1,
+		effectiveness: '100%',
+	},
+	{
+		key: '10',
+		name: 'Nombre del Jugador',
+		game: 1,
+		challenge: 1,
+		score: 1,
+		effectiveness: '100%',
+	},
+	{
+		key: '11',
+		name: 'Nombre del Jugador',
+		game: 1,
+		challenge: 1,
+		score: 1,
+		effectiveness: '100%',
+	},
+	{
+		key: '12',
+		name: 'Nombre del Jugador',
+		game: 1,
+		challenge: 1,
+		score: 1,
+		effectiveness: '100%',
+	},
 ];
 
 export const TablePosition: React.FC = () => {
@@ -66,40 +122,59 @@ export const TablePosition: React.FC = () => {
 
 	const columns: TableColumnsType<DataType> = [
 		{
-			title: 'No.',
-			dataIndex: 'key',
 			key: 'key',
+			dataIndex: 'key',
+			title: <span className="text-gray3 font-medium">No.</span>,
+			width: '30px',
+			align: 'center',
+			render: (value) => <span className="text-gray4">{value}</span>,
 		},
 		{
-			title: 'Nombre',
-			dataIndex: 'name',
 			key: 'name',
+			dataIndex: 'name',
+			title: <span className="text-gray3 font-medium">Nombre</span>,
+			width: '150px',
+			align: 'left',
+			render: (value) => <span className="text-blue">{value}</span>,
 		},
 		{
-			title: 'Juegos',
-			dataIndex: 'game',
 			key: 'game',
+			dataIndex: 'game',
+			title: <span className="text-gray3 font-medium">Juegos</span>,
+			width: '60px',
+			align: 'center',
+			render: (value) => <span className="text-gray4">{value}</span>,
 		},
 		{
-			title: 'Retos',
-			dataIndex: 'challenge',
 			key: 'challenge',
+			dataIndex: 'challenge',
+			title: <span className="text-gray3 font-medium">Retos</span>,
+			width: '60px',
+			align: 'center',
+			render: (value) => <span className="text-gray4">{value}</span>,
 		},
 		{
-			title: 'Puntaje',
-			dataIndex: 'score',
 			key: 'score',
+			dataIndex: 'score',
+			title: <span className="text-gray3 font-medium">Puntaje</span>,
+			width: '60px',
+			align: 'center',
+			render: (value) => <span className="text-gray4">{value}</span>,
 		},
 		{
-			title: 'Efectividad',
-			dataIndex: 'effectiveness',
 			key: 'effectiveness',
+			dataIndex: 'effectiveness',
+			title: <span className="text-gray3 font-medium">Efectividad</span>,
+			width: '80px',
+			align: 'center',
+			render: (value) => <span className="text-green">{value}</span>,
 		},
 	];
 
 	return (
-		<div className="w-full grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
-			<div className="">
+		// grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3
+		<div className="w-full flex flex-wrap gap-3">
+			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
 						<span className="text-white italic font-black text-sm">E</span>
@@ -107,56 +182,110 @@ export const TablePosition: React.FC = () => {
 					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
 				</div>
 
-				<Table columns={columns} dataSource={data} pagination={false} />
+				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
 			</div>
 
-			<div className="">
+			{/* <div className="w-[560px]">
 				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
-						xd
+					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+						<span className="text-white italic font-black text-sm">E</span>
 					</div>
 					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
 				</div>
-				<Table columns={columns} dataSource={data} pagination={false} />
+
+				<Table
+					columns={columns}
+					dataSource={data}
+					pagination={false}
+					scroll={{ y: 310 }}
+					className="table-position"
+				/>
 			</div>
 
-			<div className="">
+			<div className="w-[560px]">
 				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
-						xd
+					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+						<span className="text-white italic font-black text-sm">E</span>
 					</div>
 					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
 				</div>
-				<Table columns={columns} dataSource={data} pagination={false} />
+
+				<Table
+					columns={columns}
+					dataSource={data}
+					pagination={false}
+					scroll={{ y: 310 }}
+					className="table-position"
+				/>
 			</div>
 
-			<div className="">
+			<div className="w-[560px]">
 				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
-						xd
+					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+						<span className="text-white italic font-black text-sm">E</span>
 					</div>
 					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
 				</div>
-				<Table columns={columns} dataSource={data} pagination={false} />
+
+				<Table
+					columns={columns}
+					dataSource={data}
+					pagination={false}
+					scroll={{ y: 310 }}
+					className="table-position"
+				/>
 			</div>
-			<div className="">
+
+			<div className="w-[560px]">
 				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
-						xd
+					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+						<span className="text-white italic font-black text-sm">E</span>
 					</div>
 					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
 				</div>
-				<Table columns={columns} dataSource={data} pagination={false} />
+
+				<Table
+					columns={columns}
+					dataSource={data}
+					pagination={false}
+					scroll={{ y: 310 }}
+					className="table-position"
+				/>
 			</div>
-			<div className="">
+
+			<div className="w-[560px]">
 				<div className="flex justify-start items-center space-x-5">
-					<div className="rounded-full w-6 h-6 bg-blue flex justify-center items-center">
-						xd
+					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+						<span className="text-white italic font-black text-sm">E</span>
 					</div>
 					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
 				</div>
-				<Table columns={columns} dataSource={data} pagination={false} />
+
+				<Table
+					columns={columns}
+					dataSource={data}
+					pagination={false}
+					scroll={{ y: 310 }}
+					className="table-position"
+				/>
 			</div>
+
+			<div className="w-[560px]">
+				<div className="flex justify-start items-center space-x-5">
+					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
+						<span className="text-white italic font-black text-sm">E</span>
+					</div>
+					<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
+				</div>
+
+				<Table
+					columns={columns}
+					dataSource={data}
+					pagination={false}
+					scroll={{ y: 310 }}
+					className="table-position"
+				/>
+			</div> */}
 		</div>
 	);
 };

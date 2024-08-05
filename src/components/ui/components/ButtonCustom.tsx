@@ -12,7 +12,7 @@ export const ButtonCustom: FC<ButtonCustomProps> = ({ children, color, className
 			}}
 		>
 			<Button
-				className={`${className} flex justify-center items-center text-3xl font-black italic shadow-none`}
+				className={`flex justify-center items-center text-3xl font-black italic shadow-none ${className}`}
 				{...props}
 			>
 				{children}

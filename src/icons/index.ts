@@ -1,5 +1,7 @@
 export * from './Logo';
+export * from './LogoAstroGraph';
 export * from './Icon';
+export * from './IconWhite';
 export * from './UserIcon';
 export * from './PortadaIcon';
 export * from './TablaIcon';
@@ -7,3 +9,4 @@ export * from './ConvocatoriaIcon';
 export * from './PalmaresIcon';
 export * from './GruposIcon';
 export * from './AvisosIcon';
+export * from './PtcmLetter';

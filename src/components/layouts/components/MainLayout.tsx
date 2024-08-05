@@ -10,7 +10,7 @@ import { useStoreLoading, useStoreMessage, useStoreAuth } from '@/store';
 import { Footer } from '@/components/global/components';
 import { Menu } from '@/components/menu';
 
-const raleway = Poppins({ subsets: ['latin'], weight: ['400', '700'] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'] });
 
 export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 	const { data, status } = useSession();
@@ -40,7 +40,7 @@ export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main className={`w-full min-h-screen ${raleway.className}`}>
+			<main className={`w-full min-h-screen ${poppins.className}`}>
 				{contextHolder}
 
 				<Spin spinning={loading} fullscreen size="large" />

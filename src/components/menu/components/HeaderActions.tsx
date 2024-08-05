@@ -12,7 +12,7 @@ export const HeaderActions: React.FC<IWrapperComponent> = ({ children }) => {
 	const title = menuItems.find((menu) => menu.key === router.pathname);
 
 	return (
-		<div className="flex-grow overflow-y-auto bg-content space-y-5 px-[58px] py-[45px]">
+		<div className="flex-grow overflow-y-auto bg-content space-y-5 px-5 py-9 lg:px-[58px] lg:py-[45px]">
 			<Breadcrumb
 				className="flex justify-start text-sm"
 				items={[
