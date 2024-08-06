@@ -11,15 +11,15 @@ export const HeaderMenu = () => {
 			</div>
 
 			<div className="flex justify-center items-center">
-				<div className="p-1 lg:p-2">
+				<div className="p-1 md:p-2">
 					<Badge color="#146586" size="small" count={5}>
 						<IoNotificationsOutline className="w-6 h-6" />
 					</Badge>
 				</div>
 				<Divider type="vertical" />
-				<div className="p-1 flex justify-center items-center space-x-2 lg:p-2 lg:space-x-4">
-					<UserIcon className="w-8 h-8 lg:w-10 lg:h-10" />
-					<span className="text-xs text-gray font-medium lg:text-base">
+				<div className="p-1 flex justify-center items-center space-x-2 md:p-2 md:space-x-4">
+					<UserIcon className="w-8 h-8 md:w-10 md:h-10" />
+					<span className="text-sm text-gray font-medium md:text-base">
 						Iniciar Sesión
 					</span>
 				</div>

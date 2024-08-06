@@ -1,12 +1,13 @@
 import React from 'react';
 
-export const LogoAstroGraph = () => {
+export const LogoAstroGraph = (props: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="102.221"
 			height="36.243"
 			viewBox="0 0 102.221 36.243"
+			{...props}
 		>
 			<g transform="translate(-1716.985 -1842.145)">
 				<path

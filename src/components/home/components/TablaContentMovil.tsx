@@ -114,7 +114,7 @@ export const TablaContentMovil = () => {
 			key: 'key',
 			dataIndex: 'key',
 			title: <span className="text-gray3 font-medium">No.</span>,
-			width: '30px',
+			width: '40px',
 			align: 'center',
 			render: (value) => <span className="text-gray4">{value}</span>,
 		},
@@ -146,7 +146,7 @@ export const TablaContentMovil = () => {
 			key: 'score',
 			dataIndex: 'score',
 			title: <span className="text-gray3 font-medium">Puntaje</span>,
-			width: '60px',
+			width: '80px',
 			align: 'center',
 			render: (value) => <span className="text-gray4">{value}</span>,
 		},
@@ -154,7 +154,7 @@ export const TablaContentMovil = () => {
 			key: 'effectiveness',
 			dataIndex: 'effectiveness',
 			title: <span className="text-gray3 font-medium">Efectividad</span>,
-			width: '80px',
+			width: '90px',
 			align: 'center',
 			render: (value) => <span className="text-green">{value}</span>,
 		},
@@ -172,19 +172,12 @@ export const TablaContentMovil = () => {
 				</div>
 			),
 			children: (
-				<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
-					<div className="flex justify-start items-center space-x-5">
-						<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
-							<span className="text-white italic font-black text-sm">E</span>
-						</div>
-						<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
-					</div>
-
+				<div className="w-full bg-white rounded-lg shadow-sm md:w-[560px]">
 					<Table
 						columns={columns}
 						dataSource={data}
 						pagination={false}
-						scroll={{ y: 310 }}
+						scroll={{ y: 315 }}
 					/>
 				</div>
 			),
@@ -200,19 +193,12 @@ export const TablaContentMovil = () => {
 				</div>
 			),
 			children: (
-				<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
-					<div className="flex justify-start items-center space-x-5">
-						<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
-							<span className="text-white italic font-black text-sm">E</span>
-						</div>
-						<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
-					</div>
-
+				<div className="w-full bg-white rounded-lg shadow-sm md:w-[560px]">
 					<Table
 						columns={columns}
 						dataSource={data}
 						pagination={false}
-						scroll={{ y: 310 }}
+						scroll={{ y: 315 }}
 					/>
 				</div>
 			),
@@ -228,19 +214,12 @@ export const TablaContentMovil = () => {
 				</div>
 			),
 			children: (
-				<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
-					<div className="flex justify-start items-center space-x-5">
-						<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
-							<span className="text-white italic font-black text-sm">E</span>
-						</div>
-						<h4 className="text-sm text-gray2 font-medium">Categoría Elite</h4>
-					</div>
-
+				<div className="w-full bg-white rounded-lg shadow-sm md:w-[560px]">
 					<Table
 						columns={columns}
 						dataSource={data}
 						pagination={false}
-						scroll={{ y: 310 }}
+						scroll={{ y: 315 }}
 					/>
 				</div>
 			),

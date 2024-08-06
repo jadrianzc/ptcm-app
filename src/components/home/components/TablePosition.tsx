@@ -170,7 +170,7 @@ export const TablePosition: React.FC = () => {
 
 	return (
 		// grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3
-		<div className="w-full flex flex-wrap gap-3">
+		<div className="w-full flex flex-wrap justify-center items-center gap-5">
 			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">

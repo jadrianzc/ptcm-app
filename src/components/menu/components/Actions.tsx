@@ -3,7 +3,7 @@ import React from 'react';
 
 export const Actions = () => {
 	return (
-		<div className="hidden sm:grid sm:gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
+		<div className="hidden md:grid md:gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
 			<ButtonCustom
 				type="primary"
 				color="#146586"

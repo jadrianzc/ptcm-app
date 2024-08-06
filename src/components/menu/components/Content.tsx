@@ -1,20 +1,19 @@
-import { Breadcrumb } from 'antd';
 import Link from 'next/link';
-import React from 'react';
-import { Actions } from './';
-import { IWrapperComponent } from '@/components/layouts/interfaces';
-import { menuItems } from '../helpers';
 import { useRouter } from 'next/router';
+import { Breadcrumb } from 'antd';
+import { Actions } from '.';
+import { menuItems } from '../helpers';
+import { IWrapperComponent } from '@/components/layouts/interfaces';
 
-export const HeaderActions: React.FC<IWrapperComponent> = ({ children }) => {
+export const Content: React.FC<IWrapperComponent> = ({ children }) => {
 	const router = useRouter();
 
 	const title = menuItems.find((menu) => menu.key === router.pathname);
 
 	return (
-		<div className="flex-grow overflow-y-auto bg-content space-y-5 px-5 py-9 lg:px-[58px] lg:py-[45px]">
+		<div className="flex-grow overflow-y-auto bg-content px-5 py-9 md:px-[58px] md:py-[45px] md:space-y-5">
 			<Breadcrumb
-				className="hidden justify-start text-sm lg:flex"
+				className="hidden justify-start text-sm md:flex"
 				items={[
 					{
 						title: (

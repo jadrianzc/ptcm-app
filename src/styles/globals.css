@@ -15,52 +15,22 @@ input[type='number'] {
 	appearance: textfield;
 }
 
-/* SCROLL BAR BODY */
-/* body::-webkit-scrollbar {
-	-webkit-appearance: none;
+/* width */
+::-webkit-scrollbar {
+	width: 6px;
+	height: 0px;
 }
 
-body::-webkit-scrollbar:vertical {
-	width: 0px;
-} */
-
-/* .ant-table-wrapper .ant-table {
-	scrollbar-width: thin;
-	scrollbar-color: #3490dc #f1f1f1;
-} */
-
-/* SCROLL BAR MODALS */
-/* .ant-table-wrapper .ant-table::-webkit-scrollbar {
-	-webkit-appearance: none;
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f9f9f9;
 }
 
-.ant-table-wrapper .ant-table::-webkit-scrollbar:vertical {
-	width: 0px;
-}
-
-.ant-table-wrapper .ant-table::-webkit-scrollbar-thumb {
-	background-color: rgba(0, 0, 0, 0.2) !important;
-	border: none !important;
-}
-
-.ant-table-wrapper .ant-table::-webkit-scrollbar-button:increment,
-.ant-table-wrapper .ant-table::-webkit-scrollbar-button {
-	display: none;
-}
-
-.ant-table-wrapper .ant-table::-webkit-scrollbar:horizontal {
-	height: 10px;
-}
-
-.ant-table-wrapper .ant-table::-webkit-scrollbar-thumb {
-	background-color: #797979;
-	border-radius: 20px;
-	border: 2px solid #f1f2f3;
-}
-
-.ant-table-wrapper .ant-table::-webkit-scrollbar-track {
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #dcdddf;
 	border-radius: 10px;
-} */
+}
 
 /* ANT CUSTOM */
 .ant-drawer-header,
@@ -72,12 +42,6 @@ body::-webkit-scrollbar:vertical {
 .ant-spin-dot-item {
 	background-color: orange !important;
 }
-
-/* .modal-container div:nth-child(2),
-.ant-modal-content,
-.ant-modal-body {
-	height: 100% !important;
-} */
 
 .ant-modal-footer {
 	display: none;
@@ -154,9 +118,9 @@ body::-webkit-scrollbar:vertical {
 	background: inherit;
 }
 
-.ant-table-wrapper .ant-table-container table > thead > tr:first-child > *:first-child {
+/* .ant-table-wrapper .ant-table-container table > thead > tr:first-child > *:first-child {
 	border-radius: 0px !important;
-}
-.ant-table-wrapper .ant-table-container table > thead > tr:first-child > *:last-child {
+} */
+/* .ant-table-wrapper .ant-table-container table > thead > tr:first-child > *:last-child {
 	border: none !important;
-}
+} */
