@@ -32,21 +32,31 @@ input[type='number'] {
 	border-radius: 10px;
 }
 
-/* ANT CUSTOM */
-.ant-drawer-header,
+/* DRAWER */
+.ant-drawer-content-wrapper {
+	width: 250px !important;
+}
+
+.ant-drawer-header {
+	padding: 10px 16px !important;
+}
+
 .ant-drawer-body {
 	padding: 0px !important;
-	border: none !important;
+	background-color: #146586;
 }
 
+/* SPIN */
 .ant-spin-dot-item {
-	background-color: orange !important;
+	background-color: #146586 !important;
 }
 
+/* MODAL */
 .ant-modal-footer {
 	display: none;
 }
 
+/* BREADCRUMB */
 .ant-breadcrumb-link,
 .ant-breadcrumb-separator {
 	height: 100% !important;
@@ -83,7 +93,7 @@ input[type='number'] {
 	height: 100%;
 }
 
-/* ANT BADGE */
+/* BADGE */
 .badge-container .ant-badge-count {
 	width: 50px;
 	height: 50px;
@@ -98,7 +108,7 @@ input[type='number'] {
 	font-style: italic;
 }
 
-/* ANT TABLE */
+/* TABLE */
 .ant-table-wrapper .ant-table-thead > tr > th,
 .ant-table-wrapper .ant-table-tbody > tr > td {
 	padding: 4px;

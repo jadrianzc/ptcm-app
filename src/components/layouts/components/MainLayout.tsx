@@ -10,7 +10,10 @@ import { useStoreLoading, useStoreMessage, useStoreAuth } from '@/store';
 import { Footer } from '@/components/global/components';
 import { Menu } from '@/components/menu';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'] });
+const poppins = Poppins({
+	subsets: ['latin'],
+	weight: ['300', '400', '500', '600', '700', '800', '900'],
+});
 
 export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 	const { data, status } = useSession();
@@ -35,15 +38,15 @@ export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 		<>
 			<Head>
 				<title>PTCM</title>
-				<meta name="description" content="Padel Training Club Manta" />
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<link rel="icon" href="/favicon.ico" />
+				<meta name='description' content='Padel Training Club Manta' />
+				<meta name='viewport' content='width=device-width, initial-scale=1' />
+				<link rel='icon' href='/favicon.ico' />
 			</Head>
 
 			<main className={`w-full min-h-screen ${poppins.className}`}>
 				{contextHolder}
 
-				<Spin spinning={loading} fullscreen size="large" />
+				<Spin spinning={loading} fullscreen size='large' />
 
 				<Menu>
 					{children}

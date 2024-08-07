@@ -7,10 +7,7 @@ let refModalOC = createRef<boolean>() as React.MutableRefObject<null>;
 refModalOC.current = null;
 
 export const useStoreModal = create<IModalStore>()((set) => ({
-	isModalOpenOC: false,
-	refModalOC,
-	showFilesOC: true,
+	isDrawer: false,
 
-	setIsModalOpenOC: (isModalOpenOC) => set({ isModalOpenOC }),
-	setShowFilesOC: (showFilesOC) => set({ showFilesOC }),
+	setIsDrawer: (isDrawer) => set({ isDrawer }),
 }));
