@@ -105,6 +105,8 @@ input[type='number'] {
 	font-size: 12px;
 	font-weight: 800;
 	font-style: italic;
+	right: 70px;
+	margin-top: 20px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -112,6 +114,8 @@ input[type='number'] {
 		width: 40px;
 		height: 40px;
 		font-size: 23px;
+		right: 120px;
+		margin-top: 20px;
 	}
 }
 
