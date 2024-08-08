@@ -11,9 +11,6 @@ export const ConfigTheme: React.FC<IWrapperComponent> = ({ children }) => {
 					fontFamily: 'Poppins, sans-serif',
 					colorPrimary: '#146586',
 				},
-				components: {
-					Menu: {},
-				},
 			}}
 		>
 			{children}

@@ -31,11 +31,12 @@ const config: Config = {
 			},
 			borderColor: {
 				blue: '#146586',
+				gray2: '#DCDDDF',
 				gray3: '#6D6D6D',
 				gray4: '#B2B2B2',
 			},
 		},
 	},
-	plugins: [],
+	plugins: [require('tailwind-scrollbar')],
 };
 export default config;
