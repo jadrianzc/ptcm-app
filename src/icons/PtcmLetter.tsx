@@ -1,12 +1,13 @@
 import React from 'react';
 
-export const PtcmLetter = () => {
+export const PtcmLetter = (props: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="21.639"
 			height="118.821"
 			viewBox="0 0 21.639 118.821"
+			{...props}
 		>
 			<g transform="translate(-270.243 -1068.118)">
 				<path
