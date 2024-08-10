@@ -6,7 +6,7 @@ dayjs.extend(duration);
 import { ButtonCustom } from '@/components/ui/components';
 import { GruposIcon, PtcmLetter } from '@/icons';
 import { ICountdown } from '../interfaces';
-import { Divider } from 'antd';
+import { Badge, Divider } from 'antd';
 
 export const Groups = () => {
 	const [timeLeft, setTimeLeft] = useState<ICountdown | null>(null);
@@ -223,23 +223,31 @@ export const Groups = () => {
 				</div>
 
 				<div className="h-auto rounded-xl space-y-8 md:bg-blueTra md:p-10">
-					<div className="content-convocatoria bg-white w-fit rounded-md p-[18px]">
-						<span className="text-sm text-gray2 font-medium">Convocatoria de hoy</span>
-						<Divider type="vertical" />
-						<span className="text-sm text-gray2 font-medium">Liga Cñor Marisco</span>
-						<Divider type="vertical" />
-						<span className="text-sm text-gray2 font-medium">Fecha 7</span>
-						<Divider type="vertical" />
-						<span className="text-sm text-gray2 font-medium">
+					<div className="content-convocatoria bg-white w-full rounded-md p-[10px] flex flex-wrap justify-center items-center gap-4 md:w-fit md:p-[18px]">
+						<div className="text-sm text-gray2 font-medium">Convocatoria de hoy</div>
+						<Divider type="vertical" className="hidden md:inline-block" />
+						<div className="text-sm text-gray2 font-medium">Liga Cñor Marisco</div>
+						<Divider type="vertical" className="hidden md:inline-block" />
+						<div className="text-sm text-gray2 font-medium">Fecha 7</div>
+						<Divider type="vertical" className="hidden md:inline-block" />
+						<div className="text-sm text-gray2 font-medium text-center">
 							Miercoles 12 de junio a las 20:00pm
-						</span>
+						</div>
 					</div>
 
 					<div className="w-full flex flex-wrap justify-center items-center gap-y-5 lg:justify-between md:gap-y-10">
 						<div className="bg-white w-[490px] rounded-md p-[18px] space-y-2">
-							<span className="text-sm text-gray2 font-medium">
+							<div className="w-full flex justify-center items-center relative">
+								<div className="rounded-full w-[27px] h-[27px] bg-blue flex justify-center items-center absolute bottom-[4.5px] md:w-12 md:h-12 md:-bottom-[6px]">
+									<div className="text-white italic font-extrabold text-sm md:text-3xl mr-1">
+										1
+									</div>
+								</div>
+							</div>
+
+							<div className="text-sm text-gray2 font-medium text-center md:text-left">
 								Cancha 1 (Produbanco)
-							</span>
+							</div>
 
 							<div className="grid gap-x-1 md:grid-rows-2 md:grid-flow-col md:gap-y-1 md:gap-x-0">
 								<div className="bg-turquoise h-[50px] flex justify-center items-center mb-1 col-span-2 md:mb-0 md:mr-1 md:col-span-1 md:row-span-2 md:h-full">
@@ -268,19 +276,27 @@ export const Groups = () => {
 						</div>
 
 						<div className="bg-white w-[490px] rounded-md p-[18px] space-y-2">
-							<span className="text-sm text-gray2 font-medium">
+							<div className="w-full flex justify-center items-center relative">
+								<div className="rounded-full w-[27px] h-[27px] bg-blue flex justify-center items-center absolute bottom-[4.5px] md:w-12 md:h-12 md:-bottom-[6px]">
+									<div className="text-white italic font-extrabold text-sm md:text-3xl mr-1">
+										1
+									</div>
+								</div>
+							</div>
+
+							<div className="text-sm text-gray2 font-medium text-center md:text-left">
 								Cancha 1 (Produbanco)
-							</span>
+							</div>
 
 							<div className="grid gap-x-1 md:grid-rows-2 md:grid-flow-col md:gap-y-1 md:gap-x-0">
 								<div className="bg-turquoise h-[50px] flex justify-center items-center mb-1 col-span-2 md:mb-0 md:mr-1 md:col-span-1 md:row-span-2 md:h-full">
 									<PtcmLetter className="h-[80px] rotate-90 md:h-auto md:rotate-0" />
 								</div>
-								<div className="bg-darkblue h-[137px] border-b-4 border-dashed text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
+								<div className="bg-darkblue h-[137px] border-b-4 border-dashed border-white text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
 									<span>Jugador 1</span>
 									<span>Nombre Largo</span>
 								</div>
-								<div className="bg-darkblue h-[137px] border-b-4 border-dashed text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
+								<div className="bg-darkblue h-[137px] border-b-4 border-dashed border-white text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
 									<span>Jugador 2</span>
 									<span>Nombre Largo</span>
 								</div>
@@ -299,19 +315,27 @@ export const Groups = () => {
 						</div>
 
 						<div className="bg-white w-[490px] rounded-md p-[18px] space-y-2">
-							<span className="text-sm text-gray2 font-medium">
+							<div className="w-full flex justify-center items-center relative">
+								<div className="rounded-full w-[27px] h-[27px] bg-blue flex justify-center items-center absolute bottom-[4.5px] md:w-12 md:h-12 md:-bottom-[6px]">
+									<div className="text-white italic font-extrabold text-sm md:text-3xl mr-1">
+										1
+									</div>
+								</div>
+							</div>
+
+							<div className="text-sm text-gray2 font-medium text-center md:text-left">
 								Cancha 1 (Produbanco)
-							</span>
+							</div>
 
 							<div className="grid gap-x-1 md:grid-rows-2 md:grid-flow-col md:gap-y-1 md:gap-x-0">
 								<div className="bg-turquoise h-[50px] flex justify-center items-center mb-1 col-span-2 md:mb-0 md:mr-1 md:col-span-1 md:row-span-2 md:h-full">
 									<PtcmLetter className="h-[80px] rotate-90 md:h-auto md:rotate-0" />
 								</div>
-								<div className="bg-darkblue h-[137px] border-b-4 border-dashed text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
+								<div className="bg-darkblue h-[137px] border-b-4 border-dashed border-white text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
 									<span>Jugador 1</span>
 									<span>Nombre Largo</span>
 								</div>
-								<div className="bg-darkblue h-[137px] border-b-4 border-dashed text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
+								<div className="bg-darkblue h-[137px] border-b-4 border-dashed border-white text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
 									<span>Jugador 2</span>
 									<span>Nombre Largo</span>
 								</div>
@@ -330,19 +354,27 @@ export const Groups = () => {
 						</div>
 
 						<div className="bg-white w-[490px] rounded-md p-[18px] space-y-2">
-							<span className="text-sm text-gray2 font-medium">
+							<div className="w-full flex justify-center items-center relative">
+								<div className="rounded-full w-[27px] h-[27px] bg-blue flex justify-center items-center absolute bottom-[4.5px] md:w-12 md:h-12 md:-bottom-[6px]">
+									<div className="text-white italic font-extrabold text-sm md:text-3xl mr-1">
+										1
+									</div>
+								</div>
+							</div>
+
+							<div className="text-sm text-gray2 font-medium text-center md:text-left">
 								Cancha 1 (Produbanco)
-							</span>
+							</div>
 
 							<div className="grid gap-x-1 md:grid-rows-2 md:grid-flow-col md:gap-y-1 md:gap-x-0">
 								<div className="bg-turquoise h-[50px] flex justify-center items-center mb-1 col-span-2 md:mb-0 md:mr-1 md:col-span-1 md:row-span-2 md:h-full">
 									<PtcmLetter className="h-[80px] rotate-90 md:h-auto md:rotate-0" />
 								</div>
-								<div className="bg-darkblue h-[137px] border-b-4 border-dashed text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
+								<div className="bg-darkblue h-[137px] border-b-4 border-dashed border-white text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
 									<span>Jugador 1</span>
 									<span>Nombre Largo</span>
 								</div>
-								<div className="bg-darkblue h-[137px] border-b-4 border-dashed text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
+								<div className="bg-darkblue h-[137px] border-b-4 border-dashed border-white text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
 									<span>Jugador 2</span>
 									<span>Nombre Largo</span>
 								</div>
@@ -361,19 +393,27 @@ export const Groups = () => {
 						</div>
 
 						<div className="bg-white w-[490px] rounded-md p-[18px] space-y-2">
-							<span className="text-sm text-gray2 font-medium">
+							<div className="w-full flex justify-center items-center relative">
+								<div className="rounded-full w-[27px] h-[27px] bg-blue flex justify-center items-center absolute bottom-[4.5px] md:w-12 md:h-12 md:-bottom-[6px]">
+									<div className="text-white italic font-extrabold text-sm md:text-3xl mr-1">
+										1
+									</div>
+								</div>
+							</div>
+
+							<div className="text-sm text-gray2 font-medium text-center md:text-left">
 								Cancha 1 (Produbanco)
-							</span>
+							</div>
 
 							<div className="grid gap-x-1 md:grid-rows-2 md:grid-flow-col md:gap-y-1 md:gap-x-0">
 								<div className="bg-turquoise h-[50px] flex justify-center items-center mb-1 col-span-2 md:mb-0 md:mr-1 md:col-span-1 md:row-span-2 md:h-full">
 									<PtcmLetter className="h-[80px] rotate-90 md:h-auto md:rotate-0" />
 								</div>
-								<div className="bg-darkblue h-[137px] border-b-4 border-dashed text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
+								<div className="bg-darkblue h-[137px] border-b-4 border-dashed border-white text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
 									<span>Jugador 1</span>
 									<span>Nombre Largo</span>
 								</div>
-								<div className="bg-darkblue h-[137px] border-b-4 border-dashed text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
+								<div className="bg-darkblue h-[137px] border-b-4 border-dashed border-white text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
 									<span>Jugador 2</span>
 									<span>Nombre Largo</span>
 								</div>
@@ -392,19 +432,27 @@ export const Groups = () => {
 						</div>
 
 						<div className="bg-white w-[490px] rounded-md p-[18px] space-y-2">
-							<span className="text-sm text-gray2 font-medium">
+							<div className="w-full flex justify-center items-center relative">
+								<div className="rounded-full w-[27px] h-[27px] bg-blue flex justify-center items-center absolute bottom-[4.5px] md:w-12 md:h-12 md:-bottom-[6px]">
+									<div className="text-white italic font-extrabold text-sm md:text-3xl mr-1">
+										1
+									</div>
+								</div>
+							</div>
+
+							<div className="text-sm text-gray2 font-medium text-center md:text-left">
 								Cancha 1 (Produbanco)
-							</span>
+							</div>
 
 							<div className="grid gap-x-1 md:grid-rows-2 md:grid-flow-col md:gap-y-1 md:gap-x-0">
 								<div className="bg-turquoise h-[50px] flex justify-center items-center mb-1 col-span-2 md:mb-0 md:mr-1 md:col-span-1 md:row-span-2 md:h-full">
 									<PtcmLetter className="h-[80px] rotate-90 md:h-auto md:rotate-0" />
 								</div>
-								<div className="bg-darkblue h-[137px] border-b-4 border-dashed text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
+								<div className="bg-darkblue h-[137px] border-b-4 border-dashed border-white text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
 									<span>Jugador 1</span>
 									<span>Nombre Largo</span>
 								</div>
-								<div className="bg-darkblue h-[137px] border-b-4 border-dashed text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
+								<div className="bg-darkblue h-[137px] border-b-4 border-dashed border-white text-white font-bold italic flex flex-col justify-center items-center text-[9px] md:text-base md:border-b-0 md:border-r-4">
 									<span>Jugador 2</span>
 									<span>Nombre Largo</span>
 								</div>
