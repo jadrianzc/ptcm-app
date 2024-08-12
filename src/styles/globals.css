@@ -151,3 +151,12 @@ input[type='number'] {
 /* .ant-table-wrapper .ant-table-container table > thead > tr:first-child > *:last-child {
 	border: none !important;
 } */
+
+/* COLLAPSE */
+.member-content .ant-collapse {
+	background: #fff;
+}
+
+.member-content .ant-collapse .ant-collapse-item .ant-collapse-header .ant-collapse-expand-icon {
+	height: 126px;
+}

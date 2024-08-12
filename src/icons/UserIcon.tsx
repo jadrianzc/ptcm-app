@@ -14,7 +14,9 @@ export const UserIcon = (props: React.SVGProps<SVGSVGElement>) => {
 				data-name="Trazado 19"
 				d="M1696,29a19,19,0,1,1-19-19,19,19,0,0,1,19,19"
 				transform="translate(-1658 -10.002)"
-				fill="#f7f7f7"
+				style={{
+					fill: `${props.color ?? '#f7f7f7'}`,
+				}}
 			/>
 			<path
 				id="Trazado_20"

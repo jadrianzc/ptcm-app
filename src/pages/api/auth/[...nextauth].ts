@@ -21,10 +21,10 @@ export default NextAuth({
 			},
 			authorize: async (credentials: any) => {
 				try {
-					//comprobacion en api (?)
+					// comprobacion en api (?)
 					const user = await db
 						.select('*')
-						.from('ViewEmpleados')
+						.from('Atletas')
 						.where('email', credentials.email);
 
 					if (user.length === 0) return null;

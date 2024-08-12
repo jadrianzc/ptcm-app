@@ -10,6 +10,8 @@ export const Content: React.FC<IWrapperComponent> = ({ children }) => {
 
 	const title = menuItems.find((menu) => menu.key === router.pathname);
 
+	console.log(router);
+
 	return (
 		<div className="flex-grow overflow-y-auto bg-content px-5 py-9 md:px-[58px] md:py-[45px] md:space-y-5">
 			<Breadcrumb
@@ -28,7 +30,7 @@ export const Content: React.FC<IWrapperComponent> = ({ children }) => {
 				]}
 			/>
 
-			<Actions />
+			{!router.pathname.includes('/admin') && <Actions />}
 
 			{children}
 		</div>

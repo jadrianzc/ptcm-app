@@ -4,34 +4,26 @@ import { signIn } from 'next-auth/react';
 import { IconWhite } from '@/icons';
 import { ILogin } from '../interfaces';
 import { ButtonCustom } from '@/components/ui/components';
-import { Form, FormProps, Input } from 'antd';
+import { Form, FormProps, Input, message } from 'antd';
 
 export const Login = () => {
 	const router = useRouter();
+	const [messageApi, contextHolder] = message.useMessage();
 
-	const onFinish: FormProps<ILogin>['onFinish'] = (values) => {
-		console.log('Success:', values);
+	const onFinish: FormProps<ILogin>['onFinish'] = async (values) => {
+		try {
+			const result = await signIn('credentials', {
+				...values,
+				redirect: false, // Deshabilitar redirección automática para manejar errores
+			});
 
-		// try {
-		// 	const result = await signIn('credentials', {
-		// 		...credentials,
-		// 		role: 'admin',
-		// 		redirect: false, // Deshabilitar redirección automática para manejar errores
-		// 	});
+			if (!result?.ok) throw new Error(result?.error as string);
 
-		// 	if (!result?.ok) throw new Error(result?.error as string);
-
-		// 	router.replace('/admin/usuarios');
-
-		// 	reset();
-		// } catch (error: any) {
-		// 	console.error(error.message);
-		// 	setErrorLogin(error.message);
-
-		// 	setTimeout(() => {
-		// 		setErrorLogin(null);
-		// 	}, 4000);
-		// }
+			router.replace('/');
+		} catch (error: any) {
+			console.error(error.message);
+			messageApi?.error('Credenciales incorrectas.');
+		}
 	};
 
 	const onFinishFailed: FormProps<ILogin>['onFinishFailed'] = (errorInfo) => {
@@ -40,6 +32,7 @@ export const Login = () => {
 
 	return (
 		<div className="h-screen flex flex-col justify-center items-center space-y-20">
+			{contextHolder}
 			<div className="flex flex-col justify-center items-center">
 				<IconWhite className="w-40 h-40" />
 				<div className="font-semibold tracking-widest">PADEL TRAINING CLUB MANTA</div>

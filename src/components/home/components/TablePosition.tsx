@@ -169,9 +169,8 @@ export const TablePosition: React.FC = () => {
 	];
 
 	return (
-		// grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3
-		<div className="w-full flex flex-wrap justify-center items-center gap-5">
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
+		<div className="w-full grid gap-5 grid-cols-[repeat(auto-fit,_minmax(560px,_1fr))]">
+			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
 						<span className="text-white italic font-black text-sm">E</span>
@@ -182,7 +181,7 @@ export const TablePosition: React.FC = () => {
 				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
 			</div>
 
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
+			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
 						<span className="text-white italic font-black text-sm">E</span>
@@ -193,7 +192,7 @@ export const TablePosition: React.FC = () => {
 				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
 			</div>
 
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
+			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
 						<span className="text-white italic font-black text-sm">E</span>
@@ -204,7 +203,7 @@ export const TablePosition: React.FC = () => {
 				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
 			</div>
 
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
+			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
 						<span className="text-white italic font-black text-sm">E</span>
@@ -215,7 +214,7 @@ export const TablePosition: React.FC = () => {
 				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
 			</div>
 
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
+			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
 						<span className="text-white italic font-black text-sm">E</span>
@@ -226,7 +225,7 @@ export const TablePosition: React.FC = () => {
 				<Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 310 }} />
 			</div>
 
-			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md md:w-[560px]">
+			<div className="w-full bg-white rounded-lg px-2 py-4 space-y-2 shadow-md">
 				<div className="flex justify-start items-center space-x-5">
 					<div className="rounded-full w-8 h-8 bg-blue flex justify-center items-center">
 						<span className="text-white italic font-black text-sm">E</span>
