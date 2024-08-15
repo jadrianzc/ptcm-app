@@ -14,6 +14,7 @@ const config: Config = {
 				gray2: '#393939',
 				gray3: '#6D6D6D',
 				gray4: '#B2B2B2',
+				gray5: '#A5AAAD',
 				main: '#3F6380',
 				blue: '#146586',
 				skyBlue: '#C7D9E0',
@@ -21,6 +22,7 @@ const config: Config = {
 			},
 			backgroundColor: {
 				content: '#F7F7F7',
+				gray: '#F8F8F8',
 				tableContent: '#F9F9F9',
 				red: '#D14747',
 				green: '#609D56',
