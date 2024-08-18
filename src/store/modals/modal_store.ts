@@ -7,7 +7,9 @@ let refModalOC = createRef<boolean>() as React.MutableRefObject<null>;
 refModalOC.current = null;
 
 export const useStoreModal = create<IModalStore>()((set) => ({
+	isModalSeason: false,
 	isDrawer: false,
 
+	setIsSeason: (isModalSeason) => set({ isModalSeason }),
 	setIsDrawer: (isDrawer) => set({ isDrawer }),
 }));

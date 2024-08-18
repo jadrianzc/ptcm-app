@@ -2,10 +2,10 @@ import { ReactElement } from 'react';
 
 import { NextPageWithLayout } from '@/pages/_app';
 import { MainLayout } from '@/components/layouts';
-import { Convocatoria } from '@/components/admin';
+import { Season } from '@/components/admin';
 
 const AdminPage: NextPageWithLayout = () => {
-	return <Convocatoria />;
+	return <Season />;
 };
 
 AdminPage.getLayout = function getLayout(page: ReactElement) {

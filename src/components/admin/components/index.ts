@@ -1,2 +1,3 @@
 export * from './Members';
-export * from './Convocatoria';
+export * from './Season';
+export * from './ModalAddSeason';
