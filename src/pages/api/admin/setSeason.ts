@@ -16,7 +16,7 @@ dayjs.extend(utc);
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseSetSesion | IResponseUnauthorized>,
+	res: NextApiResponse<IResponseSetSesion | IResponseUnauthorized>
 ) {
 	if (req.method === 'POST') {
 		try {
@@ -50,13 +50,14 @@ export default async function handler(
 			res.status(200).json({
 				status: 200,
 				message: `Temporada creada.`,
-				// data: orderFormat[0],
+				data: [],
 			});
 		} catch (error) {
 			console.log(error);
 			res.status(400).json({
 				status: 400,
 				message: 'Ocurrió un error al crear la temporada.',
+				data: [],
 			});
 		}
 	} else {

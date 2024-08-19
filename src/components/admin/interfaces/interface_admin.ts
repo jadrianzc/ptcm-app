@@ -32,10 +32,21 @@ export interface IAddJornadaDB {
 export interface IResponseSetSesion {
 	status: number;
 	message: string;
-	data?: IAddSeasonDB;
+	data: IAddSeasonDB[];
+}
+
+export interface IResponseSetMatchDays {
+	status: number;
+	message: string;
+	data: IAddJornadaDB[];
 }
 
 export interface IResponseUnauthorized {
 	status: number;
 	error: string;
+}
+
+export interface ISeasonMatch {
+	respSeason: IResponseSetSesion;
+	respMatchDays: IResponseSetMatchDays;
 }

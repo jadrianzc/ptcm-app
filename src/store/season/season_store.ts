@@ -6,7 +6,7 @@ import { ISeasonStore } from './interfaces';
 let refModalOC = createRef<boolean>() as React.MutableRefObject<null>;
 refModalOC.current = null;
 
-export const useStoreModal = create<ISeasonStore>()((set) => ({
+export const useStoreSeason = create<ISeasonStore>()((set) => ({
 	seasons: [],
 	matchDays: [],
 
