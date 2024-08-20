@@ -160,3 +160,12 @@ input[type='number'] {
 .member-content .ant-collapse .ant-collapse-item .ant-collapse-header .ant-collapse-expand-icon {
 	height: 126px;
 }
+
+/* LIST ANT */
+.ant-list-items {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+}

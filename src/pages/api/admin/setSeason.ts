@@ -16,7 +16,7 @@ dayjs.extend(utc);
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseSetSesion | IResponseUnauthorized>
+	res: NextApiResponse<IResponseSetSesion | IResponseUnauthorized>,
 ) {
 	if (req.method === 'POST') {
 		try {
@@ -25,27 +25,35 @@ export default async function handler(
 			}
 
 			const newSeason = req.body as IAddSeasonDB;
-			const matchDays = getMatchDays(newSeason.matchdays);
+			const matchDays = getMatchDays(newSeason.matchdays, newSeason.startAt);
 			const id = uuidv4();
 
 			const newJordanas: IAddJornadaDB[] = [];
 
-			const ordenInserted: IAddSeasonDB[] = await db('Temporadas')
-				.returning('id')
-				.insert({ ...newSeason, id });
+			// const ordenInserted: IAddSeasonDB[] = await db('Temporadas')
+			// 	.returning('id')
+			// 	.insert({ ...newSeason, id });
 
 			for (const days in matchDays) {
-				const newJordana: IAddJornadaDB = {
-					id: uuidv4(),
-					idSeason: ordenInserted[0].id,
-					name: `Fecha ${parseInt(days) + 1}`,
-					startAt: matchDays[days],
-				};
+				console.log(dayjs(matchDays[days]).format('dddd'));
+				console.log(parseInt(days));
+				const isThursday = dayjs(matchDays[days]).format('dddd') === 'jueves';
 
-				newJordanas.push(newJordana);
+				console.log(`Fecha ${parseInt(days) + 1}`);
+				// const newJordana: IAddJornadaDB = {
+				// 	id: uuidv4(),
+				// 	idSeason: id,
+				// 	// idSeason: ordenInserted[0].id,
+				// 	name: `Fecha ${parseInt(days) + 1}`,
+				// 	startAt: matchDays[days],
+				// };
+
+				// console.log(newJordana);
+
+				// newJordanas.push(newJordana);
 			}
 
-			await db('Jornadas').insert(newJordanas);
+			// await db('Jornadas').insert(newJordanas);
 
 			res.status(200).json({
 				status: 200,
