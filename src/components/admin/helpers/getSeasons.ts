@@ -7,7 +7,5 @@ export const getSeasons = async (): Promise<ISeasonMatch> => {
 		`/admin/getMatchDaysByIdSeason?idSeason=${respSeason.data[0].id}`
 	);
 
-	console.log({ respSeason, respMatchDays });
-
 	return { respSeason, respMatchDays };
 };

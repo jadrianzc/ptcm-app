@@ -17,7 +17,7 @@ export interface IAddSeasonDB {
 export interface IAddSeason {
 	name: string;
 	matchdays: number;
-	dateMatches: any[];
+	dateMatches: Date;
 }
 
 export interface IAddJornadaDB {
