@@ -1,16 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/db/dbconfig';
-import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import {
-	IAddJornadaDB,
-	IAddSeasonDB,
-	IResponseSetSesion,
-	IResponseUnauthorized,
-} from '@/components/admin/interfaces';
+import { IResponseSetSesion, IResponseUnauthorized } from '@/components/admin/interfaces';
 import { getMatchDays } from '@/helpers';
+import { IDataMatchDays } from '@/helpers/interfaces';
 
 dayjs.extend(utc);
 
@@ -24,25 +19,16 @@ export default async function handler(
 				return res.status(401).json({ status: 401, error: 'Unauthorized' });
 			}
 
-			const newSeason = req.body as IAddSeasonDB;
-			const id = uuidv4();
+			const dataMatchDay = req.body as IDataMatchDays;
 
-			const ordenInserted: IAddSeasonDB[] = await db('Temporadas')
-				.returning('id')
-				.insert({ ...newSeason, id });
+			const matchDay = getMatchDays(dataMatchDay);
 
-			const dataMatchDays = {
-				idSeason: ordenInserted[0].id,
-				days: newSeason.matchdays,
-				startAt: newSeason.startAt,
-			};
-			const matchDays = getMatchDays(dataMatchDays);
-
-			await db('Jornadas').insert(matchDays);
+			await db('Jornadas').insert(matchDay);
+			await db('Temporadas').where('id', dataMatchDay.idSeason).increment('matchdays', 1);
 
 			res.status(200).json({
 				status: 200,
-				message: `Temporada creada.`,
+				message: `Jornada creada.`,
 				data: [],
 			});
 		} catch (error) {

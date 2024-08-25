@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs';
+
 export interface ICountdown {
 	hours: number;
 	minutes: number;
@@ -18,6 +20,8 @@ export interface IAddSeason {
 	name: string;
 	matchdays: number;
 	dateMatches: Date;
+	startAt: string | Dayjs;
+	endAt: string | Dayjs;
 }
 
 export interface IAddJornadaDB {
@@ -39,6 +43,8 @@ export interface IResponseSetMatchDays {
 	status: number;
 	message: string;
 	data: IAddJornadaDB[];
+	upcomingDates: number;
+	completed: number;
 }
 
 export interface IResponseUnauthorized {
@@ -46,7 +52,10 @@ export interface IResponseUnauthorized {
 	error: string;
 }
 
-export interface ISeasonMatch {
+export interface IRespSeason {
 	respSeason: IResponseSetSesion;
+}
+
+export interface IRespMatchDays {
 	respMatchDays: IResponseSetMatchDays;
 }

@@ -9,7 +9,11 @@ refModalOC.current = null;
 export const useStoreSeason = create<ISeasonStore>()((set) => ({
 	seasons: [],
 	matchDays: [],
+	upcomingDates: 0,
+	completedDates: 0,
 
 	setSeason: (seasons) => set({ seasons }),
 	setMatchDay: (matchDays) => set({ matchDays }),
+	setUpcomingDates: (upcomingDates) => set({ upcomingDates }),
+	setCompletedDates: (completedDates) => set({ completedDates }),
 }));

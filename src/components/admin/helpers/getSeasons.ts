@@ -1,11 +1,8 @@
 import { localApi } from '@/axios';
-import { IResponseSetMatchDays, IResponseSetSesion, ISeasonMatch } from '../interfaces';
+import { IResponseSetMatchDays, IResponseSetSesion, IRespSeason } from '../interfaces';
 
-export const getSeasons = async (): Promise<ISeasonMatch> => {
+export const getSeasons = async (): Promise<IRespSeason> => {
 	const { data: respSeason } = await localApi.get<IResponseSetSesion>('/admin/getSeason');
-	const { data: respMatchDays } = await localApi.get<IResponseSetMatchDays>(
-		`/admin/getMatchDaysByIdSeason?idSeason=${respSeason.data[0].id}`
-	);
 
-	return { respSeason, respMatchDays };
+	return { respSeason };
 };

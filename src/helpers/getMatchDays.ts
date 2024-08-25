@@ -6,11 +6,17 @@ import { IDataMatchDays } from './interfaces';
 
 dayjs.extend(utc);
 
-export const getMatchDays = ({ idSeason, days, startAt }: IDataMatchDays): IAddJornadaDB[] => {
+export const getMatchDays = ({
+	idSeason,
+	days,
+	startAt,
+	totalSeasonMatchs,
+}: IDataMatchDays): IAddJornadaDB[] => {
 	const daysOfWeek = [1, 2, 3, 4]; // 1 = Lunes, 2 = Martes, 3 = Miércoles, 4 = Jueves
 	const newJordanas: IAddJornadaDB[] = [];
 	const newJordanasThursday: IAddJornadaDB[] = [];
-	const targetHour = 20; // La hora deseada (20 para 8 PM)
+	const targetHourOne = 20; // La hora deseada (20 para 8 PM)
+	const targetHourTwo = 21; // La hora deseada (21 para 9 PM)
 	const targetMinute = 30; // El minuto deseado (30 para 30 minutos)
 	let currentDate = dayjs(startAt);
 
@@ -24,7 +30,7 @@ export const getMatchDays = ({ idSeason, days, startAt }: IDataMatchDays): IAddJ
 		if (daysOfWeek.includes(dayOfWeek)) {
 			// Jornadas normales
 			const adjustedDate = currentDate
-				.hour(targetHour)
+				.hour(dayOfWeek === 2 ? targetHourTwo : targetHourOne)
 				.minute(targetMinute)
 				.second(0)
 				.millisecond(0);
@@ -32,18 +38,26 @@ export const getMatchDays = ({ idSeason, days, startAt }: IDataMatchDays): IAddJ
 			newJordanas.push({
 				id: uuidv4(),
 				idSeason,
-				name: `Fecha ${newJordanas.length + 1} ${dayOfWeek === 4 ? '(a)' : ''}`.trim(),
+				name: `Fecha ${totalSeasonMatchs ?? newJordanas.length + 1} ${
+					dayOfWeek === 4 ? '(a)' : ''
+				}`.trim(),
 				startAt: adjustedDate.toISOString(),
 			});
 
 			// Valida la segunda jornada de los jueves
 			if (dayOfWeek === 4) {
-				const adjustedDate = currentDate.hour(21).minute(30).second(0).millisecond(0);
+				const adjustedDate = currentDate
+					.hour(targetHourTwo)
+					.minute(targetMinute)
+					.second(0)
+					.millisecond(0);
 
 				newJordanasThursday.push({
 					id: uuidv4(),
 					idSeason,
-					name: `Fecha ${newJordanas.length} ${dayOfWeek === 4 ? '(b)' : ''}`.trim(),
+					name: `Fecha ${totalSeasonMatchs ?? newJordanas.length} ${
+						dayOfWeek === 4 ? '(b)' : ''
+					}`.trim(),
 					startAt: adjustedDate.toISOString(),
 				});
 			}

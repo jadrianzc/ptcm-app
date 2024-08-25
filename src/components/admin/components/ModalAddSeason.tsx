@@ -15,104 +15,100 @@ const { RangePicker } = DatePicker;
 export const ModalAddSeason = () => {
 	const [form] = Form.useForm<IAddSeason>();
 	const { isModalSeason, setIsSeason } = useStoreModal();
-	const [endAt, setEndAt] = useState<string | null>(null);
 
 	const handleCancel = () => {
 		setIsSeason(false);
+		form.resetFields();
 	};
 
 	const onChangeDate: DatePickerProps['onChange'] = (date) => {
-		const startAt = dayjs(date).utcOffset(0, true).toISOString();
-		const days = form.getFieldValue('matchdays');
-		console.log({ startAt, days });
+		if (date) {
+			const startAt = dayjs(date).utcOffset(0, true).toISOString();
+			const days = form.getFieldValue('matchdays');
 
-		const endAt = getSeasonEndDay(days, startAt);
-		console.log(endAt);
-		setEndAt(endAt);
-		// while (newJordanas.length < days) {
+			// Obtener la fecha de la última jornada
+			const endAt = getSeasonEndDay(days, startAt);
 
-		// }
+			form.setFieldsValue({ endAt: dayjs(endAt).utcOffset(0, true) });
+		}
 	};
 
-	const handleAddSeason: FormProps<IAddSeason>['onFinish'] = async ({
-		name,
-		matchdays,
-		dateMatches,
-	}) => {
+	const handleAddSeason: FormProps<IAddSeason>['onFinish'] = async (values) => {
 		try {
-			const startAt: string = dayjs(dateMatches).utcOffset(0, true).toISOString();
-			console.log(startAt);
-			// const endAt: string = dayjs(dateMatches[1]).utcOffset(0, true).toISOString();
+			const startAt: string = dayjs(values.startAt).utcOffset(0, true).toISOString();
+			const endAt: string = dayjs(values.endAt).utcOffset(0, true).toISOString();
 
 			const newSeason = {
-				name,
-				matchdays,
+				...values,
 				startAt,
 				endAt,
 			};
 
-			console.log(newSeason);
-
-			// const { data } = await localApi.post('/admin/setSeason', newSeason);
-			// console.log(data);
+			const { data } = await localApi.post('/admin/setSeason', newSeason);
+			console.log(data);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
 	return (
-		<Modal title='Crear temporada' open={isModalSeason} onCancel={handleCancel}>
+		<Modal title="Crear temporada" open={isModalSeason} onCancel={handleCancel}>
 			<Form
 				form={form}
-				name='form-add-season'
+				name="form-add-season"
 				initialValues={{
 					matchdays: 42,
 				}}
-				layout='vertical'
+				layout="vertical"
 				onFinish={handleAddSeason}
-				autoComplete='off'>
+				autoComplete="off"
+			>
 				<Form.Item<IAddSeason>
-					label='Nombre:'
-					name='name'
-					className='col-span-full md:col-span-6 lg:col-span-4'
-					rules={[{ required: true, message: '* Requerido.' }]}>
-					<Input size='large' />
+					label="Nombre:"
+					name="name"
+					className="col-span-full md:col-span-6 lg:col-span-4"
+					rules={[{ required: true, message: '* Requerido.' }]}
+				>
+					<Input size="large" />
 				</Form.Item>
 
 				<Form.Item<IAddSeason>
-					label='Jornadas:'
-					name='matchdays'
-					className='col-span-full md:col-span-6 lg:col-span-4'
-					rules={[{ required: true, message: '* Requerido.' }]}>
-					<InputNumber type='number' size='large' controls={false} />
+					label="Jornadas:"
+					name="matchdays"
+					className="col-span-full md:col-span-6 lg:col-span-4"
+					rules={[{ required: true, message: '* Requerido.' }]}
+				>
+					<InputNumber type="number" size="large" controls={false} />
 				</Form.Item>
 
-				<Form.Item
-					name='dateMatches'
-					label='Hora de inicio:'
-					rules={[{ type: 'object' as const, required: true, message: '* Requerido.' }]}>
-					<DatePicker showTime format='YYYY-MM-DD HH:mm' onChange={onChangeDate} />
-					{/* <RangePicker showTime format="YYYY-MM-DD HH:mm" /> */}
-				</Form.Item>
+				<div className="flex items-center justify-between">
+					<Form.Item<IAddSeason>
+						name="startAt"
+						label="Fecha de inicio:"
+						rules={[
+							{ type: 'object' as const, required: true, message: '* Requerido.' },
+						]}
+					>
+						<DatePicker showTime format="DD-MM-YYYY HH:mm" onChange={onChangeDate} />
+					</Form.Item>
 
-				<Form.Item
-					// name='dateMatches'
-					label='Hora de fin:'
-					rules={[{ type: 'object' as const, required: true, message: '* Requerido.' }]}>
-					<DatePicker
-						showTime
-						format='YYYY-MM-DD HH:mm'
-						value={endAt ? dayjs(endAt).utcOffset(0, false) : ''}
-						disabled
-					/>
-					{/* <RangePicker showTime format="YYYY-MM-DD HH:mm" /> */}
-				</Form.Item>
+					<Form.Item<IAddSeason>
+						name="endAt"
+						label="Fecha de finalización:"
+						rules={[
+							{ type: 'object' as const, required: true, message: '* Requerido.' },
+						]}
+					>
+						<DatePicker showTime format="DD-MM-YYYY HH:mm" disabled />
+					</Form.Item>
+				</div>
 
 				<Form.Item>
 					<ButtonCustom
-						type='primary'
-						htmlType='submit'
-						className='text-base font-medium not-italic'>
+						type="primary"
+						htmlType="submit"
+						className="text-base font-medium not-italic"
+					>
 						Crear temporada
 					</ButtonCustom>
 				</Form.Item>

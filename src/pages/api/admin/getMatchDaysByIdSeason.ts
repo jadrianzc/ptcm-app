@@ -8,10 +8,11 @@ import {
 	IResponseSetSesion,
 	IResponseUnauthorized,
 } from '@/components/admin/interfaces';
+import dayjs from 'dayjs';
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseSetMatchDays | IResponseUnauthorized>
+	res: NextApiResponse<IResponseSetMatchDays | IResponseUnauthorized>,
 ) {
 	if (req.method === 'GET') {
 		try {
@@ -25,12 +26,22 @@ export default async function handler(
 				.select<IAddJornadaDB[]>('*')
 				.from('Jornadas')
 				.where('idSeason', idSeason)
-				.orderByRaw('CAST(SUBSTRING(name, 7, LEN(name) - 6) AS INT)');
+				.orderBy('startAt', 'asc');
+
+			const upcomingDates = matchDays.filter(
+				(match) => dayjs().isBefore(dayjs(match.startAt)) && !match.name.endsWith('(b)'),
+			).length;
+
+			const completed = matchDays.filter(
+				(match) => dayjs().isAfter(dayjs(match.startAt)) && !match.name.endsWith('(b)'),
+			).length;
 
 			res.status(200).json({
 				status: 200,
 				message: ``,
 				data: matchDays,
+				upcomingDates,
+				completed,
 			});
 		} catch (error) {
 			console.log(error);
@@ -38,6 +49,8 @@ export default async function handler(
 				status: 400,
 				message: 'Ocurrió un error al obtener las jornadas.',
 				data: [],
+				upcomingDates: 0,
+				completed: 0,
 			});
 		}
 	} else {
