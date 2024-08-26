@@ -1,16 +1,15 @@
-import { DatePicker, DatePickerProps, Form, FormProps, Input, InputNumber, Modal } from 'antd';
-import dayjs from 'dayjs';
+import { DatePicker, Form, FormProps, Input, InputNumber, Modal } from 'antd';
+import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { ButtonCustom } from '@/components/ui/components';
 import { useStoreModal } from '@/store';
 import { localApi } from '@/axios';
-import { IAddSeason } from '../interfaces';
+import { IAddSeason, IChangeDate } from '../interfaces';
 import { getSeasonEndDay } from '@/helpers';
 import { useState } from 'react';
+import { IoAddCircleSharp } from 'react-icons/io5';
 
 dayjs.extend(utc);
-
-const { RangePicker } = DatePicker;
 
 export const ModalAddSeason = () => {
 	const [form] = Form.useForm<IAddSeason>();
@@ -21,11 +20,10 @@ export const ModalAddSeason = () => {
 		form.resetFields();
 	};
 
-	const onChangeDate: DatePickerProps['onChange'] = (date) => {
-		if (date) {
-			const startAt = dayjs(date).utcOffset(0, true).toISOString();
+	const onChangeDate = () => {
+		if (form.getFieldValue('startAt') && form.getFieldValue('matchdays')) {
+			const startAt = dayjs(form.getFieldValue('startAt')).utcOffset(0, true).toISOString();
 			const days = form.getFieldValue('matchdays');
-
 			// Obtener la fecha de la última jornada
 			const endAt = getSeasonEndDay(days, startAt);
 
@@ -36,7 +34,7 @@ export const ModalAddSeason = () => {
 	const handleAddSeason: FormProps<IAddSeason>['onFinish'] = async (values) => {
 		try {
 			const startAt: string = dayjs(values.startAt).utcOffset(0, true).toISOString();
-			const endAt: string = dayjs(values.endAt).utcOffset(0, true).toISOString();
+			const endAt: string = dayjs(values.endAt).utcOffset(-5, true).toISOString();
 
 			const newSeason = {
 				...values,
@@ -62,52 +60,62 @@ export const ModalAddSeason = () => {
 				layout="vertical"
 				onFinish={handleAddSeason}
 				autoComplete="off"
+				className="grid gap-2 grid-cols-1 md:grid-cols-12 md:gap-5"
 			>
 				<Form.Item<IAddSeason>
 					label="Nombre:"
 					name="name"
-					className="col-span-full md:col-span-6 lg:col-span-4"
+					className="col-span-full"
 					rules={[{ required: true, message: '* Requerido.' }]}
 				>
 					<Input size="large" />
 				</Form.Item>
 
 				<Form.Item<IAddSeason>
-					label="Jornadas:"
-					name="matchdays"
-					className="col-span-full md:col-span-6 lg:col-span-4"
-					rules={[{ required: true, message: '* Requerido.' }]}
+					name="startAt"
+					label="Fecha de inicio:"
+					className="col-span-full md:col-span-6"
+					rules={[{ type: 'object' as const, required: true, message: '* Requerido.' }]}
 				>
-					<InputNumber type="number" size="large" controls={false} />
+					<DatePicker
+						showTime
+						format="DD-MM-YYYY HH:mm"
+						className="w-full"
+						onChange={() => onChangeDate()}
+					/>
 				</Form.Item>
 
-				<div className="flex items-center justify-between">
-					<Form.Item<IAddSeason>
-						name="startAt"
-						label="Fecha de inicio:"
-						rules={[
-							{ type: 'object' as const, required: true, message: '* Requerido.' },
-						]}
-					>
-						<DatePicker showTime format="DD-MM-YYYY HH:mm" onChange={onChangeDate} />
-					</Form.Item>
+				<Form.Item<IAddSeason>
+					name="endAt"
+					label="Fecha de finalización:"
+					className="col-span-full md:col-span-6"
+					rules={[{ type: 'object' as const, required: true, message: '* Requerido.' }]}
+				>
+					<DatePicker showTime format="DD-MM-YYYY HH:mm" className="w-full" disabled />
+				</Form.Item>
 
-					<Form.Item<IAddSeason>
-						name="endAt"
-						label="Fecha de finalización:"
-						rules={[
-							{ type: 'object' as const, required: true, message: '* Requerido.' },
-						]}
-					>
-						<DatePicker showTime format="DD-MM-YYYY HH:mm" disabled />
-					</Form.Item>
-				</div>
+				<Form.Item<IAddSeason>
+					label="Jornadas:"
+					name="matchdays"
+					className="col-span-full"
+					rules={[{ required: true, message: '* Requerido.' }]}
+				>
+					<InputNumber
+						type="number"
+						size="large"
+						controls={false}
+						className="w-1/4"
+						onChange={() => onChangeDate()}
+					/>
+				</Form.Item>
 
-				<Form.Item>
+				<Form.Item className="col-span-full flex justify-center">
 					<ButtonCustom
 						type="primary"
 						htmlType="submit"
+						color="#146586"
 						className="text-base font-medium not-italic"
+						icon={<IoAddCircleSharp />}
 					>
 						Crear temporada
 					</ButtonCustom>

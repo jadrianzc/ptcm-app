@@ -33,6 +33,11 @@ export interface IAddJornadaDB {
 	updateAt?: string;
 }
 
+export interface IChangeDate {
+	startAt: string;
+	days: number;
+}
+
 export interface IResponseSetSesion {
 	status: number;
 	message: string;

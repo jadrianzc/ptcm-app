@@ -10,7 +10,6 @@ import { ModalAddSeason } from './ModalAddSeason';
 import { getMatchDay, getSeasons } from '../helpers';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
-import { getMatchDays } from '@/helpers';
 import { localApi } from '@/axios';
 
 dayjs.locale('es');
@@ -98,7 +97,11 @@ export const Season = () => {
 									{seasons?.map((season, index) => (
 										<div
 											key={season.id}
-											className="w-full bg-gray flex justify-between items-center p-2 border rounded-lg cursor-pointer"
+											className={`w-full bg-gray flex justify-between items-center p-2 border rounded-lg cursor-pointer ${
+												matchDays[0]?.idSeason === season.id
+													? 'border-blue border-[3px]'
+													: ''
+											}`}
 											onClick={() => {
 												getMatchDay(seasons[index]?.id)
 													.then((resp) => {
