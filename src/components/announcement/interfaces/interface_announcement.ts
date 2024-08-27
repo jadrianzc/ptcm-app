@@ -1,3 +1,5 @@
+import { IAddJornadaDB } from '@/components/admin/interfaces';
+
 export interface ICountdown {
 	hours: number;
 	minutes: number;
@@ -7,5 +9,5 @@ export interface ICountdown {
 export interface IResponseCallDate {
 	status: number;
 	message?: string;
-	data: string;
+	data?: IAddJornadaDB;
 }

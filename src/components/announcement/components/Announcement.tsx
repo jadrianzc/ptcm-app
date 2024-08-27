@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import duration from 'dayjs/plugin/duration';
+import 'dayjs/locale/es';
+dayjs.locale('es');
 dayjs.extend(utc);
 dayjs.extend(duration);
 
@@ -10,9 +12,11 @@ import { ConvocatoriaIcon } from '@/icons';
 import { ICountdown } from '../interfaces';
 import { Divider } from 'antd';
 import { getDateMatchDay } from '../helpers';
+import { IAddJornadaDB } from '@/components/admin/interfaces';
 
 export const Announcement = () => {
 	const [timeLeft, setTimeLeft] = useState<ICountdown | null>(null);
+	const [currentDay, setCurrentDay] = useState<IAddJornadaDB>();
 	const convocados = [
 		{
 			name: 'Nombre del Jugador',
@@ -140,30 +144,36 @@ export const Announcement = () => {
 	];
 
 	useEffect(() => {
-		// TODO: Cambiar fecha por la fecha de creación convocatoria
 		getDateMatchDay()
 			.then((resp) => {
-				console.log(resp.split('Z'));
-				const [date] = resp.split('Z');
+				setCurrentDay(resp);
+				const [date] = resp.startAt.split('Z');
 
 				const targetDate = dayjs(date);
 
-				const updateCountdown = () => {
-					const now = dayjs();
-					const difference = targetDate.diff(now);
+				if (dayjs().isBefore(targetDate)) {
+					const updateCountdown = () => {
+						const now = dayjs();
+						const difference = targetDate.diff(now);
 
-					const duration = dayjs.duration(difference);
+						const duration = dayjs.duration(difference);
 
+						setTimeLeft({
+							hours: duration.hours(),
+							minutes: duration.minutes(),
+							seconds: duration.seconds(),
+						});
+					};
+
+					const intervalId = setInterval(updateCountdown, 1000);
+					return () => clearInterval(intervalId); // Cleanup interval on component unmount
+				} else {
 					setTimeLeft({
-						hours: duration.hours(),
-						minutes: duration.minutes(),
-						seconds: duration.seconds(),
+						hours: 0,
+						minutes: 0,
+						seconds: 0,
 					});
-				};
-
-				const intervalId = setInterval(updateCountdown, 1000);
-
-				return () => clearInterval(intervalId); // Cleanup interval on component unmount
+				}
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -182,46 +192,55 @@ export const Announcement = () => {
 					<div className="h-full flex justify-center items-center">
 						{timeLeft ? (
 							<div className="flex flex-col justify-center items-center text-blue space-y-6">
-								<span className="text-xs font-light md:text-xl">
-									Atleta, faltan
-								</span>
+								{dayjs().isBefore(currentDay?.startAt.split('Z')[0]) ? (
+									<>
+										<span className="text-xs font-light md:text-xl">
+											Atleta, faltan
+										</span>
 
-								<div className="flex justify-center items-center font-extrabold space-x-[15px] md:space-x-[45px]">
-									<div className="flex flex-col justify-center items-center">
-										<div className="text-5xl font-semibold md:text-[80px]">
-											{timeLeft.hours}
+										<div className="flex justify-center items-center font-extrabold space-x-[15px] md:space-x-[45px]">
+											<div className="flex flex-col justify-center items-center">
+												<div className="text-5xl font-semibold md:text-[80px]">
+													{timeLeft.hours}
+												</div>
+												<div className="text-xs text-skyBlue uppercase md:text-xl">
+													horas
+												</div>
+											</div>
+											<span className="text-skyBlue text-5xl font-semibold md:text-[80px]">
+												:
+											</span>
+											<div className="flex flex-col justify-center items-center">
+												<div className="text-5xl font-semibold md:text-[80px]">
+													{timeLeft.minutes}
+												</div>
+												<div className="text-xs text-skyBlue uppercase md:text-xl">
+													minutos
+												</div>
+											</div>
+											<span className="text-skyBlue text-5xl font-semibold md:text-[80px]">
+												:
+											</span>
+											<div className="flex flex-col justify-center items-center">
+												<div className="text-5xl font-semibold md:text-[80px]">
+													{timeLeft.seconds}
+												</div>
+												<div className="text-xs text-skyBlue uppercase md:text-xl">
+													segundos
+												</div>
+											</div>
 										</div>
-										<div className="text-xs text-skyBlue uppercase md:text-xl">
-											horas
-										</div>
-									</div>
-									<span className="text-skyBlue text-5xl font-semibold md:text-[80px]">
-										:
-									</span>
-									<div className="flex flex-col justify-center items-center">
-										<div className="text-5xl font-semibold md:text-[80px]">
-											{timeLeft.minutes}
-										</div>
-										<div className="text-xs text-skyBlue uppercase md:text-xl">
-											minutos
-										</div>
-									</div>
-									<span className="text-skyBlue text-5xl font-semibold md:text-[80px]">
-										:
-									</span>
-									<div className="flex flex-col justify-center items-center">
-										<div className="text-5xl font-semibold md:text-[80px]">
-											{timeLeft.seconds}
-										</div>
-										<div className="text-xs text-skyBlue uppercase md:text-xl">
-											segundos
-										</div>
-									</div>
-								</div>
 
-								<span className="text-xs font-light md:text-xl">
-									Para el inicio de la convocatoria
-								</span>
+										<span className="text-xs font-light md:text-xl">
+											Para el inicio de la convocatoria{' '}
+											<strong>{currentDay?.name}</strong>
+										</span>
+									</>
+								) : (
+									<span className="text-xl font-semibold text-center md:text-4xl">
+										Atleta, la convocatoria ha finalizado
+									</span>
+								)}
 							</div>
 						) : (
 							<div>Cargando...</div>
@@ -229,13 +248,15 @@ export const Announcement = () => {
 					</div>
 				</div>
 
-				<ButtonCustom
-					type="primary"
-					className="w-full h-[250px] rounded-xl md:h-[353px]"
-					color="#609D56"
-				>
-					Unirme
-				</ButtonCustom>
+				{dayjs().isBefore(currentDay?.startAt.split('Z')[0]) && (
+					<ButtonCustom
+						type="primary"
+						className="w-full h-[250px] rounded-xl md:h-[353px]"
+						color="#609D56"
+					>
+						Unirme
+					</ButtonCustom>
+				)}
 
 				<div className="w-full h-auto bg-white rounded-xl px-5 py-6 space-y-5 shadow-sm">
 					<div className="content-convocatoria">
@@ -243,10 +264,19 @@ export const Announcement = () => {
 						<Divider type="vertical" />
 						<span className="text-sm text-gray2 font-medium">Liga Cñor Marisco</span>
 						<Divider type="vertical" />
-						<span className="text-sm text-gray2 font-medium">Fecha 7</span>
+						<span className="text-sm text-gray2 font-medium">{currentDay?.name}</span>
 						<Divider type="vertical" />
 						<span className="text-sm text-gray4 md:text-gray2 font-medium">
-							Miercoles 12 de junio a las 20:00pm
+							{/* Miercoles 12 de junio a las 20:00pm */}
+							{dayjs(currentDay?.startAt)
+								.utcOffset(0, false)
+								.format('dddd DD MMMM, HH:mm a')
+								.charAt(0)
+								.toUpperCase() +
+								dayjs(currentDay?.startAt)
+									.utcOffset(0, false)
+									.format('dddd DD MMMM, HH:mm a')
+									.slice(1)}
 						</span>
 					</div>
 
@@ -305,23 +335,25 @@ export const Announcement = () => {
 					</div>
 
 					<div className="hidden md:flex flex-col gap-6 md:flex-row">
-						<div className="flex flex-wrap gap-2">
-							<ButtonCustom
-								type="primary"
-								className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
-								color="#D14747"
-							>
-								Bajarme
-							</ButtonCustom>
+						{dayjs().isBefore(currentDay?.startAt.split('Z')[0]) && (
+							<div className="flex flex-wrap gap-2">
+								<ButtonCustom
+									type="primary"
+									className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
+									color="#D14747"
+								>
+									Bajarme
+								</ButtonCustom>
 
-							<ButtonCustom
-								type="primary"
-								className="w-full md:w-[328px] h-[57px] rounded-md"
-								color="#609D56"
-							>
-								Unirme
-							</ButtonCustom>
-						</div>
+								<ButtonCustom
+									type="primary"
+									className="w-full md:w-[328px] h-[57px] rounded-md"
+									color="#609D56"
+								>
+									Unirme
+								</ButtonCustom>
+							</div>
+						)}
 
 						<div className="flex flex-col text-sm justify-center">
 							<span className="w-fit text-gray3 border-gray3 md:border-b">

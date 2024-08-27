@@ -15,22 +15,18 @@ export default async function handler(
 			}
 
 			const callDate: IAddJornadaDB = await db('Jornadas')
-				.where('startAt', '>=', db.fn.now())
-				.orderBy('startAt', 'asc')
+				.whereRaw('CAST(startAt AS DATE) = CAST(DATEADD(MINUTE, -302, GETDATE()) AS DATE)')
 				.first();
-
-			console.log(callDate);
 
 			res.status(200).json({
 				status: 200,
-				data: callDate.startAt,
+				data: callDate,
 			});
 		} catch (error) {
 			console.log(error);
 			res.status(400).json({
 				status: 400,
 				message: 'Ocurrió un error al obtener la temporada.',
-				data: '',
 			});
 		}
 	} else {

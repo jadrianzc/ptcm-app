@@ -31,6 +31,8 @@ export default NextAuth({
 
 					if (!bcrypt.compareSync(credentials.password, user[0]!.password)) return null;
 
+					delete user[0]!.password;
+
 					return user[0];
 				} catch (error: any) {
 					console.log(error);
