@@ -3,9 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/db/dbconfig';
 import {
 	IAddJornadaDB,
-	IAddSeasonDB,
 	IResponseSetMatchDays,
-	IResponseSetSesion,
 	IResponseUnauthorized,
 } from '@/components/admin/interfaces';
 import dayjs from 'dayjs';

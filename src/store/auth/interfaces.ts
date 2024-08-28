@@ -1,7 +1,6 @@
 export interface IAuthStore {
 	// State
 	user: IUser | null;
-	roles: number[];
 
 	// Actions
 	login: (user: IUser) => void;

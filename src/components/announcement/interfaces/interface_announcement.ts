@@ -11,3 +11,18 @@ export interface IResponseCallDate {
 	message?: string;
 	data?: IAddJornadaDB;
 }
+
+export interface ISummoned {
+	id: string;
+	idSeason: string;
+	idMatch: string;
+	idAthlete: string;
+	type: string;
+	fullname?: string;
+}
+
+export interface IResponseSummoned {
+	status: number;
+	message: string;
+	data: ISummoned[];
+}

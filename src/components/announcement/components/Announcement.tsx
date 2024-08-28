@@ -11,82 +11,17 @@ import { ButtonCustom } from '@/components/ui/components';
 import { ConvocatoriaIcon } from '@/icons';
 import { ICountdown } from '../interfaces';
 import { Divider } from 'antd';
-import { getDateMatchDay } from '../helpers';
+import { getDateMatchDay, getSummoned } from '../helpers';
 import { IAddJornadaDB } from '@/components/admin/interfaces';
+import { useStoreAuth, useStoreSummoned } from '@/store';
+import { localApi } from '@/axios';
 
 export const Announcement = () => {
 	const [timeLeft, setTimeLeft] = useState<ICountdown | null>(null);
 	const [currentDay, setCurrentDay] = useState<IAddJornadaDB>();
+	const { user } = useStoreAuth();
+	const { summoned, setSummoned } = useStoreSummoned();
 	const convocados = [
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
 		{
 			name: 'Nombre del Jugador',
 		},
@@ -96,48 +31,9 @@ export const Announcement = () => {
 		{
 			name: 'Nombre del Jugador',
 		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
 	];
 
 	const convocados3 = [
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
-		{
-			name: 'Nombre del Jugador',
-		},
 		{
 			name: 'Nombre del Jugador',
 		},
@@ -177,6 +73,36 @@ export const Announcement = () => {
 			})
 			.catch((err) => console.log(err));
 	}, []);
+
+	useEffect(() => {
+		if (currentDay) {
+			const idSeason = currentDay.idSeason;
+			const idMatch = currentDay.id;
+			getSummoned(idSeason, idMatch)
+				.then((resp) => {
+					setSummoned(resp);
+				})
+				.catch((err) => console.log(err));
+		}
+	}, [currentDay, setSummoned]);
+
+	const handleJoinMatch = async () => {
+		try {
+			const summoned = {
+				idSeason: currentDay?.idSeason,
+				idMatch: currentDay?.id,
+				idAthlete: user?.id,
+			};
+			const { data: respSummoned } = await localApi.post(
+				'/announcement/setSummoned',
+				summoned,
+			);
+
+			console.log(respSummoned);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<div className="space-y-5">
@@ -253,6 +179,7 @@ export const Announcement = () => {
 						type="primary"
 						className="w-full h-[250px] rounded-xl md:h-[353px]"
 						color="#609D56"
+						onClick={handleJoinMatch}
 					>
 						Unirme
 					</ButtonCustom>
@@ -282,17 +209,19 @@ export const Announcement = () => {
 
 					<div className="flex flex-col md:flex-row md:flex-wrap md:gap-5 2xl:gap-0">
 						<div className="w-auto h-full grid grid-cols-1 md:grid-rows-12 lg:grid-rows-10 xl:grid-rows-6 md:grid-flow-col gap-x-5">
-							{convocados.map((convocado, index) => (
-								<div
-									key={index}
-									className={`text-sm flex justify-start md:justify-between items-center py-1 px-2 space-x-7 ${
-										(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
-									}`}
-								>
-									<span className="text-gray4">{index + 1}</span>
-									<span className="text-blue">{convocado.name}</span>
-								</div>
-							))}
+							{summoned
+								.filter((row) => row.type === 'titular')
+								.map((convocado, index) => (
+									<div
+										key={index}
+										className={`text-sm flex justify-start md:justify-between items-center py-1 px-2 space-x-7 ${
+											(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
+										}`}
+									>
+										<span className="text-gray4">{index + 1}</span>
+										<span className="text-blue">{convocado?.fullname}</span>
+									</div>
+								))}
 						</div>
 						<div className="w-full bg-tableContent my-3 border border-y-0 border-b-[3px] border-b-blue md:w-[26px] md:my-0 md:mx-3 md:border-r-[3px] md:border-r-blue md:border-b-0"></div>
 						<div className="w-auto h-full grid grid-cols-1 md:grid-rows-6 md:grid-flow-col gap-x-5">
@@ -301,17 +230,19 @@ export const Announcement = () => {
 									Suplentes
 								</span>
 							</div>
-							{convocados2.map((convocado, index) => (
-								<div
-									key={index}
-									className={`text-sm flex justify-start md:justify-between items-center py-1 px-2 space-x-7 ${
-										(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
-									}`}
-								>
-									<span className="text-gray4">{index + 1}</span>
-									<span className="text-blue">{convocado.name}</span>
-								</div>
-							))}
+							{summoned
+								.filter((row) => row.type === 'suplentes')
+								.map((convocado, index) => (
+									<div
+										key={index}
+										className={`text-sm flex justify-start md:justify-between items-center py-1 px-2 space-x-7 ${
+											(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
+										}`}
+									>
+										<span className="text-gray4">{index + 1}</span>
+										<span className="text-blue">{convocado?.fullname}</span>
+									</div>
+								))}
 						</div>
 						<div className="w-full bg-tableContent my-3 border border-y-0 border-b-[3px] border-b-blue md:w-[26px] md:my-0 md:mx-3 md:border-r-[3px] md:border-r-blue md:border-b-0"></div>
 						<div className="w-auto h-full grid grid-cols-1 md:grid-rows-6 md:grid-flow-col gap-x-5">
@@ -320,17 +251,19 @@ export const Announcement = () => {
 									Suplentes 2
 								</span>
 							</div>
-							{convocados3.map((convocado, index) => (
-								<div
-									key={index}
-									className={`text-sm flex justify-start md:justify-between items-center py-1 px-2 space-x-7 ${
-										(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
-									}`}
-								>
-									<span className="text-gray4">{index + 1}</span>
-									<span className="text-blue">{convocado?.name}</span>
-								</div>
-							))}
+							{summoned
+								.filter((row) => row.type === 'suplente 2')
+								.map((convocado, index) => (
+									<div
+										key={index}
+										className={`text-sm flex justify-start md:justify-between items-center py-1 px-2 space-x-7 ${
+											(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
+										}`}
+									>
+										<span className="text-gray4">{index + 1}</span>
+										<span className="text-blue">{convocado?.fullname}</span>
+									</div>
+								))}
 						</div>
 					</div>
 

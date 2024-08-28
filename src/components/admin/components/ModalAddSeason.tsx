@@ -1,12 +1,11 @@
 import { DatePicker, Form, FormProps, Input, InputNumber, Modal } from 'antd';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { ButtonCustom } from '@/components/ui/components';
 import { useStoreModal } from '@/store';
 import { localApi } from '@/axios';
-import { IAddSeason, IChangeDate } from '../interfaces';
+import { IAddSeason } from '../interfaces';
 import { getSeasonEndDay } from '@/helpers';
-import { useState } from 'react';
 import { IoAddCircleSharp } from 'react-icons/io5';
 
 dayjs.extend(utc);

@@ -1,12 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { db } from '@/db/dbconfig';
-import { IAddJornadaDB, IResponseUnauthorized } from '@/components/admin/interfaces';
-import { IResponseCallDate } from '@/components/announcement/interfaces';
+import { IResponseUnauthorized } from '@/components/admin/interfaces';
+import { IResponseSummoned, ISummoned } from '@/components/announcement/interfaces';
+
+dayjs.extend(utc);
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseCallDate | IResponseUnauthorized>,
+	res: NextApiResponse<IResponseSummoned | IResponseUnauthorized>,
 ) {
 	if (req.method === 'GET') {
 		try {
@@ -14,19 +18,26 @@ export default async function handler(
 				return res.status(401).json({ status: 401, error: 'Unauthorized' });
 			}
 
-			const callDate: IAddJornadaDB = await db('Jornadas')
-				.whereRaw('CAST(startAt AS DATE) = CAST(DATEADD(MINUTE, -302, GETDATE()) AS DATE)')
-				.first();
+			const { idSeason, idMatch } = req.query;
+
+			const summoned = await db
+				.select<ISummoned[]>('*')
+				.from('ViewConvocatoriaUser')
+				.where('idMatch', idMatch)
+				.andWhere('idSeason', idSeason)
+				.orderBy('createAt');
 
 			res.status(200).json({
 				status: 200,
-				data: callDate,
+				message: `Exito.`,
+				data: summoned,
 			});
 		} catch (error) {
 			console.log(error);
 			res.status(400).json({
 				status: 400,
-				message: 'Ocurrió un error al obtener la temporada.',
+				message: 'Ocurrió un error al obtener los registros de la convocatoria.',
+				data: [],
 			});
 		}
 	} else {

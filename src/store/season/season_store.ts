@@ -2,7 +2,7 @@ import { createRef } from 'react';
 import { create } from 'zustand';
 import { ISeasonStore } from './interfaces';
 
-// Referencia de modal Órden Compra
+// Referencia de modal Season
 let refModalOC = createRef<boolean>() as React.MutableRefObject<null>;
 refModalOC.current = null;
 
