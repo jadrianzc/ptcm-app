@@ -104,6 +104,20 @@ export const Announcement = () => {
 		}
 	};
 
+	const handleLeaveMatch = async () => {
+		try {
+			const summoned = {
+				idSeason: currentDay?.idSeason,
+				idMatch: currentDay?.id,
+				idAthlete: user?.id,
+			};
+
+			console.log(summoned);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<div className="space-y-5">
 			<div className="flex justify-start items-center space-x-5">
@@ -194,7 +208,6 @@ export const Announcement = () => {
 						<span className="text-sm text-gray2 font-medium">{currentDay?.name}</span>
 						<Divider type="vertical" />
 						<span className="text-sm text-gray4 md:text-gray2 font-medium">
-							{/* Miercoles 12 de junio a las 20:00pm */}
 							{dayjs(currentDay?.startAt)
 								.utcOffset(0, false)
 								.format('dddd DD MMMM, HH:mm a')
@@ -274,6 +287,7 @@ export const Announcement = () => {
 									type="primary"
 									className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
 									color="#D14747"
+									onClick={handleLeaveMatch}
 								>
 									Bajarme
 								</ButtonCustom>
@@ -282,6 +296,7 @@ export const Announcement = () => {
 									type="primary"
 									className="w-full md:w-[328px] h-[57px] rounded-md"
 									color="#609D56"
+									onClick={handleJoinMatch}
 								>
 									Unirme
 								</ButtonCustom>
@@ -318,6 +333,7 @@ export const Announcement = () => {
 							type="primary"
 							className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
 							color="#D14747"
+							onClick={handleLeaveMatch}
 						>
 							Bajarme
 						</ButtonCustom>
@@ -326,6 +342,7 @@ export const Announcement = () => {
 							type="primary"
 							className="w-full md:w-[328px] h-[57px] rounded-md"
 							color="#609D56"
+							onClick={handleJoinMatch}
 						>
 							Unirme
 						</ButtonCustom>
