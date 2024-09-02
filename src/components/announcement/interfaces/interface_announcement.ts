@@ -1,4 +1,5 @@
 import { IAddJornadaDB } from '@/components/admin/interfaces';
+import { Dayjs } from 'dayjs';
 
 export interface ICountdown {
 	hours: number;
@@ -25,4 +26,10 @@ export interface IResponseSummoned {
 	status: number;
 	message: string;
 	data: ISummoned[];
+}
+
+export interface IConvocationDates {
+	callDate: Dayjs | null;
+	callEndDate: Dayjs | null;
+	groupDate: Dayjs | null;
 }

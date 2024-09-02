@@ -3,21 +3,11 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 
-import { ButtonCustom } from '@/components/ui/components';
-import { AddUserIcon, MemberIcon, PalmaresIcon } from '@/icons';
-import { ICountdown } from '../interfaces';
-import {
-	Avatar,
-	Badge,
-	Collapse,
-	CollapseProps,
-	Divider,
-	Image,
-	Table,
-	TableColumnsType,
-} from 'antd';
-import { IoPersonCircleOutline } from 'react-icons/io5';
+import { AddUserIcon, MemberIcon } from '@/icons';
+
+import { Collapse, CollapseProps, Divider, Table, TableColumnsType } from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
+import { ICountdown } from '../../interfaces';
 
 interface DataType {
 	key: string;

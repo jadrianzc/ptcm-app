@@ -1,18 +1,20 @@
 import { DatePicker, Form, FormProps, Input, InputNumber, Modal } from 'antd';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { ButtonCustom } from '@/components/ui/components';
-import { useStoreModal } from '@/store';
-import { localApi } from '@/axios';
-import { IAddSeason } from '../interfaces';
-import { getSeasonEndDay } from '@/helpers';
 import { IoAddCircleSharp } from 'react-icons/io5';
 
+import { localApi } from '@/axios';
+import { useStoreLoading, useStoreMessage, useStoreModal } from '@/store';
+import { getSeasonEndDay } from '@/helpers';
+import { ButtonCustom } from '@/components/ui/components';
+import { IAddSeason, IResponseSetSesion } from '../../interfaces';
 dayjs.extend(utc);
 
 export const ModalAddSeason = () => {
-	const [form] = Form.useForm<IAddSeason>();
+	const { setLoading } = useStoreLoading();
+	const { message } = useStoreMessage();
 	const { isModalSeason, setIsSeason } = useStoreModal();
+	const [form] = Form.useForm<IAddSeason>();
 
 	const handleCancel = () => {
 		setIsSeason(false);
@@ -20,11 +22,14 @@ export const ModalAddSeason = () => {
 	};
 
 	const onChangeDate = () => {
-		if (form.getFieldValue('startAt') && form.getFieldValue('matchdays')) {
-			const startAt = dayjs(form.getFieldValue('startAt')).utcOffset(0, true).toISOString();
-			const days = form.getFieldValue('matchdays');
+		const startAt = form.getFieldValue('startAt');
+		const matchdayjs = form.getFieldValue('matchdays');
+
+		if (startAt && matchdayjs) {
+			const startDate = dayjs(startAt).utcOffset(0, true).toISOString();
+
 			// Obtener la fecha de la última jornada
-			const endAt = getSeasonEndDay(days, startAt);
+			const endAt = getSeasonEndDay(matchdayjs, startDate);
 
 			form.setFieldsValue({ endAt: dayjs(endAt).utcOffset(0, true) });
 		}
@@ -32,6 +37,8 @@ export const ModalAddSeason = () => {
 
 	const handleAddSeason: FormProps<IAddSeason>['onFinish'] = async (values) => {
 		try {
+			setLoading(true);
+
 			const startAt: string = dayjs(values.startAt).utcOffset(0, true).toISOString();
 			const endAt: string = dayjs(values.endAt).utcOffset(-5, true).toISOString();
 
@@ -41,10 +48,15 @@ export const ModalAddSeason = () => {
 				endAt,
 			};
 
-			const { data } = await localApi.post('/admin/setSeason', newSeason);
-			console.log(data);
-		} catch (error) {
+			const { data } = await localApi.post<IResponseSetSesion>('/admin/setSeason', newSeason);
+
+			message?.success(data.message);
+		} catch (error: any) {
 			console.log(error);
+			console.log(error.response.data.message);
+			message?.error(error.response.data.message);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -80,7 +92,7 @@ export const ModalAddSeason = () => {
 						showTime
 						format="DD-MM-YYYY HH:mm"
 						className="w-full"
-						onChange={() => onChangeDate()}
+						onChange={onChangeDate}
 					/>
 				</Form.Item>
 
@@ -104,7 +116,7 @@ export const ModalAddSeason = () => {
 						size="large"
 						controls={false}
 						className="w-1/4"
-						onChange={() => onChangeDate()}
+						onChange={onChangeDate}
 					/>
 				</Form.Item>
 

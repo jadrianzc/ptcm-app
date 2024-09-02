@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 import { NextPageWithLayout } from '@/pages/_app';
 import { MainLayout } from '@/components/layouts';
-import { Season } from '@/components/admin';
+import { Season } from '@/components/admin/convocatoria';
 
 const AdminPage: NextPageWithLayout = () => {
 	return <Season />;

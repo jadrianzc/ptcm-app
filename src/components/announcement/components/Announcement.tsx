@@ -1,78 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import duration from 'dayjs/plugin/duration';
+import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/es';
 dayjs.locale('es');
 dayjs.extend(utc);
 dayjs.extend(duration);
+dayjs.extend(timezone);
 
 import { ButtonCustom } from '@/components/ui/components';
 import { ConvocatoriaIcon } from '@/icons';
-import { ICountdown } from '../interfaces';
-import { Divider } from 'antd';
 import { getDateMatchDay, getSummoned } from '../helpers';
-import { IAddJornadaDB } from '@/components/admin/interfaces';
-import { useStoreAuth, useStoreSummoned } from '@/store';
+import { useStoreAuth, useStoreLoading, useStoreMessage, useStoreSummoned } from '@/store';
 import { localApi } from '@/axios';
+import { CountDown, TablaSummoned } from './';
+import { IResponseSummoned } from '../interfaces';
 
 export const Announcement = () => {
-	const [timeLeft, setTimeLeft] = useState<ICountdown | null>(null);
-	const [currentDay, setCurrentDay] = useState<IAddJornadaDB>();
 	const { user } = useStoreAuth();
-	const { summoned, setSummoned } = useStoreSummoned();
-	const convocados = [
-		{
-			name: 'Nombre del Jugador',
-		},
-	];
+	const { message } = useStoreMessage();
+	const { setLoading } = useStoreLoading();
+	const {
+		summoned,
+		setSummoned,
+		currentDay,
+		setCurrentDay,
+		setTimeLeft,
+		convocationDates,
+		setConvocationDates,
+	} = useStoreSummoned();
 
-	const convocados2 = [
-		{
-			name: 'Nombre del Jugador',
-		},
-	];
-
-	const convocados3 = [
-		{
-			name: 'Nombre del Jugador',
-		},
-	];
-
-	useEffect(() => {
-		getDateMatchDay()
-			.then((resp) => {
-				setCurrentDay(resp);
-				const [date] = resp.startAt.split('Z');
-
-				const targetDate = dayjs(date);
-
-				if (dayjs().isBefore(targetDate)) {
-					const updateCountdown = () => {
-						const now = dayjs();
-						const difference = targetDate.diff(now);
-
-						const duration = dayjs.duration(difference);
-
-						setTimeLeft({
-							hours: duration.hours(),
-							minutes: duration.minutes(),
-							seconds: duration.seconds(),
-						});
-					};
-
-					const intervalId = setInterval(updateCountdown, 1000);
-					return () => clearInterval(intervalId); // Cleanup interval on component unmount
-				} else {
-					setTimeLeft({
-						hours: 0,
-						minutes: 0,
-						seconds: 0,
-					});
-				}
-			})
-			.catch((err) => console.log(err));
-	}, []);
+	const now = dayjs().utcOffset(0, true);
 
 	useEffect(() => {
 		if (currentDay) {
@@ -86,37 +45,98 @@ export const Announcement = () => {
 		}
 	}, [currentDay, setSummoned]);
 
+	const fetchGetDateMatchDay = useCallback(async () => {
+		try {
+			setLoading(true);
+			const resp = await getDateMatchDay();
+
+			setCurrentDay(resp);
+
+			const date = resp.startAt;
+
+			const callDate = dayjs.utc(date).subtract(6, 'h');
+			const callEndDate = dayjs.utc(date).subtract(4, 'h');
+			const groupDate = dayjs.utc(date).subtract(3, 'h');
+			const matchDate = dayjs.utc(date);
+
+			setConvocationDates({ callDate, callEndDate, groupDate });
+
+			if (dayjs().utcOffset(0, true).isBefore(callDate)) {
+				const updateCountdown = () => {
+					const now = dayjs().utcOffset(0, true);
+					const difference = callDate.diff(now);
+
+					const duration = dayjs.duration(difference);
+
+					setTimeLeft({
+						hours: duration.hours(),
+						minutes: duration.minutes(),
+						seconds: duration.seconds(),
+					});
+				};
+
+				const intervalId = setInterval(updateCountdown, 1000);
+				return () => clearInterval(intervalId); // Cleanup interval on component unmount
+			} else if (
+				dayjs().utcOffset(0, true).isAfter(callEndDate) &&
+				dayjs().utcOffset(0, true).isBefore(groupDate)
+			) {
+				const updateCountdown = () => {
+					const now = dayjs().utcOffset(0, true);
+					const difference = matchDate.diff(now);
+
+					const duration = dayjs.duration(difference);
+
+					setTimeLeft({
+						hours: duration.hours(),
+						minutes: duration.minutes(),
+						seconds: duration.seconds(),
+					});
+				};
+
+				const intervalId = setInterval(updateCountdown, 1000);
+				return () => clearInterval(intervalId); // Cleanup interval on component unmount
+			} else {
+				setTimeLeft({
+					hours: 0,
+					minutes: 0,
+					seconds: 0,
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setLoading(false);
+		}
+	}, [setCurrentDay, setLoading, setTimeLeft, setConvocationDates]);
+
 	const handleJoinMatch = async () => {
 		try {
+			setLoading(true);
 			const summoned = {
 				idSeason: currentDay?.idSeason,
 				idMatch: currentDay?.id,
 				idAthlete: user?.id,
 			};
-			const { data: respSummoned } = await localApi.post(
+			const { data: respSummoned } = await localApi.post<IResponseSummoned>(
 				'/announcement/setSummoned',
 				summoned,
 			);
 
-			console.log(respSummoned);
-		} catch (error) {
+			message?.success(respSummoned.message);
+			console.log(respSummoned.data);
+			setSummoned(respSummoned.data);
+		} catch (error: any) {
 			console.log(error);
+			message?.error(error.response.data.message);
+		} finally {
+			setLoading(false);
 		}
 	};
 
-	const handleLeaveMatch = async () => {
-		try {
-			const summoned = {
-				idSeason: currentDay?.idSeason,
-				idMatch: currentDay?.id,
-				idAthlete: user?.id,
-			};
-
-			console.log(summoned);
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	useEffect(() => {
+		fetchGetDateMatchDay();
+	}, [fetchGetDateMatchDay]);
 
 	return (
 		<div className="space-y-5">
@@ -128,67 +148,8 @@ export const Announcement = () => {
 			</div>
 
 			<div className="space-y-8 md:space-y-14">
-				<div className="bg-white h-[250px] rounded-xl md:h-[353px]">
-					<div className="h-full flex justify-center items-center">
-						{timeLeft ? (
-							<div className="flex flex-col justify-center items-center text-blue space-y-6">
-								{dayjs().isBefore(currentDay?.startAt.split('Z')[0]) ? (
-									<>
-										<span className="text-xs font-light md:text-xl">
-											Atleta, faltan
-										</span>
-
-										<div className="flex justify-center items-center font-extrabold space-x-[15px] md:space-x-[45px]">
-											<div className="flex flex-col justify-center items-center">
-												<div className="text-5xl font-semibold md:text-[80px]">
-													{timeLeft.hours}
-												</div>
-												<div className="text-xs text-skyBlue uppercase md:text-xl">
-													horas
-												</div>
-											</div>
-											<span className="text-skyBlue text-5xl font-semibold md:text-[80px]">
-												:
-											</span>
-											<div className="flex flex-col justify-center items-center">
-												<div className="text-5xl font-semibold md:text-[80px]">
-													{timeLeft.minutes}
-												</div>
-												<div className="text-xs text-skyBlue uppercase md:text-xl">
-													minutos
-												</div>
-											</div>
-											<span className="text-skyBlue text-5xl font-semibold md:text-[80px]">
-												:
-											</span>
-											<div className="flex flex-col justify-center items-center">
-												<div className="text-5xl font-semibold md:text-[80px]">
-													{timeLeft.seconds}
-												</div>
-												<div className="text-xs text-skyBlue uppercase md:text-xl">
-													segundos
-												</div>
-											</div>
-										</div>
-
-										<span className="text-xs font-light md:text-xl">
-											Para el inicio de la convocatoria{' '}
-											<strong>{currentDay?.name}</strong>
-										</span>
-									</>
-								) : (
-									<span className="text-xl font-semibold text-center md:text-4xl">
-										Atleta, la convocatoria ha finalizado
-									</span>
-								)}
-							</div>
-						) : (
-							<div>Cargando...</div>
-						)}
-					</div>
-				</div>
-
-				{dayjs().isBefore(currentDay?.startAt.split('Z')[0]) && (
+				{now.isAfter(convocationDates?.callDate) &&
+				now.isBefore(convocationDates?.callEndDate) ? (
 					<ButtonCustom
 						type="primary"
 						className="w-full h-[250px] rounded-xl md:h-[353px]"
@@ -197,157 +158,11 @@ export const Announcement = () => {
 					>
 						Unirme
 					</ButtonCustom>
+				) : (
+					<CountDown />
 				)}
 
-				<div className="w-full h-auto bg-white rounded-xl px-5 py-6 space-y-5 shadow-sm">
-					<div className="content-convocatoria">
-						<span className="text-sm text-gray2 font-medium">Convocatoria de hoy</span>
-						<Divider type="vertical" />
-						<span className="text-sm text-gray2 font-medium">Liga Cñor Marisco</span>
-						<Divider type="vertical" />
-						<span className="text-sm text-gray2 font-medium">{currentDay?.name}</span>
-						<Divider type="vertical" />
-						<span className="text-sm text-gray4 md:text-gray2 font-medium">
-							{dayjs(currentDay?.startAt)
-								.utcOffset(0, false)
-								.format('dddd DD MMMM, HH:mm a')
-								.charAt(0)
-								.toUpperCase() +
-								dayjs(currentDay?.startAt)
-									.utcOffset(0, false)
-									.format('dddd DD MMMM, HH:mm a')
-									.slice(1)}
-						</span>
-					</div>
-
-					<div className="flex flex-col md:flex-row md:flex-wrap md:gap-5 2xl:gap-0">
-						<div className="w-auto h-full grid grid-cols-1 md:grid-rows-12 lg:grid-rows-10 xl:grid-rows-6 md:grid-flow-col gap-x-5">
-							{summoned
-								.filter((row) => row.type === 'titular')
-								.map((convocado, index) => (
-									<div
-										key={index}
-										className={`text-sm flex justify-start md:justify-between items-center py-1 px-2 space-x-7 ${
-											(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
-										}`}
-									>
-										<span className="text-gray4">{index + 1}</span>
-										<span className="text-blue">{convocado?.fullname}</span>
-									</div>
-								))}
-						</div>
-						<div className="w-full bg-tableContent my-3 border border-y-0 border-b-[3px] border-b-blue md:w-[26px] md:my-0 md:mx-3 md:border-r-[3px] md:border-r-blue md:border-b-0"></div>
-						<div className="w-auto h-full grid grid-cols-1 md:grid-rows-6 md:grid-flow-col gap-x-5">
-							<div className={`border-b-2`}>
-								<span className="text-blue text-base font-bold italic">
-									Suplentes
-								</span>
-							</div>
-							{summoned
-								.filter((row) => row.type === 'suplentes')
-								.map((convocado, index) => (
-									<div
-										key={index}
-										className={`text-sm flex justify-start md:justify-between items-center py-1 px-2 space-x-7 ${
-											(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
-										}`}
-									>
-										<span className="text-gray4">{index + 1}</span>
-										<span className="text-blue">{convocado?.fullname}</span>
-									</div>
-								))}
-						</div>
-						<div className="w-full bg-tableContent my-3 border border-y-0 border-b-[3px] border-b-blue md:w-[26px] md:my-0 md:mx-3 md:border-r-[3px] md:border-r-blue md:border-b-0"></div>
-						<div className="w-auto h-full grid grid-cols-1 md:grid-rows-6 md:grid-flow-col gap-x-5">
-							<div className={`border-b-2`}>
-								<span className="text-blue text-base font-bold italic">
-									Suplentes 2
-								</span>
-							</div>
-							{summoned
-								.filter((row) => row.type === 'suplente 2')
-								.map((convocado, index) => (
-									<div
-										key={index}
-										className={`text-sm flex justify-start md:justify-between items-center py-1 px-2 space-x-7 ${
-											(index + 1) % 2 === 0 ? 'bg-tableContent' : ''
-										}`}
-									>
-										<span className="text-gray4">{index + 1}</span>
-										<span className="text-blue">{convocado?.fullname}</span>
-									</div>
-								))}
-						</div>
-					</div>
-
-					<div className="hidden md:flex flex-col gap-6 md:flex-row">
-						{dayjs().isBefore(currentDay?.startAt.split('Z')[0]) && (
-							<div className="flex flex-wrap gap-2">
-								<ButtonCustom
-									type="primary"
-									className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
-									color="#D14747"
-									onClick={handleLeaveMatch}
-								>
-									Bajarme
-								</ButtonCustom>
-
-								<ButtonCustom
-									type="primary"
-									className="w-full md:w-[328px] h-[57px] rounded-md"
-									color="#609D56"
-									onClick={handleJoinMatch}
-								>
-									Unirme
-								</ButtonCustom>
-							</div>
-						)}
-
-						<div className="flex flex-col text-sm justify-center">
-							<span className="w-fit text-gray3 border-gray3 md:border-b">
-								Recuerda que tienes 00:00 horas para bajarte de la convocatoria sin
-								multa.
-							</span>
-							<span className="w-fit text-gray4 border-gray4 md:border-b">
-								Se agotó el tiempo para bajarte de la convocatoria sin multa. A
-								partir de este momento la multa es la siguiente: --------
-							</span>
-						</div>
-					</div>
-				</div>
-
-				<div className="flex flex-col gap-6 md:flex-row md:hidden">
-					<div className="flex flex-col text-sm justify-center px-2">
-						<span className="w-fit text-gray3 border-gray3 md:border-b">
-							Recuerda que tienes 00:00 horas para bajarte de la convocatoria sin
-							multa.
-						</span>
-						<span className="w-fit text-gray4 border-gray4 md:border-b">
-							Se agotó el tiempo para bajarte de la convocatoria sin multa. A partir
-							de este momento la multa es la siguiente: --------
-						</span>
-					</div>
-
-					<div className="flex flex-wrap gap-2">
-						<ButtonCustom
-							type="primary"
-							className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
-							color="#D14747"
-							onClick={handleLeaveMatch}
-						>
-							Bajarme
-						</ButtonCustom>
-
-						<ButtonCustom
-							type="primary"
-							className="w-full md:w-[328px] h-[57px] rounded-md"
-							color="#609D56"
-							onClick={handleJoinMatch}
-						>
-							Unirme
-						</ButtonCustom>
-					</div>
-				</div>
+				<TablaSummoned handleJoinMatch={handleJoinMatch} />
 			</div>
 		</div>
 	);

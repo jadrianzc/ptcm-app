@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 import { NextPageWithLayout } from '../_app';
 import { MainLayout } from '@/components/layouts';
-import { Members } from '@/components/admin';
+import { Members } from '@/components/admin/members';
 
 const AdminPage: NextPageWithLayout = () => {
 	return <Members />;

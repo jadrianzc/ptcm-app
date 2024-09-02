@@ -1,17 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '@/db/dbconfig';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+
+import { db } from '@/db/dbconfig';
+import { getMatchDays } from '@/helpers';
 import {
-	IAddJornadaDB,
 	IAddSeasonDB,
 	IResponseSetSesion,
 	IResponseUnauthorized,
 } from '@/components/admin/interfaces';
-import { getMatchDays } from '@/helpers';
-
 dayjs.extend(utc);
 
 export default async function handler(
@@ -36,6 +35,8 @@ export default async function handler(
 				days: newSeason.matchdays,
 				startAt: newSeason.startAt,
 			};
+
+			// Obtiene todas las jornadas
 			const matchDays = getMatchDays(dataMatchDays);
 
 			await db('Jornadas').insert(matchDays);
