@@ -19,49 +19,20 @@ export default async function handler(
 				return res.status(401).json({ status: 401, error: 'Unauthorized' });
 			}
 
-			const { idSeason, idMatch, idAthlete } = req.body as ISummoned;
+			const { idSeason, idMatch, groups } = req.body;
 			const id = uuidv4();
 
-			const summoned = await db
-				.select<ISummoned[]>('*')
-				.from('Convocados')
-				.where('idMatch', idMatch)
-				.andWhere('idAthlete', idAthlete);
+			console.log({ id, idSeason, idMatch, groups });
 
-			if (summoned.length > 0) {
-				return res.status(409).json({
-					status: 409,
-					message: `El usuario ya se encuentra registrado.`,
-					data: [],
-				});
-			}
+			await db('Groups').insert({ id, idSeason, idMatch, groups });
 
-			const summonedMatchTotal = await db
-				.select<ISummoned[]>('*')
-				.from('Convocados')
-				.where('idMatch', idMatch)
-				.orderBy('createAt');
-
-			const type =
-				summonedMatchTotal.length < 24
-					? 'titular'
-					: summonedMatchTotal.length >= 24 && summonedMatchTotal.length < 34
-					? 'suplente'
-					: 'suplente 2';
-
-			await db('Convocados').insert({ id, idSeason, idMatch, idAthlete, type });
-
-			const newSummoned = await db
-				.select<ISummoned[]>('*')
-				.from('ViewConvocatoriaUser')
-				.where('idMatch', idMatch)
-				.andWhere('idSeason', idSeason)
-				.orderBy('createAt');
+			const groupsDB = await db.select('*').from('Groups').orderBy('createAt');
+			console.log(groupsDB);
 
 			res.status(200).json({
 				status: 200,
 				message: `Registro exitoso.`,
-				data: newSummoned,
+				data: groupsDB,
 			});
 		} catch (error) {
 			console.log(error);

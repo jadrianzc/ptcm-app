@@ -34,7 +34,7 @@ export default async function handler(
 			console.log(error);
 			res.status(400).json({
 				status: 400,
-				message: 'Ocurrió un error al crear la temporada.',
+				message: 'Ocurrió un error al crear al atleta.',
 			});
 		}
 	} else {

@@ -2,8 +2,9 @@ import React, { FC } from 'react';
 import dayjs from 'dayjs';
 import { Divider } from 'antd';
 
-import { useStoreAuth, useStoreSummoned } from '@/store';
+import { useStoreAuth, useStoreLoading, useStoreMessage, useStoreSummoned } from '@/store';
 import { ButtonCustom } from '@/components/ui/components';
+import { localApi } from '@/axios';
 
 interface IProps {
 	handleJoinMatch: () => void;
@@ -11,19 +12,29 @@ interface IProps {
 
 export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 	const { user } = useStoreAuth();
-	const { summoned, currentDay } = useStoreSummoned();
+	const { message } = useStoreMessage();
+	const { setLoading } = useStoreLoading();
+	const { summoned, currentDay, setSummoned } = useStoreSummoned();
 
 	const handleLeaveMatch = async () => {
 		try {
-			const summoned = {
-				idSeason: currentDay?.idSeason,
-				idMatch: currentDay?.id,
-				idAthlete: user?.id,
-			};
+			setLoading(true);
 
-			console.log(summoned);
-		} catch (error) {
+			const athlete = summoned.find(({ idAthlete }) => user?.id === idAthlete);
+
+			console.log(athlete);
+			const { data: respSummoned } = await localApi.delete('/announcement/deleteSummoned', {
+				data: athlete,
+			});
+
+			message?.success(respSummoned.message);
+
+			setSummoned(respSummoned.data);
+		} catch (error: any) {
 			console.log(error);
+			message?.error(error.response.data.message);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -88,7 +99,7 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 											</span>
 										</div>
 										{summoned
-											.filter((row) => row.type === 'suplentes')
+											.filter((row) => row.type === 'suplente')
 											.map((convocado, index) => (
 												<div
 													key={index}
@@ -133,7 +144,7 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 								</div>
 
 								<div className="hidden md:flex flex-col gap-6 md:flex-row">
-									{dayjs().isBefore(currentDay?.startAt.split('Z')[0]) && (
+									{/* {dayjs().isBefore(currentDay?.startAt.split('Z')[0]) && (
 										<div className="flex flex-wrap gap-2">
 											<ButtonCustom
 												type="primary"
@@ -153,7 +164,27 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 												Unirme
 											</ButtonCustom>
 										</div>
-									)}
+									)} */}
+
+									<div className="flex flex-wrap gap-2">
+										<ButtonCustom
+											type="primary"
+											className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
+											color="#D14747"
+											onClick={handleLeaveMatch}
+										>
+											Bajarme
+										</ButtonCustom>
+
+										<ButtonCustom
+											type="primary"
+											className="w-full md:w-[328px] h-[57px] rounded-md"
+											color="#609D56"
+											onClick={handleJoinMatch}
+										>
+											Unirme
+										</ButtonCustom>
+									</div>
 
 									<div className="flex flex-col text-sm justify-center">
 										<span className="w-fit text-gray3 border-gray3 md:border-b">
