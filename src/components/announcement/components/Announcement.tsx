@@ -55,35 +55,16 @@ export const Announcement = () => {
 			const date = resp.startAt;
 
 			const callDate = dayjs.utc(date).subtract(6, 'h');
-			const callEndDate = dayjs.utc(date).subtract(4, 'h');
-			const groupDate = dayjs.utc(date).subtract(3, 'h');
+			const callEndDate = dayjs.utc(date).subtract(4, 'h').subtract(98, 'm');
+			// const groupDate = dayjs.utc(date).subtract(3, 'h');
 			const matchDate = dayjs.utc(date);
 
-			setConvocationDates({ callDate, callEndDate, groupDate });
+			setConvocationDates({ callDate, callEndDate });
 
 			if (dayjs().utcOffset(0, true).isBefore(callDate)) {
 				const updateCountdown = () => {
 					const now = dayjs().utcOffset(0, true);
 					const difference = callDate.diff(now);
-
-					const duration = dayjs.duration(difference);
-
-					setTimeLeft({
-						hours: duration.hours(),
-						minutes: duration.minutes(),
-						seconds: duration.seconds(),
-					});
-				};
-
-				const intervalId = setInterval(updateCountdown, 1000);
-				return () => clearInterval(intervalId); // Cleanup interval on component unmount
-			} else if (
-				dayjs().utcOffset(0, true).isAfter(callEndDate) &&
-				dayjs().utcOffset(0, true).isBefore(groupDate)
-			) {
-				const updateCountdown = () => {
-					const now = dayjs().utcOffset(0, true);
-					const difference = matchDate.diff(now);
 
 					const duration = dayjs.duration(difference);
 
@@ -120,7 +101,7 @@ export const Announcement = () => {
 			};
 			const { data: respSummoned } = await localApi.post<IResponseSummoned>(
 				'/announcement/setSummoned',
-				summoned,
+				summoned
 			);
 
 			message?.success(respSummoned.message);
@@ -173,50 +154,49 @@ export const Announcement = () => {
 	};
 
 	return (
-		<div className="space-y-5">
-			<div className="flex justify-start items-center space-x-5">
-				<div className="rounded-full w-9 h-9 bg-blue flex justify-center items-center md:w-12 md:h-12">
-					<ConvocatoriaIcon className="w-5 h-5 md:w-6 md:h-6" />
+		<div className='space-y-5'>
+			<div className='flex justify-start items-center space-x-5'>
+				<div className='rounded-full w-9 h-9 bg-blue flex justify-center items-center md:w-12 md:h-12'>
+					<ConvocatoriaIcon className='w-5 h-5 md:w-6 md:h-6' />
 				</div>
-				<h2 className="text-xl text-blue font-medium md:text-3xl">Convocatoria</h2>
+				<h2 className='text-xl text-blue font-medium md:text-3xl'>Convocatoria</h2>
 			</div>
 
-			<div className="space-y-8 md:space-y-14">
-				{/* {now.isAfter(convocationDates?.callDate) &&
+			<div className='space-y-8 md:space-y-14'>
+				{now.isAfter(convocationDates?.callDate) &&
 				now.isBefore(convocationDates?.callEndDate) ? (
-					<ButtonCustom
-						type="primary"
-						className="w-full h-[250px] rounded-xl md:h-[353px]"
-						color="#609D56"
-						onClick={handleJoinMatch}
-					>
-						Unirme
-					</ButtonCustom>
+					<>
+						<ButtonCustom
+							type='primary'
+							className='w-full h-[250px] rounded-xl md:h-[353px]'
+							color='#609D56'
+							onClick={handleJoinMatch}>
+							Unirme
+						</ButtonCustom>
+
+						<TablaSummoned handleJoinMatch={handleJoinMatch} />
+					</>
 				) : (
 					<CountDown />
-				)} */}
+				)}
 
-				<ButtonCustom
-					type="primary"
-					className="w-full h-[250px] rounded-xl md:h-[353px]"
-					color="#609D56"
-					onClick={handleJoinMatch}
-				>
+				{/* <ButtonCustom
+					type='primary'
+					className='w-full h-[250px] rounded-xl md:h-[353px]'
+					color='#609D56'
+					onClick={handleJoinMatch}>
 					Unirme
 				</ButtonCustom>
 
 				<ButtonCustom
-					type="primary"
-					className="w-full h-[250px] rounded-xl md:h-[353px]"
+					type='primary'
+					className='w-full h-[250px] rounded-xl md:h-[353px]'
 					// color="#609D56"
-					onClick={createGroups}
-				>
+					onClick={createGroups}>
 					CREAR GRUPOS
-				</ButtonCustom>
+				</ButtonCustom> */}
 
-				<CountDown />
-
-				<TablaSummoned handleJoinMatch={handleJoinMatch} />
+				{/* <CountDown /> */}
 			</div>
 		</div>
 	);

@@ -29,7 +29,7 @@ export interface IResponseSummoned {
 }
 
 export interface IConvocationDates {
-	callDate: Dayjs | null;
-	callEndDate: Dayjs | null;
-	groupDate: Dayjs | null;
+	callDate?: Dayjs | null;
+	callEndDate?: Dayjs | null;
+	groupDate?: Dayjs | null;
 }
