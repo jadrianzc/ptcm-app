@@ -22,12 +22,9 @@ export default async function handler(
 			const { idSeason, idMatch, groups } = req.body;
 			const id = uuidv4();
 
-			console.log({ id, idSeason, idMatch, groups });
-
 			await db('Groups').insert({ id, idSeason, idMatch, groups });
 
 			const groupsDB = await db.select('*').from('Groups').orderBy('createAt');
-			console.log(groupsDB);
 
 			res.status(200).json({
 				status: 200,

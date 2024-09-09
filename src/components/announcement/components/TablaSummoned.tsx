@@ -5,12 +5,14 @@ import { Divider } from 'antd';
 import { useStoreAuth, useStoreLoading, useStoreMessage, useStoreSummoned } from '@/store';
 import { ButtonCustom } from '@/components/ui/components';
 import { localApi } from '@/axios';
+import { useDateMatchday } from '@/hooks';
 
 interface IProps {
-	handleJoinMatch: () => void;
+	handleJoinMatch?: () => void;
 }
 
 export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
+	useDateMatchday();
 	const { user } = useStoreAuth();
 	const { message } = useStoreMessage();
 	const { setLoading } = useStoreLoading();
@@ -144,7 +146,7 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 								</div>
 
 								<div className="hidden md:flex flex-col gap-6 md:flex-row">
-									{/* {dayjs().isBefore(currentDay?.startAt.split('Z')[0]) && (
+									{dayjs().isBefore(currentDay?.startAt.split('Z')[0]) && (
 										<div className="flex flex-wrap gap-2">
 											<ButtonCustom
 												type="primary"
@@ -164,27 +166,7 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 												Unirme
 											</ButtonCustom>
 										</div>
-									)} */}
-
-									<div className="flex flex-wrap gap-2">
-										<ButtonCustom
-											type="primary"
-											className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
-											color="#D14747"
-											onClick={handleLeaveMatch}
-										>
-											Bajarme
-										</ButtonCustom>
-
-										<ButtonCustom
-											type="primary"
-											className="w-full md:w-[328px] h-[57px] rounded-md"
-											color="#609D56"
-											onClick={handleJoinMatch}
-										>
-											Unirme
-										</ButtonCustom>
-									</div>
+									)}
 
 									<div className="flex flex-col text-sm justify-center">
 										<span className="w-fit text-gray3 border-gray3 md:border-b">
