@@ -33,3 +33,29 @@ export interface IConvocationDates {
 	callEndDate?: Dayjs | null;
 	groupDate?: Dayjs | null;
 }
+
+export interface IGroups {
+	id: string;
+	idSeason: string;
+	idMatch: string;
+	groups: IGroupItems[] | string;
+	createAt: string;
+	updateAt: string;
+}
+
+export interface IGroupItems {
+	id: string;
+	idSeason: string;
+	idMatch: string;
+	idAthlete: string;
+	type: string;
+	createAt: string;
+	updateAt: string;
+	fullname: string;
+}
+
+export interface IResponseGroup {
+	status: number;
+	message: string;
+	data: IGroups[];
+}

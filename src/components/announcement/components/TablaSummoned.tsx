@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import dayjs from 'dayjs';
 import { Divider } from 'antd';
+import dayjs from 'dayjs';
 
 import { useStoreAuth, useStoreLoading, useStoreMessage, useStoreSummoned } from '@/store';
 import { ButtonCustom } from '@/components/ui/components';
@@ -12,7 +12,7 @@ interface IProps {
 }
 
 export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
-	useDateMatchday();
+	// useDateMatchday();
 	const { user } = useStoreAuth();
 	const { message } = useStoreMessage();
 	const { setLoading } = useStoreLoading();
@@ -44,21 +44,21 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 		<>
 			{currentDay && (
 				<>
-					<div className="w-full h-auto bg-white rounded-xl px-5 py-6 space-y-5 shadow-sm">
-						<div className="content-convocatoria">
-							<span className="text-sm text-gray2 font-medium">
+					<div className='w-full h-auto bg-white rounded-xl px-5 py-6 space-y-5 shadow-sm'>
+						<div className='content-convocatoria'>
+							<span className='text-sm text-gray2 font-medium'>
 								Convocatoria de hoy
 							</span>
-							<Divider type="vertical" />
-							<span className="text-sm text-gray2 font-medium">
+							<Divider type='vertical' />
+							<span className='text-sm text-gray2 font-medium'>
 								Liga Cñor Marisco
 							</span>
-							<Divider type="vertical" />
-							<span className="text-sm text-gray2 font-medium">
+							<Divider type='vertical' />
+							<span className='text-sm text-gray2 font-medium'>
 								{currentDay?.name}
 							</span>
-							<Divider type="vertical" />
-							<span className="text-sm text-gray4 md:text-gray2 font-medium">
+							<Divider type='vertical' />
+							<span className='text-sm text-gray4 md:text-gray2 font-medium'>
 								{dayjs(currentDay?.startAt)
 									.utcOffset(0, false)
 									.format('dddd DD MMMM, HH:mm a')
@@ -73,8 +73,8 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 
 						{summoned.length > 0 && (
 							<>
-								<div className="flex flex-col md:flex-row md:flex-wrap md:gap-5 2xl:gap-0">
-									<div className="w-auto h-full grid grid-cols-1 md:grid-rows-12 lg:grid-rows-10 xl:grid-rows-6 md:grid-flow-col gap-x-5">
+								<div className='flex flex-col md:flex-row md:flex-wrap md:gap-5 2xl:gap-0'>
+									<div className='w-auto h-full grid grid-cols-1 md:grid-rows-12 lg:grid-rows-10 xl:grid-rows-6 md:grid-flow-col gap-x-5'>
 										{summoned
 											.filter((row) => row.type === 'titular')
 											.map((convocado, index) => (
@@ -84,19 +84,18 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 														(index + 1) % 2 === 0
 															? 'bg-tableContent'
 															: ''
-													}`}
-												>
-													<span className="text-gray4">{index + 1}</span>
-													<span className="text-blue">
+													}`}>
+													<span className='text-gray4'>{index + 1}</span>
+													<span className='text-blue'>
 														{convocado?.fullname}
 													</span>
 												</div>
 											))}
 									</div>
-									<div className="w-full bg-tableContent my-3 border border-y-0 border-b-[3px] border-b-blue md:w-[26px] md:my-0 md:mx-3 md:border-r-[3px] md:border-r-blue md:border-b-0"></div>
-									<div className="w-auto h-full grid grid-cols-1 md:grid-rows-6 md:grid-flow-col gap-x-5">
+									<div className='w-full bg-tableContent my-3 border border-y-0 border-b-[3px] border-b-blue md:w-[26px] md:my-0 md:mx-3 md:border-r-[3px] md:border-r-blue md:border-b-0'></div>
+									<div className='w-auto h-full grid grid-cols-1 md:grid-rows-6 md:grid-flow-col gap-x-5'>
 										<div className={`border-b-2`}>
-											<span className="text-blue text-base font-bold italic">
+											<span className='text-blue text-base font-bold italic'>
 												Suplentes
 											</span>
 										</div>
@@ -109,19 +108,18 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 														(index + 1) % 2 === 0
 															? 'bg-tableContent'
 															: ''
-													}`}
-												>
-													<span className="text-gray4">{index + 1}</span>
-													<span className="text-blue">
+													}`}>
+													<span className='text-gray4'>{index + 1}</span>
+													<span className='text-blue'>
 														{convocado?.fullname}
 													</span>
 												</div>
 											))}
 									</div>
-									<div className="w-full bg-tableContent my-3 border border-y-0 border-b-[3px] border-b-blue md:w-[26px] md:my-0 md:mx-3 md:border-r-[3px] md:border-r-blue md:border-b-0"></div>
-									<div className="w-auto h-full grid grid-cols-1 md:grid-rows-6 md:grid-flow-col gap-x-5">
+									<div className='w-full bg-tableContent my-3 border border-y-0 border-b-[3px] border-b-blue md:w-[26px] md:my-0 md:mx-3 md:border-r-[3px] md:border-r-blue md:border-b-0'></div>
+									<div className='w-auto h-full grid grid-cols-1 md:grid-rows-6 md:grid-flow-col gap-x-5'>
 										<div className={`border-b-2`}>
-											<span className="text-blue text-base font-bold italic">
+											<span className='text-blue text-base font-bold italic'>
 												Suplentes 2
 											</span>
 										</div>
@@ -134,10 +132,9 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 														(index + 1) % 2 === 0
 															? 'bg-tableContent'
 															: ''
-													}`}
-												>
-													<span className="text-gray4">{index + 1}</span>
-													<span className="text-blue">
+													}`}>
+													<span className='text-gray4'>{index + 1}</span>
+													<span className='text-blue'>
 														{convocado?.fullname}
 													</span>
 												</div>
@@ -145,35 +142,33 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 									</div>
 								</div>
 
-								<div className="hidden md:flex flex-col gap-6 md:flex-row">
+								<div className='hidden md:flex flex-col gap-6 md:flex-row'>
 									{dayjs().isBefore(currentDay?.startAt.split('Z')[0]) && (
-										<div className="flex flex-wrap gap-2">
+										<div className='flex flex-wrap gap-2'>
 											<ButtonCustom
-												type="primary"
-												className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
-												color="#D14747"
-												onClick={handleLeaveMatch}
-											>
+												type='primary'
+												className='w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first'
+												color='#D14747'
+												onClick={handleLeaveMatch}>
 												Bajarme
 											</ButtonCustom>
 
 											<ButtonCustom
-												type="primary"
-												className="w-full md:w-[328px] h-[57px] rounded-md"
-												color="#609D56"
-												onClick={handleJoinMatch}
-											>
+												type='primary'
+												className='w-full md:w-[328px] h-[57px] rounded-md'
+												color='#609D56'
+												onClick={handleJoinMatch}>
 												Unirme
 											</ButtonCustom>
 										</div>
 									)}
 
-									<div className="flex flex-col text-sm justify-center">
-										<span className="w-fit text-gray3 border-gray3 md:border-b">
+									<div className='flex flex-col text-sm justify-center'>
+										<span className='w-fit text-gray3 border-gray3 md:border-b'>
 											Recuerda que tienes 00:00 horas para bajarte de la
 											convocatoria sin multa.
 										</span>
-										<span className="w-fit text-gray4 border-gray4 md:border-b">
+										<span className='w-fit text-gray4 border-gray4 md:border-b'>
 											Se agotó el tiempo para bajarte de la convocatoria sin
 											multa. A partir de este momento la multa es la
 											siguiente: --------
@@ -185,34 +180,32 @@ export const TablaSummoned: FC<IProps> = ({ handleJoinMatch }) => {
 					</div>
 
 					{summoned.length > 0 && (
-						<div className="flex flex-col gap-6 md:flex-row md:hidden">
-							<div className="flex flex-col text-sm justify-center px-2">
-								<span className="w-fit text-gray3 border-gray3 md:border-b">
+						<div className='flex flex-col gap-6 md:flex-row md:hidden'>
+							<div className='flex flex-col text-sm justify-center px-2'>
+								<span className='w-fit text-gray3 border-gray3 md:border-b'>
 									Recuerda que tienes 00:00 horas para bajarte de la convocatoria
 									sin multa.
 								</span>
-								<span className="w-fit text-gray4 border-gray4 md:border-b">
+								<span className='w-fit text-gray4 border-gray4 md:border-b'>
 									Se agotó el tiempo para bajarte de la convocatoria sin multa. A
 									partir de este momento la multa es la siguiente: --------
 								</span>
 							</div>
 
-							<div className="flex flex-wrap gap-2">
+							<div className='flex flex-wrap gap-2'>
 								<ButtonCustom
-									type="primary"
-									className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
-									color="#D14747"
-									onClick={handleLeaveMatch}
-								>
+									type='primary'
+									className='w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first'
+									color='#D14747'
+									onClick={handleLeaveMatch}>
 									Bajarme
 								</ButtonCustom>
 
 								<ButtonCustom
-									type="primary"
-									className="w-full md:w-[328px] h-[57px] rounded-md"
-									color="#609D56"
-									onClick={handleJoinMatch}
-								>
+									type='primary'
+									className='w-full md:w-[328px] h-[57px] rounded-md'
+									color='#609D56'
+									onClick={handleJoinMatch}>
 									Unirme
 								</ButtonCustom>
 							</div>

@@ -30,7 +30,6 @@ export const useDateMatchday = () => {
 		}
 	}, [currentDay, setSummoned]);
 
-	//
 	const fetchGetDateMatchDay = useCallback(async () => {
 		try {
 			setLoading(true);
@@ -40,30 +39,31 @@ export const useDateMatchday = () => {
 
 			const date = resp.startAt;
 
-			const callDate = dayjs.utc(date).subtract(6, 'h');
-			const callEndDate = dayjs.utc(date).subtract(4, 'h');
-			const groupDate = dayjs.utc(date).subtract(3, 'h');
+			const callDate = dayjs.utc(date).subtract(10, 'h');
+			const callEndDate = dayjs.utc(date).subtract(10, 'h');
+			const groupDate = dayjs.utc(date).subtract(6, 'h');
 
 			setConvocationDates({ callDate, callEndDate, groupDate });
 
-			const difference = dayjs().utcOffset(0, true).isBefore(callDate)
-				? callDate.diff(now)
-				: dayjs().utcOffset(0, true).isAfter(callEndDate) &&
-				  dayjs().utcOffset(0, true).isBefore(groupDate)
-				? groupDate.diff(now)
-				: null;
-
-			if (!difference) {
-				setTimeLeft({
-					hours: 0,
-					minutes: 0,
-					seconds: 0,
-				});
-
-				return;
-			}
-
 			const updateCountdown = () => {
+				const now = dayjs().utcOffset(0, true);
+				const difference = dayjs().utcOffset(0, true).isBefore(callDate)
+					? callDate.diff(now)
+					: dayjs().utcOffset(0, true).isAfter(callEndDate) &&
+					  dayjs().utcOffset(0, true).isBefore(groupDate)
+					? groupDate.diff(now)
+					: null;
+
+				if (!difference) {
+					setTimeLeft({
+						hours: 0,
+						minutes: 0,
+						seconds: 0,
+					});
+
+					return;
+				}
+
 				const duration = dayjs.duration(difference);
 				const time = {
 					hours: duration.hours(),
@@ -76,15 +76,6 @@ export const useDateMatchday = () => {
 
 			const intervalId = setInterval(updateCountdown, 1000);
 			return () => clearInterval(intervalId); // Cleanup interval on component unmount
-
-			// if (dayjs().utcOffset(0, true).isBefore(callDate)) {
-			// } else {
-			// 	setTimeLeft({
-			// 		hours: 0,
-			// 		minutes: 0,
-			// 		seconds: 0,
-			// 	});
-			// }
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -98,5 +89,6 @@ export const useDateMatchday = () => {
 
 	return {
 		now,
+		currentDay,
 	};
 };
