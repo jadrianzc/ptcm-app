@@ -1,4 +1,6 @@
 import { useCallback, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Divider } from 'antd';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import duration from 'dayjs/plugin/duration';
@@ -10,76 +12,76 @@ dayjs.extend(duration);
 dayjs.extend(timezone);
 
 import { GruposIcon, PtcmLetter } from '@/icons';
-import { Divider } from 'antd';
 import { useStoreLoading, useStoreSummoned } from '@/store';
 import { getDateMatchDay } from '@/components/announcement/helpers';
 import { CountDown } from '@/components/announcement';
 import { ButtonCustom } from '@/components/ui/components';
-import { useRouter } from 'next/router';
+import { useDateMatchday } from '@/hooks';
 
 export const Groups = () => {
 	const router = useRouter();
+	const { now } = useDateMatchday();
 	const { setLoading } = useStoreLoading();
 	const { convocationDates, setCurrentDay, setTimeLeft, setConvocationDates } =
 		useStoreSummoned();
 
-	const now = dayjs().utcOffset(0, true);
+	// const now = dayjs().utcOffset(0, true);
 
-	const fetchGetDateMatchDay = useCallback(async () => {
-		try {
-			setLoading(true);
-			const resp = await getDateMatchDay();
+	// const fetchGetDateMatchDay = useCallback(async () => {
+	// 	try {
+	// 		setLoading(true);
+	// 		const resp = await getDateMatchDay();
 
-			setCurrentDay(resp);
+	// 		setCurrentDay(resp);
 
-			const date = resp.startAt;
+	// 		const date = resp.startAt;
 
-			const callEndDate = dayjs.utc(date).subtract(4, 'h');
-			const groupDate = dayjs.utc(date).subtract(1, 'h');
+	// 		const callEndDate = dayjs.utc(date).subtract(4, 'h');
+	// 		const groupDate = dayjs.utc(date).subtract(1, 'h');
 
-			setConvocationDates({ groupDate, callEndDate });
+	// 		setConvocationDates({ groupDate, callEndDate });
 
-			console.log(
-				dayjs().utcOffset(0, true).isAfter(callEndDate) &&
-					dayjs().utcOffset(0, true).isBefore(groupDate),
-			);
+	// 		console.log(
+	// 			dayjs().utcOffset(0, true).isAfter(callEndDate) &&
+	// 				dayjs().utcOffset(0, true).isBefore(groupDate),
+	// 		);
 
-			if (
-				dayjs().utcOffset(0, true).isAfter(callEndDate) &&
-				dayjs().utcOffset(0, true).isBefore(groupDate)
-			) {
-				const updateCountdown = () => {
-					const now = dayjs().utcOffset(0, true);
-					const difference = groupDate.diff(now);
+	// 		if (
+	// 			dayjs().utcOffset(0, true).isAfter(callEndDate) &&
+	// 			dayjs().utcOffset(0, true).isBefore(groupDate)
+	// 		) {
+	// 			const updateCountdown = () => {
+	// 				const now = dayjs().utcOffset(0, true);
+	// 				const difference = groupDate.diff(now);
 
-					const duration = dayjs.duration(difference);
+	// 				const duration = dayjs.duration(difference);
 
-					setTimeLeft({
-						hours: duration.hours(),
-						minutes: duration.minutes(),
-						seconds: duration.seconds(),
-					});
-				};
+	// 				setTimeLeft({
+	// 					hours: duration.hours(),
+	// 					minutes: duration.minutes(),
+	// 					seconds: duration.seconds(),
+	// 				});
+	// 			};
 
-				const intervalId = setInterval(updateCountdown, 1000);
-				return () => clearInterval(intervalId); // Cleanup interval on component unmount
-			} else {
-				setTimeLeft({
-					hours: 0,
-					minutes: 0,
-					seconds: 0,
-				});
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			setLoading(false);
-		}
-	}, [setCurrentDay, setLoading, setTimeLeft, setConvocationDates]);
+	// 			const intervalId = setInterval(updateCountdown, 1000);
+	// 			return () => clearInterval(intervalId); // Cleanup interval on component unmount
+	// 		} else {
+	// 			setTimeLeft({
+	// 				hours: 0,
+	// 				minutes: 0,
+	// 				seconds: 0,
+	// 			});
+	// 		}
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	} finally {
+	// 		setLoading(false);
+	// 	}
+	// }, [setCurrentDay, setLoading, setTimeLeft, setConvocationDates]);
 
-	useEffect(() => {
-		fetchGetDateMatchDay();
-	}, [fetchGetDateMatchDay]);
+	// useEffect(() => {
+	// 	fetchGetDateMatchDay();
+	// }, [fetchGetDateMatchDay]);
 
 	return (
 		<div className="space-y-5">

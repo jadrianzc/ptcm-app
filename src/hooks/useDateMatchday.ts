@@ -15,7 +15,9 @@ export const useDateMatchday = () => {
 	const { setLoading } = useStoreLoading();
 	const { currentDay, setSummoned, setCurrentDay, setTimeLeft, setConvocationDates } =
 		useStoreSummoned();
+	const now = dayjs().utcOffset(0, true);
 
+	// Obtener día actual de la jornada
 	useEffect(() => {
 		if (currentDay) {
 			const idSeason = currentDay.idSeason;
@@ -28,6 +30,7 @@ export const useDateMatchday = () => {
 		}
 	}, [currentDay, setSummoned]);
 
+	//
 	const fetchGetDateMatchDay = useCallback(async () => {
 		try {
 			setLoading(true);
@@ -39,32 +42,49 @@ export const useDateMatchday = () => {
 
 			const callDate = dayjs.utc(date).subtract(6, 'h');
 			const callEndDate = dayjs.utc(date).subtract(4, 'h');
+			const groupDate = dayjs.utc(date).subtract(3, 'h');
 
-			setConvocationDates({ callDate, callEndDate });
+			setConvocationDates({ callDate, callEndDate, groupDate });
 
-			if (dayjs().utcOffset(0, true).isBefore(callDate)) {
-				const updateCountdown = () => {
-					const now = dayjs().utcOffset(0, true);
-					const difference = callDate.diff(now);
+			const difference = dayjs().utcOffset(0, true).isBefore(callDate)
+				? callDate.diff(now)
+				: dayjs().utcOffset(0, true).isAfter(callEndDate) &&
+				  dayjs().utcOffset(0, true).isBefore(groupDate)
+				? groupDate.diff(now)
+				: null;
 
-					const duration = dayjs.duration(difference);
-
-					setTimeLeft({
-						hours: duration.hours(),
-						minutes: duration.minutes(),
-						seconds: duration.seconds(),
-					});
-				};
-
-				const intervalId = setInterval(updateCountdown, 1000);
-				return () => clearInterval(intervalId); // Cleanup interval on component unmount
-			} else {
+			if (!difference) {
 				setTimeLeft({
 					hours: 0,
 					minutes: 0,
 					seconds: 0,
 				});
+
+				return;
 			}
+
+			const updateCountdown = () => {
+				const duration = dayjs.duration(difference);
+				const time = {
+					hours: duration.hours(),
+					minutes: duration.minutes(),
+					seconds: duration.seconds(),
+				};
+
+				setTimeLeft(time);
+			};
+
+			const intervalId = setInterval(updateCountdown, 1000);
+			return () => clearInterval(intervalId); // Cleanup interval on component unmount
+
+			// if (dayjs().utcOffset(0, true).isBefore(callDate)) {
+			// } else {
+			// 	setTimeLeft({
+			// 		hours: 0,
+			// 		minutes: 0,
+			// 		seconds: 0,
+			// 	});
+			// }
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -75,4 +95,8 @@ export const useDateMatchday = () => {
 	useEffect(() => {
 		fetchGetDateMatchDay();
 	}, [fetchGetDateMatchDay]);
+
+	return {
+		now,
+	};
 };

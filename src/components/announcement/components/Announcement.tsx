@@ -18,13 +18,11 @@ import { IResponseSummoned, ISummoned } from '../interfaces';
 import { useDateMatchday } from '@/hooks';
 
 export const Announcement = () => {
-	useDateMatchday();
+	const { now } = useDateMatchday();
 	const { user } = useStoreAuth();
 	const { message } = useStoreMessage();
 	const { setLoading } = useStoreLoading();
 	const { summoned, setSummoned, currentDay, convocationDates } = useStoreSummoned();
-
-	const now = dayjs().utcOffset(0, true);
 
 	const handleJoinMatch = async () => {
 		try {

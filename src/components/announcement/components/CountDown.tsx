@@ -21,6 +21,8 @@ export const CountDown: FC<IProps> = ({ isGroup }) => {
 	const { currentDay, timeLeft, convocationDates } = useStoreSummoned();
 	const now = dayjs().utcOffset(0, true);
 
+	console.log(timeLeft);
+
 	return (
 		<div className="bg-white h-[250px] rounded-xl md:h-[353px]">
 			<div className="h-full flex justify-center items-center">
