@@ -6,9 +6,11 @@ export const useStoreSummoned = create<ISummonedStore>()((set) => ({
 	currentDay: null,
 	timeLeft: null,
 	convocationDates: null,
+	groups: [],
 
 	setSummoned: (summoned) => set({ summoned }),
 	setCurrentDay: (currentDay) => set({ currentDay }),
 	setTimeLeft: (timeLeft) => set({ timeLeft }),
 	setConvocationDates: (convocationDates) => set({ convocationDates }),
+	setGroups: (groups) => set({ groups }),
 }));

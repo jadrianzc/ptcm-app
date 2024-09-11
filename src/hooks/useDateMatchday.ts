@@ -5,15 +5,19 @@ import duration from 'dayjs/plugin/duration';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/es';
 import { getDateMatchDay, getSummoned } from '@/components/announcement/helpers';
-import { useStoreLoading, useStoreSummoned } from '@/store';
+import { useStoreAuth, useStoreLoading, useStoreMessage, useStoreSummoned } from '@/store';
+import { IResponseSummoned, ISummoned } from '@/components/announcement/interfaces';
+import { localApi } from '@/axios';
 dayjs.locale('es');
 dayjs.extend(utc);
 dayjs.extend(duration);
 dayjs.extend(timezone);
 
 export const useDateMatchday = () => {
+	const { user } = useStoreAuth();
+	const { message } = useStoreMessage();
 	const { setLoading } = useStoreLoading();
-	const { currentDay, setSummoned, setCurrentDay, setTimeLeft, setConvocationDates } =
+	const { summoned, currentDay, setSummoned, setCurrentDay, setTimeLeft, setConvocationDates } =
 		useStoreSummoned();
 	const now = dayjs().utcOffset(0, true);
 
@@ -39,9 +43,9 @@ export const useDateMatchday = () => {
 
 			const date = resp.startAt;
 
-			const callDate = dayjs.utc(date).subtract(10, 'h');
-			const callEndDate = dayjs.utc(date).subtract(10, 'h');
-			const groupDate = dayjs.utc(date).subtract(6, 'h');
+			const callDate = dayjs.utc(date).subtract(6, 'h');
+			const callEndDate = dayjs.utc(date).subtract(4, 'h');
+			const groupDate = dayjs.utc(date).subtract(3, 'h');
 
 			setConvocationDates({ callDate, callEndDate, groupDate });
 
@@ -87,8 +91,95 @@ export const useDateMatchday = () => {
 		fetchGetDateMatchDay();
 	}, [fetchGetDateMatchDay]);
 
+	const shuffleArray = (array: ISummoned[]): ISummoned[] => {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array;
+	};
+
+	const groupIntoChunks = (array: ISummoned[], chunkSize: number): ISummoned[][] => {
+		const shuffledArray = shuffleArray(array);
+		const chunks: ISummoned[][] = [];
+
+		for (let i = 0; i < shuffledArray.length; i += chunkSize) {
+			const chunk = shuffledArray.slice(i, i + chunkSize);
+			chunks.push(chunk);
+		}
+
+		return chunks;
+	};
+
+	const createGroups = async () => {
+		try {
+			const summonedTitular = summoned.filter((sum) => sum.type === 'titular');
+			const groupsOfFour = groupIntoChunks(summonedTitular, 4);
+
+			const data = {
+				idSeason: currentDay?.idSeason,
+				idMatch: currentDay?.id,
+				groups: JSON.stringify(groupsOfFour),
+			};
+
+			console.log(data);
+			await localApi.post('/announcement/setGroups', data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleLeaveMatch = async () => {
+		try {
+			setLoading(true);
+
+			const athlete = summoned.find(({ idAthlete }) => user?.id === idAthlete);
+
+			console.log(athlete);
+			const { data: respSummoned } = await localApi.delete('/announcement/deleteSummoned', {
+				data: athlete,
+			});
+
+			message?.success(respSummoned.message);
+
+			setSummoned(respSummoned.data);
+		} catch (error: any) {
+			console.log(error);
+			message?.error(error.response.data.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const handleJoinMatch = async () => {
+		try {
+			setLoading(true);
+			const summoned = {
+				idSeason: currentDay?.idSeason,
+				idMatch: currentDay?.id,
+				idAthlete: user?.id,
+			};
+			const { data: respSummoned } = await localApi.post<IResponseSummoned>(
+				'/announcement/setSummoned',
+				summoned,
+			);
+
+			message?.success(respSummoned.message);
+
+			setSummoned(respSummoned.data);
+		} catch (error: any) {
+			console.log(error);
+			message?.error(error.response.data.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return {
 		now,
 		currentDay,
+		createGroups,
+		handleLeaveMatch,
+		handleJoinMatch,
 	};
 };
