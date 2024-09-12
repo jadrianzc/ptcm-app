@@ -38,15 +38,15 @@ export const MainLayout: React.FC<IWrapperComponent> = ({ children }) => {
 		<>
 			<Head>
 				<title>PTCM</title>
-				<meta name='description' content='Padel Training Club Manta' />
-				<meta name='viewport' content='width=device-width, initial-scale=1' />
-				<link rel='icon' href='/favicon.ico' />
+				<meta name="description" content="Padel Training Club Manta" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
 			<main className={`w-full min-h-screen ${poppins.className}`}>
 				{contextHolder}
 
-				<Spin spinning={loading} fullscreen size='large' />
+				<Spin spinning={loading} fullscreen size="large" />
 
 				<Menu>
 					{children}

@@ -1,7 +1,7 @@
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import { PtcmLetter } from '@/icons';
 import { IGroupItems } from '@/components/announcement/interfaces';
-import { useStoreSummoned } from '@/store';
+import { useStoreAuth, useStoreSummoned } from '@/store';
 
 interface IGroupItem {
 	group: IGroupItems[];
@@ -22,46 +22,49 @@ export const GroupListItem: FC<IGroupItem> = ({
 	firstDataPlayer,
 	setFirstDataPlayer,
 }) => {
+	const { user } = useStoreAuth();
 	const { groups, setGroups } = useStoreSummoned();
 
 	const handleSelectPlayer = ({ index, numPlayer, player }: IDataPlayer) => {
-		if (firstDataPlayer.length === 0) {
-			setFirstDataPlayer((state) => [...state, { index, numPlayer, player }]);
-			return;
-		}
-
-		if (firstDataPlayer.length === 1) {
-			// Obtener el primer jugador
-			const firstPlayer = firstDataPlayer[0];
-			const secondPlayer = { index, numPlayer, player };
-
-			// Crear una copia de los grupos
-			const updatedGroups = [...groups];
-
-			// Verificar si los índices son válidos
-			if (
-				updatedGroups[firstPlayer.index] &&
-				updatedGroups[secondPlayer.index] &&
-				updatedGroups[firstPlayer.index][firstPlayer.numPlayer] &&
-				updatedGroups[secondPlayer.index][secondPlayer.numPlayer]
-			) {
-				// Intercambiar las posiciones
-				const temp = updatedGroups[firstPlayer.index][firstPlayer.numPlayer];
-
-				updatedGroups[firstPlayer.index][firstPlayer.numPlayer] =
-					updatedGroups[secondPlayer.index][secondPlayer.numPlayer];
-
-				updatedGroups[secondPlayer.index][secondPlayer.numPlayer] = temp;
-
-				// Actualizar los grupos con los elementos intercambiados
-				setGroups(updatedGroups);
-				// TODO: ACTUALIZAR BASE DE DATOS Y SOLO FUNCIONAR CON ROL DE ADMIN
-			} else {
-				console.error('Los índices son inválidos');
+		if (user?.idRol === 1) {
+			if (firstDataPlayer.length === 0) {
+				setFirstDataPlayer((state) => [...state, { index, numPlayer, player }]);
+				return;
 			}
 
-			// Resetear el estado de `firstDataPlayer`
-			setFirstDataPlayer([]);
+			if (firstDataPlayer.length === 1) {
+				// Obtener el primer jugador
+				const firstPlayer = firstDataPlayer[0];
+				const secondPlayer = { index, numPlayer, player };
+
+				// Crear una copia de los grupos
+				const updatedGroups = [...groups];
+
+				// Verificar si los índices son válidos
+				if (
+					updatedGroups[firstPlayer.index] &&
+					updatedGroups[secondPlayer.index] &&
+					updatedGroups[firstPlayer.index][firstPlayer.numPlayer] &&
+					updatedGroups[secondPlayer.index][secondPlayer.numPlayer]
+				) {
+					// Intercambiar las posiciones
+					const temp = updatedGroups[firstPlayer.index][firstPlayer.numPlayer];
+
+					updatedGroups[firstPlayer.index][firstPlayer.numPlayer] =
+						updatedGroups[secondPlayer.index][secondPlayer.numPlayer];
+
+					updatedGroups[secondPlayer.index][secondPlayer.numPlayer] = temp;
+
+					// Actualizar los grupos con los elementos intercambiados
+					setGroups(updatedGroups);
+					// TODO: ACTUALIZAR BASE DE DATOS Y SOLO FUNCIONAR CON ROL DE ADMIN
+				} else {
+					console.error('Los índices son inválidos');
+				}
+
+				// Resetear el estado de `firstDataPlayer`
+				setFirstDataPlayer([]);
+			}
 		}
 	};
 

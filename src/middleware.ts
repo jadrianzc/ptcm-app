@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { IUser } from './store/auth/interfaces';
 
 export async function middleware(req: NextRequest) {
 	const urlPath = req.nextUrl.pathname;
@@ -7,6 +8,14 @@ export async function middleware(req: NextRequest) {
 
 	if (!!session) {
 		if (urlPath.startsWith('/login')) {
+			return NextResponse.redirect(new URL(`/`, req.url));
+		}
+
+		if ((session.user as IUser).idRol === 1 && !urlPath.startsWith('/admin')) {
+			return NextResponse.redirect(new URL(`/admin`, req.url));
+		}
+
+		if ((session.user as IUser).idRol !== 1 && urlPath.startsWith('/admin')) {
 			return NextResponse.redirect(new URL(`/`, req.url));
 		}
 	} else {

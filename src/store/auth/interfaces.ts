@@ -14,6 +14,8 @@ export interface IUser {
 	lastname: string;
 	email: string;
 	password: string;
+	idRol: number;
+	nameRol: string;
 }
 
 export interface IResponseUser {

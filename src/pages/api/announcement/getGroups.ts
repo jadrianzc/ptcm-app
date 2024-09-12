@@ -10,7 +10,7 @@ dayjs.extend(utc);
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>
+	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>,
 ) {
 	if (req.method === 'GET') {
 		try {
@@ -19,8 +19,6 @@ export default async function handler(
 			}
 
 			const { idSeason, idMatch } = req.query;
-
-			console.log({ idSeason, idMatch });
 
 			const data = await db
 				.select<IGroups[]>('groups')

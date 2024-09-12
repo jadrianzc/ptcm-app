@@ -24,7 +24,7 @@ export default NextAuth({
 					// comprobacion en api (?)
 					const user = await db
 						.select('*')
-						.from('Atletas')
+						.from('ViewAtletas')
 						.where('email', credentials.email);
 
 					if (user.length === 0) return null;
