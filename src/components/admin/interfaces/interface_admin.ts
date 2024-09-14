@@ -71,3 +71,9 @@ export interface ICategories {
 	createAt: string;
 	updateAt: string;
 }
+
+export interface IResponseCategories {
+	status: number;
+	message: string;
+	data: ICategories[];
+}

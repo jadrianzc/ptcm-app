@@ -1,12 +1,15 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/db/dbconfig';
-import { ICategories, IResponseUnauthorized } from '@/components/admin/interfaces';
-import { IGroups, IResponseGroup } from '@/components/announcement/interfaces';
+import {
+	ICategories,
+	IResponseCategories,
+	IResponseUnauthorized,
+} from '@/components/admin/interfaces';
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>,
+	res: NextApiResponse<IResponseCategories | IResponseUnauthorized>,
 ) {
 	if (req.method === 'GET') {
 		try {
@@ -15,6 +18,7 @@ export default async function handler(
 			}
 
 			const categories = await db.select<ICategories[]>('*').from('Category');
+			console.log(categories);
 
 			res.status(200).json({
 				status: 200,
