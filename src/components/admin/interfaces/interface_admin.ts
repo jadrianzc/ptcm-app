@@ -64,3 +64,10 @@ export interface IRespSeason {
 export interface IRespMatchDays {
 	respMatchDays: IResponseSetMatchDays;
 }
+
+export interface ICategories {
+	id: number;
+	name: string;
+	createAt: string;
+	updateAt: string;
+}

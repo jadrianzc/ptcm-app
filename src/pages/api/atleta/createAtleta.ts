@@ -23,8 +23,9 @@ export default async function handler(
 			const user = req.body as IUser;
 			const id = uuidv4();
 			const password = bcrypt.hashSync(user.password, 10);
+			console.log(password);
 
-			await db('Atletas').insert({ ...user, id, password });
+			// await db('Atletas').insert({ ...user, id, password });
 
 			res.status(200).json({
 				status: 200,
