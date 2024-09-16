@@ -20,7 +20,7 @@ export default async function handler(
 				return res.status(401).json({ status: 401, error: 'Unauthorized' });
 			}
 
-			const user = req.body as IUser;
+			const user = req.body;
 			const id = uuidv4();
 			const password = bcrypt.hashSync(user.password, 10);
 

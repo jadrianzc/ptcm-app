@@ -6,6 +6,7 @@ import {
 	IResponseCategories,
 	IResponseUnauthorized,
 } from '@/components/admin/interfaces';
+import { ITableAthete } from '@/components/admin/members/interfaces/interface_members';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -17,8 +18,22 @@ export default async function handler(
 				return res.status(401).json({ status: 401, error: 'Unauthorized' });
 			}
 
-			const categories = await db.select<ICategories[]>('*').from('Category');
-			console.log(categories);
+			const allCategories = await db.select<ICategories[]>('*').from('Category');
+			console.log(allCategories);
+
+			const athetes: ITableAthete[] = await db
+				.select('id', 'identification', 'name', 'lastname', 'idCategory')
+				.from('Atletas');
+
+			const categories: ICategories[] = [];
+
+			for (const category of allCategories) {
+				const athetesCategory = athetes.filter(
+					(athete) => athete.idCategory === category.id,
+				);
+
+				categories.push({ ...category, athetes: athetesCategory });
+			}
 
 			res.status(200).json({
 				status: 200,

@@ -1,4 +1,6 @@
+import { IUser } from '@/store/auth/interfaces';
 import { Dayjs } from 'dayjs';
+import { ITableAthete } from '../members/interfaces/interface_members';
 
 export interface ICountdown {
 	hours: number;
@@ -68,6 +70,8 @@ export interface IRespMatchDays {
 export interface ICategories {
 	id: number;
 	name: string;
+	rendering: string;
+	athetes?: ITableAthete[];
 	createAt: string;
 	updateAt: string;
 }
@@ -76,4 +80,9 @@ export interface IResponseCategories {
 	status: number;
 	message: string;
 	data: ICategories[];
+}
+
+export interface IResponseAthetes {
+	status: number;
+	data: ITableAthete[];
 }
