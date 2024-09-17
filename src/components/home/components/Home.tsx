@@ -1,7 +1,17 @@
 import { TablaIcon } from '@/icons';
 import { TablaContentMovil, TablePosition } from './';
+import { useEffect } from 'react';
+import { getCategories } from '@/components/admin/members/helpers';
+import { useStoreSeason } from '@/store';
 
 export const Home = () => {
+	const { setCategories } = useStoreSeason();
+	useEffect(() => {
+		getCategories()
+			.then((resp) => setCategories(resp.data))
+			.catch((err) => console.log(err));
+	}, [setCategories]);
+
 	return (
 		<div className="space-y-5">
 			<div className="flex justify-start items-center space-x-5">
