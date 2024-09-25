@@ -28,7 +28,7 @@ export const Sidebar: React.FC<IWrapperComponent> = ({ children }) => {
 								index % 2 === 0 ? 'bg-[#0E5373]' : 'bg-[#146586]'
 							}`}
 							placement="left"
-							title={item.label}
+							title={<Link href={item.key}>{item.label}</Link>}
 							arrow={false}
 							color={`${index % 2 === 0 ? '#0E5373' : '#146586'}`}
 							overlayClassName="tooltip-content"

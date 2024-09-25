@@ -6,6 +6,7 @@ import { useStoreSeason } from '@/store';
 
 export const Home = () => {
 	const { setCategories } = useStoreSeason();
+
 	useEffect(() => {
 		getCategories()
 			.then((resp) => setCategories(resp.data))
