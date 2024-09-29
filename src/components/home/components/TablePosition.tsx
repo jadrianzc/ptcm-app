@@ -22,8 +22,12 @@ export const TablePosition: React.FC = () => {
 					</div>
 
 					<Table
+						key={category.id}
 						columns={columns}
-						dataSource={category.athetes}
+						dataSource={category.athetes?.map((athete, index) => ({
+							...athete,
+							key: index + 1,
+						}))}
 						pagination={false}
 						scroll={{ y: 310 }}
 					/>

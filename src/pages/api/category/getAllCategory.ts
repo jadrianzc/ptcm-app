@@ -19,7 +19,6 @@ export default async function handler(
 			}
 
 			const allCategories = await db.select<ICategories[]>('*').from('Category');
-			console.log(allCategories);
 
 			const athetes: ITableAthete[] = await db
 				.select('id', 'identification', 'name', 'lastname', 'idCategory')

@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 import { NextPageWithLayout } from '../_app';
-import { MainLayout } from '@/components/layouts';
+import { MainLayout, MatchdayLayout } from '@/components/layouts';
 import { Groups } from '@/components/groups';
 
 const GruposPage: NextPageWithLayout = () => {
@@ -9,7 +9,11 @@ const GruposPage: NextPageWithLayout = () => {
 };
 
 GruposPage.getLayout = function getLayout(page: ReactElement) {
-	return <MainLayout>{page}</MainLayout>;
+	return (
+		<MainLayout>
+			<MatchdayLayout>{page}</MatchdayLayout>
+		</MainLayout>
+	);
 };
 
 export default GruposPage;

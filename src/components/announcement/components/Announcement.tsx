@@ -1,12 +1,19 @@
-import { ButtonCustom } from '@/components/ui/components';
-import { ConvocatoriaIcon } from '@/icons';
-import { useStoreSummoned } from '@/store';
-import { CountDown, TablaSummoned } from './';
+import { dayjs } from '@/libs';
 import { useDateMatchday } from '@/hooks';
+import { useStoreSummoned } from '@/store';
+import { ConvocatoriaIcon } from '@/icons';
+import { CountDown, TablaSummoned } from './';
+import { ButtonCustom } from '@/components/ui/components';
 
 export const Announcement = () => {
-	const { now, handleJoinMatch } = useDateMatchday();
+	// Hooks
+	const { handleJoinMatch } = useDateMatchday();
 	const { convocationDates } = useStoreSummoned();
+
+	// States
+	const now = dayjs().utcOffset(0, true);
+
+	console.log('ANNOUNCEMENT');
 
 	return (
 		<div className="space-y-5">

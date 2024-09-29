@@ -21,7 +21,10 @@ export const TablaContentMovil = () => {
 			<div className="w-full bg-white rounded-lg shadow-sm md:w-[560px]">
 				<Table
 					columns={columns}
-					dataSource={category.athetes}
+					dataSource={category.athetes?.map((athete, index) => ({
+						...athete,
+						key: index + 1,
+					}))}
 					pagination={false}
 					scroll={{ y: 315 }}
 				/>
