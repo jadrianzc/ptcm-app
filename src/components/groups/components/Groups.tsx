@@ -8,6 +8,9 @@ export const Groups = () => {
 	const { convocationDates } = useStoreSummoned();
 	const now = dayjs().utcOffset(0, true);
 
+	// TODO: LLAMAR EL USECOUNTDOWN AQUÍ CON LA CONDICIÓN
+	console.log({ group: now.isAfter(convocationDates?.groupDate) });
+
 	return (
 		<div className="space-y-5">
 			<div className="flex justify-start items-center space-x-5">

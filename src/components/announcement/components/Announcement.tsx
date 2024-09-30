@@ -13,7 +13,11 @@ export const Announcement = () => {
 	// States
 	const now = dayjs().utcOffset(0, true);
 
-	console.log('ANNOUNCEMENT');
+	// TODO: LLAMAR EL USECOUNTDOWN AQUÍ CON LA CONDICIÓN
+	console.log(
+		'Announcement',
+		now.isAfter(convocationDates?.callDate) && now.isBefore(convocationDates?.callEndDate),
+	);
 
 	return (
 		<div className="space-y-5">

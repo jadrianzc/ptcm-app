@@ -9,17 +9,17 @@ interface IProps {
 	isGroup?: boolean;
 }
 
-export const CountDown = ({ isGroup }: IProps) => {
+export const CountDown = ({ isGroup = false }: IProps) => {
 	// Hooks
 	const { currentDay, convocationDates } = useStoreSummoned();
-	const { timeLeft } = useCountdown();
-
-	// States
 	const now = dayjs().utcOffset(0, true);
-
 	const condition = isGroup
 		? now.isAfter(convocationDates?.callEndDate) && now.isBefore(convocationDates?.groupDate)
 		: now.isBefore(convocationDates?.callDate);
+
+	const { timeLeft } = useCountdown(condition);
+
+	console.log({ isGroup, condition, timeLeft });
 
 	return (
 		<div className="bg-white h-[250px] rounded-xl md:h-[353px]">
@@ -29,9 +29,9 @@ export const CountDown = ({ isGroup }: IProps) => {
 						{timeLeft ? (
 							<div className="flex flex-col justify-center items-center text-blue space-y-6">
 								{condition ? (
-									<Count isGroup timeLeft={timeLeft} />
+									<Count isGroup={isGroup} timeLeft={timeLeft} />
 								) : (
-									<CountShow isGroup />
+									<CountShow isGroup={isGroup} />
 								)}
 							</div>
 						) : (
