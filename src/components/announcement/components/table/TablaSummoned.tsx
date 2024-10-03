@@ -1,5 +1,5 @@
 import { useStoreSummoned } from '@/store';
-import { HeaderTable, TableSummonedItem, FooterTable, FooterTableMovil } from './';
+import { HeaderTable, TableSummonedItem, FooterTable, FooterTableMovil } from '..';
 
 export const TablaSummoned = () => {
 	const { currentDay, summoned } = useStoreSummoned();

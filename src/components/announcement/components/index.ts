@@ -1,9 +1,12 @@
 export * from './Announcement';
-export * from './CountDown';
-export * from './Count';
-export * from './CountShow';
-export * from './HeaderTable';
-export * from './TablaSummoned';
-export * from './TableSummonedItem';
-export * from './FooterTable';
-export * from './FooterTableMovil';
+export * from './Convocation';
+
+export * from './count/CountDown';
+export * from './count/Count';
+export * from './count/CountShow';
+
+export * from './table/HeaderTable';
+export * from './table/TablaSummoned';
+export * from './table/TableSummonedItem';
+export * from './table/FooterTable';
+export * from './table/FooterTableMovil';

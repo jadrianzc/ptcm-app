@@ -3,13 +3,13 @@ import { useStoreSummoned } from '@/store';
 import { GroupList } from './';
 import { CountDown } from '@/components/announcement';
 import { GruposIcon } from '@/icons';
+import { useCountdown } from '@/hooks';
 
 export const Groups = () => {
 	const { convocationDates } = useStoreSummoned();
 	const now = dayjs().utcOffset(0, true);
 
-	// TODO: LLAMAR EL USECOUNTDOWN AQUÍ CON LA CONDICIÓN
-	console.log({ group: now.isAfter(convocationDates?.groupDate) });
+	const { timeLeft } = useCountdown();
 
 	return (
 		<div className="space-y-5">
@@ -21,7 +21,11 @@ export const Groups = () => {
 			</div>
 
 			<div className="space-y-8 md:space-y-14">
-				{now.isAfter(convocationDates?.groupDate) ? <GroupList /> : <CountDown isGroup />}
+				{now.isAfter(convocationDates?.groupDate) ? (
+					<GroupList />
+				) : (
+					<CountDown isGroup timeLeft={timeLeft} />
+				)}
 			</div>
 		</div>
 	);

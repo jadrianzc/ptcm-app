@@ -17,12 +17,10 @@ export const MatchdayLayout = ({ children }: { children: React.ReactNode }) => {
 				const { id: idMatch, idSeason, startAt } = respCurrentDay;
 
 				// Asignar las fechas de convocatoria y creación de grupos
-				const callDate = dayjs.utc(startAt).subtract(785, 'minute');
-				const callEndDate = dayjs.utc(startAt).subtract(784, 'minute');
-				const groupDate = dayjs.utc(startAt).subtract(783, 'minute');
-				// const callDate = dayjs.utc(startAt).subtract(6, 'h');
-				// const callEndDate = dayjs.utc(startAt).subtract(4, 'h');
-				// const groupDate = dayjs.utc(startAt).subtract(3, 'h');
+
+				const callDate = dayjs.utc(startAt).subtract(6, 'h');
+				const callEndDate = dayjs.utc(startAt).subtract(4, 'h');
+				const groupDate = dayjs.utc(startAt).subtract(3, 'h');
 
 				setConvocationDates({ callDate, callEndDate, groupDate });
 

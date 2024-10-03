@@ -1,25 +1,22 @@
 import { ClockLoader } from 'react-spinners';
 
 import { dayjs } from '@/libs';
-import { useCountdown } from '@/hooks';
 import { useStoreSummoned } from '@/store';
-import { Count, CountShow } from './';
+import { Count, CountShow } from '..';
+import { ICountdown } from '../../interfaces';
 
 interface IProps {
 	isGroup?: boolean;
+	timeLeft?: ICountdown | null;
 }
 
-export const CountDown = ({ isGroup = false }: IProps) => {
+export const CountDown = ({ isGroup = false, timeLeft }: IProps) => {
 	// Hooks
 	const { currentDay, convocationDates } = useStoreSummoned();
 	const now = dayjs().utcOffset(0, true);
 	const condition = isGroup
 		? now.isAfter(convocationDates?.callEndDate) && now.isBefore(convocationDates?.groupDate)
 		: now.isBefore(convocationDates?.callDate);
-
-	const { timeLeft } = useCountdown(condition);
-
-	console.log({ isGroup, condition, timeLeft });
 
 	return (
 		<div className="bg-white h-[250px] rounded-xl md:h-[353px]">

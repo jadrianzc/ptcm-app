@@ -1,5 +1,5 @@
 import { useStoreSummoned } from '@/store';
-import { ICountdown } from '../interfaces';
+import { ICountdown } from '../../interfaces';
 
 interface IProps {
 	isGroup?: boolean;

@@ -1,4 +1,4 @@
-import { ISummoned } from '../interfaces';
+import { ISummoned } from '../../interfaces';
 
 interface IProps {
 	summoneds: ISummoned[];
