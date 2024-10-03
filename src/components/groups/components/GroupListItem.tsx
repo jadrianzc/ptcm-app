@@ -2,6 +2,8 @@ import { Dispatch, FC, SetStateAction } from 'react';
 import { PtcmLetter } from '@/icons';
 import { IGroupItems } from '@/components/announcement/interfaces';
 import { useStoreAuth, useStoreSummoned } from '@/store';
+import { localApi } from '@/axios';
+import { dayjs } from '@/libs';
 
 interface IGroupItem {
 	group: IGroupItems[];
@@ -23,23 +25,21 @@ export const GroupListItem: FC<IGroupItem> = ({
 	setFirstDataPlayer,
 }) => {
 	const { user } = useStoreAuth();
-	const { groups, setGroups } = useStoreSummoned();
+	const { currentDay, convocationDates, groups, setGroups } = useStoreSummoned();
+	const now = dayjs().utcOffset(0, true);
 
-	const handleSelectPlayer = ({ index, numPlayer, player }: IDataPlayer) => {
-		if (user?.idRol === 1) {
+	const handleSelectPlayer = async ({ index, numPlayer, player }: IDataPlayer) => {
+		if (user?.idRol === 2 && now.isBefore(convocationDates?.groupDate)) {
 			if (firstDataPlayer.length === 0) {
 				setFirstDataPlayer((state) => [...state, { index, numPlayer, player }]);
 				return;
 			}
-
 			if (firstDataPlayer.length === 1) {
 				// Obtener el primer jugador
 				const firstPlayer = firstDataPlayer[0];
 				const secondPlayer = { index, numPlayer, player };
-
 				// Crear una copia de los grupos
 				const updatedGroups = [...groups];
-
 				// Verificar si los índices son válidos
 				if (
 					updatedGroups[firstPlayer.index] &&
@@ -49,19 +49,24 @@ export const GroupListItem: FC<IGroupItem> = ({
 				) {
 					// Intercambiar las posiciones
 					const temp = updatedGroups[firstPlayer.index][firstPlayer.numPlayer];
-
 					updatedGroups[firstPlayer.index][firstPlayer.numPlayer] =
 						updatedGroups[secondPlayer.index][secondPlayer.numPlayer];
-
 					updatedGroups[secondPlayer.index][secondPlayer.numPlayer] = temp;
-
 					// Actualizar los grupos con los elementos intercambiados
 					setGroups(updatedGroups);
-					// TODO: ACTUALIZAR BASE DE DATOS Y SOLO FUNCIONAR CON ROL DE ADMIN
+					const data = {
+						idSeason: currentDay?.idSeason,
+						idMatch: currentDay?.id,
+						groups: JSON.stringify(updatedGroups),
+					};
+					try {
+						await localApi.put('/announcement/updateGroups', data);
+					} catch (error) {
+						console.log(error);
+					}
 				} else {
 					console.error('Los índices son inválidos');
 				}
-
 				// Resetear el estado de `firstDataPlayer`
 				setFirstDataPlayer([]);
 			}

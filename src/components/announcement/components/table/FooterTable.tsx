@@ -7,7 +7,7 @@ import { useDateMatchday } from '@/hooks';
 
 export const FooterTable = () => {
 	const { pathname } = useRouter();
-	const { currentDay } = useStoreSummoned();
+	const { currentDay, groups } = useStoreSummoned();
 	const { createGroups, handleLeaveMatch, handleJoinMatch } = useDateMatchday();
 
 	return (
@@ -19,6 +19,7 @@ export const FooterTable = () => {
 						className="w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first"
 						color="#3F6380"
 						onClick={createGroups}
+						disabled={groups.length > 0}
 					>
 						Crear grupos
 					</ButtonCustom>

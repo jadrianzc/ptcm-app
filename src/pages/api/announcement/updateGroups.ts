@@ -13,25 +13,20 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>,
 ) {
-	if (req.method === 'POST') {
+	if (req.method === 'PUT') {
 		try {
 			if (process.env.NEXT_PUBLIC_API_TOKEN !== req.headers.authorization) {
 				return res.status(401).json({ status: 401, error: 'Unauthorized' });
 			}
 
 			const { idSeason, idMatch, groups } = req.body;
-			const id = uuidv4();
 
-			const data: IGroups[] = await db('Groups')
-				.returning('groups')
-				.insert({ id, idSeason, idMatch, groups });
-
-			const groupsDB = JSON.parse(data[0]?.groups as string);
+			await db('Groups').where({ idSeason, idMatch }).update({ groups });
 
 			res.status(200).json({
 				status: 200,
-				message: `Grupos creados.`,
-				data: groupsDB,
+				message: `Grupos actualizados.`,
+				data: [],
 			});
 		} catch (error) {
 			console.log(error);
@@ -42,8 +37,8 @@ export default async function handler(
 			});
 		}
 	} else {
-		// Si no es una petición POST, retornar un error 405 (Método no permitido)
-		res.setHeader('Allow', ['POST']);
+		// Si no es una petición PUT, retornar un error 405 (Método no permitido)
+		res.setHeader('Allow', ['PUT']);
 		res.status(405).end(`Método ${req.method} no permitido.`);
 	}
 }

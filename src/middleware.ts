@@ -11,11 +11,14 @@ export async function middleware(req: NextRequest) {
 			return NextResponse.redirect(new URL(`/`, req.url));
 		}
 
-		if ((session.user as IUser).idRol === 1 && !urlPath.startsWith('/admin')) {
+		if (
+			((session.user as IUser).idRol === 1 || (session.user as IUser).idRol === 2) &&
+			!urlPath.startsWith('/admin')
+		) {
 			return NextResponse.redirect(new URL(`/admin`, req.url));
 		}
 
-		if ((session.user as IUser).idRol !== 1 && urlPath.startsWith('/admin')) {
+		if ((session.user as IUser).idRol === 3 && urlPath.startsWith('/admin')) {
 			return NextResponse.redirect(new URL(`/`, req.url));
 		}
 	} else {

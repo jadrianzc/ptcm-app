@@ -27,6 +27,16 @@ export default async function handler(
 				.andWhere('idSeason', idSeason)
 				.orderBy('createAt');
 
+			if (data.length === 0) {
+				res.status(200).json({
+					status: 404,
+					message: `No hay datos.`,
+					data: [],
+				});
+
+				return;
+			}
+
 			const groups = JSON.parse(data[0]?.groups as string);
 
 			res.status(200).json({

@@ -6,7 +6,7 @@ export const useDateMatchday = () => {
 	const { user } = useStoreAuth();
 	const { message } = useStoreMessage();
 	const { setLoading } = useStoreLoading();
-	const { summoned, currentDay, setSummoned } = useStoreSummoned();
+	const { summoned, currentDay, setSummoned, setGroups } = useStoreSummoned();
 
 	// Toma un array y lo baraja aleatoriamente utilizando el algoritmo de Fisher-Yates (shuffle)
 	const shuffleArray = (array: ISummoned[]): ISummoned[] => {
@@ -34,38 +34,26 @@ export const useDateMatchday = () => {
 	// Creación de grupos
 	const createGroups = async () => {
 		try {
+			setLoading(true);
 			const summonedTitular = summoned.filter((sum) => sum.type === 'titular');
-			const groupsOfFour = groupIntoChunks(summonedTitular, 4);
 
-			const data = {
-				idSeason: currentDay?.idSeason,
-				idMatch: currentDay?.id,
-				groups: JSON.stringify(groupsOfFour),
-			};
+			if (summonedTitular.length === 20 || summonedTitular.length === 24) {
+				const groupsOfFour = groupIntoChunks(summonedTitular, 4);
 
-			await localApi.post('/announcement/setGroups', data);
+				const data = {
+					idSeason: currentDay?.idSeason,
+					idMatch: currentDay?.id,
+					groups: JSON.stringify(groupsOfFour),
+				};
+
+				const { data: respGroup } = await localApi.post('/announcement/setGroups', data);
+
+				setGroups(respGroup.data);
+			}
+
+			message?.error('Faltan atletas para crear los grupos.');
 		} catch (error) {
 			console.log(error);
-		}
-	};
-
-	// Darse de baja de la convocatoria
-	const handleLeaveMatch = async () => {
-		try {
-			setLoading(true);
-
-			const athlete = summoned.find(({ idAthlete }) => user?.id === idAthlete);
-
-			const { data: respSummoned } = await localApi.delete('/announcement/deleteSummoned', {
-				data: athlete,
-			});
-
-			message?.success(respSummoned.message);
-
-			setSummoned(respSummoned.data);
-		} catch (error: any) {
-			console.log(error);
-			message?.error(error.response.data.message);
 		} finally {
 			setLoading(false);
 		}
@@ -96,10 +84,32 @@ export const useDateMatchday = () => {
 		}
 	};
 
+	// Darse de baja de la convocatoria
+	const handleLeaveMatch = async () => {
+		try {
+			setLoading(true);
+
+			const athlete = summoned.find(({ idAthlete }) => user?.id === idAthlete);
+
+			const { data: respSummoned } = await localApi.delete('/announcement/deleteSummoned', {
+				data: athlete,
+			});
+
+			message?.success(respSummoned.message);
+
+			setSummoned(respSummoned.data);
+		} catch (error: any) {
+			console.log(error);
+			message?.error(error.response.data.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return {
 		currentDay,
 		createGroups,
-		handleLeaveMatch,
 		handleJoinMatch,
+		handleLeaveMatch,
 	};
 };
