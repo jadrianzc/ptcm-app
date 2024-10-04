@@ -3,13 +3,14 @@ import { Tooltip } from 'antd';
 import { IoMenuOutline } from 'react-icons/io5';
 
 import { Content, DrawerMenu } from './';
-import { menuItems } from '../helpers';
+import { menuItems, menuItemsAdmin } from '../helpers';
 import { IWrapperComponent } from '@/components/layouts/interfaces';
 import { Icon, IconWhite } from '@/icons';
-import { useStoreModal } from '@/store';
+import { useStoreAuth, useStoreModal } from '@/store';
 
 export const Sidebar: React.FC<IWrapperComponent> = ({ children }) => {
 	const { setIsDrawer } = useStoreModal();
+	const { user } = useStoreAuth();
 
 	const showDrawer = () => setIsDrawer(true);
 
@@ -21,7 +22,7 @@ export const Sidebar: React.FC<IWrapperComponent> = ({ children }) => {
 				</div>
 
 				<div>
-					{menuItems.map((item, index) => (
+					{(user?.idRol === 3 ? menuItems : menuItemsAdmin).map((item, index) => (
 						<Tooltip
 							key={item.label}
 							className={`w-full flex justify-center items-center h-[72px] ${

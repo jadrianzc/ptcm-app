@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-import { NextPageWithLayout } from '../_app';
+import { NextPageWithLayout } from '../../_app';
 import { MainLayout } from '@/components/layouts';
 import { Members } from '@/components/admin/members';
 

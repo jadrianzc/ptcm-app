@@ -3,6 +3,7 @@ import { useStoreSeason } from '@/store';
 import { Avatar, List } from 'antd';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
+import Link from 'next/link';
 import { IoIosList } from 'react-icons/io';
 import { IoEllipsisHorizontalSharp } from 'react-icons/io5';
 import { LuClock3 } from 'react-icons/lu';
@@ -28,7 +29,10 @@ export const SeasonDaysCard = () => {
 						key={matchDay.id}
 						// className="w-full lg:w-[40%] xl:w-[30%] !p-0"
 					>
-						<div className="w-[340px] h-[321px] bg-white rounded-lg border border-gray6 py-5 space-y-5">
+						<Link
+							href={`/admin/fechas/${matchDay.name}+${matchDay.id}+${matchDay.idSeason}`}
+							className="w-[340px] h-[321px] bg-white rounded-lg border border-gray6 py-5 space-y-5"
+						>
 							<div className="flex justify-between items-start px-6">
 								<div
 									className={`w-[102px] h-8 text-white text-[15px] font-normal flex justify-center items-center rounded-2xl ${
@@ -44,7 +48,7 @@ export const SeasonDaysCard = () => {
 								</ButtonCustom>
 							</div>
 							<div className="space-y-4 px-6">
-								<div className="text-[17px] font-medium">
+								<div className="text-[17px] font-medium text-black">
 									{dayjs(matchDay.startAt)
 										.format('dddd DD MMMM')
 										.replace(/^\w/g, (char) => char.toUpperCase())}
@@ -110,7 +114,7 @@ export const SeasonDaysCard = () => {
 									<Avatar style={{ backgroundColor: '#C7C6CB' }}>K</Avatar>
 								</Avatar.Group>
 							</div>
-						</div>
+						</Link>
 					</List.Item>
 				)}
 			/>

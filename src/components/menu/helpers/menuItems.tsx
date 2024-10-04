@@ -15,3 +15,12 @@ export const menuItems = [
 	{ key: '/grupos', icon: <GruposIcon className="w-8 h-8" />, label: 'Grupos' },
 	{ key: '/avisos', icon: <AvisosIcon className="w-8 h-8" />, label: 'Avisos' },
 ];
+
+export const menuItemsAdmin = [
+	{ key: '/admin/miembros', icon: <PortadaIcon className="w-8 h-8" />, label: 'Miembros' },
+	{
+		key: '/admin/fechas',
+		icon: <PortadaIcon className="w-8 h-8" />,
+		label: 'Fechas y Temporadas',
+	},
+];

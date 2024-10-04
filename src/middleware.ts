@@ -15,7 +15,14 @@ export async function middleware(req: NextRequest) {
 			((session.user as IUser).idRol === 1 || (session.user as IUser).idRol === 2) &&
 			!urlPath.startsWith('/admin')
 		) {
-			return NextResponse.redirect(new URL(`/admin`, req.url));
+			return NextResponse.redirect(new URL(`/admin/miembros`, req.url));
+		}
+
+		if (
+			((session.user as IUser).idRol === 1 || (session.user as IUser).idRol === 2) &&
+			urlPath === '/admin'
+		) {
+			return NextResponse.redirect(new URL(`/admin/miembros`, req.url));
 		}
 
 		if ((session.user as IUser).idRol === 3 && urlPath.startsWith('/admin')) {

@@ -5,3 +5,5 @@ export * from './SeasonListItem';
 export * from './SeasonDays';
 export * from './SeasonDaysInfo';
 export * from './SeasonDaysCard';
+
+export * from './single-fechas/SingleMatch';
