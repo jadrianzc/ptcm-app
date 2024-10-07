@@ -24,7 +24,7 @@ export const Content: React.FC<IWrapperComponent> = ({ children }) => {
 				{
 					title: (
 						<Link
-							href={title!.key ?? '/'}
+							href={title?.key ?? '/'}
 							className="!h-full !flex items-center gap-2 !p-2"
 						>
 							<span className="text-gray">{title?.label}</span>

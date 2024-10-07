@@ -4,6 +4,7 @@ import { IGroupItems } from '@/components/announcement/interfaces';
 import { useStoreAuth, useStoreSummoned } from '@/store';
 import { localApi } from '@/axios';
 import { dayjs } from '@/libs';
+import { useRouter } from 'next/router';
 
 interface IGroupItem {
 	group: IGroupItems[];
@@ -25,11 +26,16 @@ export const GroupListItem: FC<IGroupItem> = ({
 	setFirstDataPlayer,
 }) => {
 	const { user } = useStoreAuth();
+	const router = useRouter();
 	const { currentDay, convocationDates, groups, setGroups } = useStoreSummoned();
 	const now = dayjs().utcOffset(0, true);
 
 	const handleSelectPlayer = async ({ index, numPlayer, player }: IDataPlayer) => {
-		if (user?.idRol === 2 && now.isBefore(convocationDates?.groupDate)) {
+		if (
+			user?.idRol === 2 &&
+			now.isBefore(convocationDates?.groupDate) &&
+			router.pathname.includes('/admin/grupos')
+		) {
 			if (firstDataPlayer.length === 0) {
 				setFirstDataPlayer((state) => [...state, { index, numPlayer, player }]);
 				return;
@@ -101,7 +107,9 @@ export const GroupListItem: FC<IGroupItem> = ({
 						} text-white font-bold italic flex flex-col justify-center items-center gap-2 !text-sm cursor-pointer md:text-base`}
 						onClick={() => handleSelectPlayer({ index, numPlayer, player })}
 					>
-						<span>Jugador {numPlayer + 1}</span>
+						{router.pathname.includes('/admin/grupos') && (
+							<span>Jugador {numPlayer + 1}</span>
+						)}
 						<span>{player?.fullname}</span>
 					</div>
 				))}

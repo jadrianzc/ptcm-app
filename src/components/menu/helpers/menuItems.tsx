@@ -23,4 +23,9 @@ export const menuItemsAdmin = [
 		icon: <PortadaIcon className="w-8 h-8" />,
 		label: 'Fechas y Temporadas',
 	},
+	{
+		key: '/admin/grupos',
+		icon: <PortadaIcon className="w-8 h-8" />,
+		label: 'Grupos',
+	},
 ];
