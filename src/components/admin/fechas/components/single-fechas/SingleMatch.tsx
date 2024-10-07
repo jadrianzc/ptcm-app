@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { localApi } from '@/axios';
-import { GroupListItem } from '@/components/groups';
-import { useStoreSummoned } from '@/store';
-import { Divider } from 'antd';
 import { useRouter } from 'next/router';
+import { Divider } from 'antd';
+
+import { localApi } from '@/axios';
+import { useStoreSummoned } from '@/store';
+import { GroupListItem } from '@/components/groups';
 import { IGroupItems } from '@/components/announcement/interfaces';
+import { MatchContainer } from '../';
 
 interface IDataPlayer {
 	index: number;
@@ -23,7 +25,7 @@ export const SingleMatch = () => {
 	const getGroups = useCallback(async () => {
 		try {
 			const { data: respGroup } = await localApi.get(
-				`/announcement/getGroups?idSeason=${idSeason}&idMatch=${idMatch}`,
+				`/announcement/getGroups?idSeason=${idSeason}&idMatch=${idMatch}`
 			);
 
 			setGroups(respGroup.data);
@@ -37,64 +39,36 @@ export const SingleMatch = () => {
 		getGroups();
 	}, [getGroups]);
 
-	console.log({ groups });
-
 	return (
 		<div>
 			<>
 				{groups.length > 0 && (
-					<div className="h-auto rounded-xl space-y-8 md:bg-blueTra md:p-10">
-						<div className="content-convocatoria bg-white w-full rounded-md p-[10px] flex flex-wrap justify-center items-center gap-4 md:w-fit md:p-[18px]">
-							<div className="text-sm text-gray2 font-medium">
+					<div className='h-auto rounded-xl space-y-8 md:bg-blueTra md:p-10'>
+						<div className='content-convocatoria bg-white w-full rounded-md p-[10px] flex flex-wrap justify-center items-center gap-4 md:w-fit md:p-[18px]'>
+							<div className='text-sm text-gray2 font-medium'>
 								Convocatoria de hoy
 							</div>
-							<Divider type="vertical" className="hidden md:inline-block" />
-							<div className="text-sm text-gray2 font-medium">Liga Cñor Marisco</div>
-							<Divider type="vertical" className="hidden md:inline-block" />
-							<div className="text-sm text-gray2 font-medium">Fecha 7</div>
-							<Divider type="vertical" className="hidden md:inline-block" />
-							<div className="text-sm text-gray2 font-medium text-center">
+							<Divider type='vertical' className='hidden md:inline-block' />
+							<div className='text-sm text-gray2 font-medium'>Liga Cñor Marisco</div>
+							<Divider type='vertical' className='hidden md:inline-block' />
+							<div className='text-sm text-gray2 font-medium'>Fecha 7</div>
+							<Divider type='vertical' className='hidden md:inline-block' />
+							<div className='text-sm text-gray2 font-medium text-center'>
 								Miercoles 12 de junio a las 20:00pm
 							</div>
 						</div>
 
-						<div className="w-full flex flex-wrap justify-center items-center gap-y-5 lg:justify-between md:gap-y-10">
+						<div className='w-full flex flex-wrap justify-center items-center gap-y-5 lg:justify-between md:gap-y-10'>
 							{groups?.map((group, index) => (
-								<div key={index} className="flex flex-col gap-5">
+								<div key={index} className='flex flex-col gap-5'>
 									<GroupListItem
 										group={group}
 										index={index}
 										firstDataPlayer={firstDataPlayer}
 										setFirstDataPlayer={setFirstDataPlayer}
 									/>
-									<div className="bg-white rounded-md p-[18px]">
-										<span>Partido 1</span>
-										<div className="w-full flex justify-between items-center">
-											<div className="grid grid-cols-3 grid-rows-2">
-												<div className="bg-[#14668630] w-[150px] col-start-1 col-end-3">
-													Diego Franco
-												</div>
-												<div className="bg-[#14668620] w-[150px] col-start-1 col-end-3">
-													Marlon Andrade
-												</div>
-												<div className="bg-[#43849E] text-white col-start-3 row-start-1 row-span-2 flex justify-center items-center">
-													0
-												</div>
-											</div>
-											{/* <div>vs</div>
-											<div className="grid grid-cols-3 grid-rows-2">
-												<div className="bg-[#43849E] text-white row-start-1 row-span-2 flex justify-center items-center">
-													0
-												</div>
-												<div className="bg-[#14658630] col-start-2 col-span-2">
-													Diego Franco
-												</div>
-												<div className="bg-[#14668620] col-start-2 col-span-2">
-													Marlon Andrade
-												</div>
-											</div> */}
-										</div>
-									</div>
+
+									<MatchContainer players={group} />
 								</div>
 							))}
 						</div>

@@ -7,3 +7,4 @@ export * from './SeasonDaysInfo';
 export * from './SeasonDaysCard';
 
 export * from './single-fechas/SingleMatch';
+export * from './single-fechas/MatchContainer';
