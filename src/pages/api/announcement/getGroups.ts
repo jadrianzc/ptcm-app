@@ -10,7 +10,7 @@ dayjs.extend(utc);
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>,
+	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>
 ) {
 	if (req.method === 'GET') {
 		try {
@@ -21,7 +21,7 @@ export default async function handler(
 			const { idSeason, idMatch } = req.query;
 
 			const data = await db
-				.select<IGroups[]>('groups')
+				.select<IGroups[]>('*')
 				.from('Groups')
 				.where('idMatch', idMatch)
 				.andWhere('idSeason', idSeason)
@@ -37,7 +37,12 @@ export default async function handler(
 				return;
 			}
 
-			const groups = JSON.parse(data[0]?.groups as string);
+			// const groups = JSON.parse(data[0]?.groups as string);
+			const groups = data.map((item) => ({
+				...item,
+				groups: JSON.parse(item.groups as string),
+				matches: JSON.parse(item.matches as string) ?? [],
+			}));
 
 			res.status(200).json({
 				status: 200,

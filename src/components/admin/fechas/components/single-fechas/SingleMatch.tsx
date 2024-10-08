@@ -5,7 +5,7 @@ import { Divider } from 'antd';
 import { localApi } from '@/axios';
 import { useStoreSummoned } from '@/store';
 import { GroupListItem } from '@/components/groups';
-import { IGroupItems } from '@/components/announcement/interfaces';
+import { IGroupItems, IMatches } from '@/components/announcement/interfaces';
 import { MatchContainer } from '../';
 
 interface IDataPlayer {
@@ -68,7 +68,7 @@ export const SingleMatch = () => {
 										setFirstDataPlayer={setFirstDataPlayer}
 									/>
 
-									<MatchContainer players={group} />
+									<MatchContainer matches={(group.matches as IMatches[]) ?? []} />
 								</div>
 							))}
 						</div>

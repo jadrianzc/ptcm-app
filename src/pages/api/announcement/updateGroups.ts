@@ -1,6 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { db } from '@/db/dbconfig';
@@ -11,7 +10,7 @@ dayjs.extend(utc);
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>,
+	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>
 ) {
 	if (req.method === 'PUT') {
 		try {
@@ -19,9 +18,13 @@ export default async function handler(
 				return res.status(401).json({ status: 401, error: 'Unauthorized' });
 			}
 
-			const { idSeason, idMatch, groups } = req.body;
+			const newGroups = req.body as IGroups[];
 
-			await db('Groups').where({ idSeason, idMatch }).update({ groups });
+			for (const group of newGroups) {
+				await db('Groups')
+					.where({ id: group.id })
+					.update({ ...group, groups: JSON.stringify(group.groups) });
+			}
 
 			res.status(200).json({
 				status: 200,

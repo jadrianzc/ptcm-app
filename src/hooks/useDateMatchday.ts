@@ -1,6 +1,11 @@
 import { localApi } from '@/axios';
 import { useStoreAuth, useStoreLoading, useStoreMessage, useStoreSummoned } from '@/store';
-import { IResponseSummoned, ISummoned } from '@/components/announcement/interfaces';
+import {
+	IGroupItems,
+	IResponseGroup,
+	IResponseSummoned,
+	ISummoned,
+} from '@/components/announcement/interfaces';
 
 export const useDateMatchday = () => {
 	const { user } = useStoreAuth();
@@ -8,6 +13,7 @@ export const useDateMatchday = () => {
 	const { setLoading } = useStoreLoading();
 	const { summoned, currentDay, setSummoned, setGroups } = useStoreSummoned();
 
+	// * Creación de grupos
 	// Toma un array y lo baraja aleatoriamente utilizando el algoritmo de Fisher-Yates (shuffle)
 	const shuffleArray = (array: ISummoned[]): ISummoned[] => {
 		for (let i = array.length - 1; i > 0; i--) {
@@ -43,12 +49,17 @@ export const useDateMatchday = () => {
 				const data = {
 					idSeason: currentDay?.idSeason,
 					idMatch: currentDay?.id,
-					groups: JSON.stringify(groupsOfFour),
+					groups: groupsOfFour,
 				};
 
-				const { data: respGroup } = await localApi.post('/announcement/setGroups', data);
+				const { data: respGroup } = await localApi.post<IResponseGroup>(
+					'/announcement/setGroups',
+					data
+				);
 
 				setGroups(respGroup.data);
+
+				return;
 			}
 
 			message?.error('Faltan atletas para crear los grupos.');
@@ -59,7 +70,7 @@ export const useDateMatchday = () => {
 		}
 	};
 
-	// Unirse a la convocatoria
+	// * Unirse a la convocatoria
 	const handleJoinMatch = async () => {
 		try {
 			setLoading(true);
@@ -70,7 +81,7 @@ export const useDateMatchday = () => {
 			};
 			const { data: respSummoned } = await localApi.post<IResponseSummoned>(
 				'/announcement/setSummoned',
-				summoned,
+				summoned
 			);
 
 			message?.success(respSummoned.message);
@@ -84,7 +95,7 @@ export const useDateMatchday = () => {
 		}
 	};
 
-	// Darse de baja de la convocatoria
+	// * Darse de baja de la convocatoria
 	const handleLeaveMatch = async () => {
 		try {
 			setLoading(true);
@@ -106,10 +117,52 @@ export const useDateMatchday = () => {
 		}
 	};
 
+	// * Generar los partidos por grupos
+	// Obtiene todas las combinacione posibles
+	const generarCombinations = (players: IGroupItems[]) => {
+		const combinaciones = [];
+
+		for (let i = 0; i < players.length; i++) {
+			for (let j = i + 1; j < players.length; j++) {
+				combinaciones.push([players[i], players[j]]);
+			}
+		}
+		return combinaciones;
+	};
+
+	// Genera los partidos por grupo
+	const generateMatches = (players: IGroupItems[]) => {
+		const combinations = generarCombinations(players);
+		const matches = [];
+
+		for (let i = 0; i < combinations.length; i++) {
+			const idElements = combinations[i].map((item) => item.id);
+			const left = combinations[i];
+			const right = [];
+
+			for (let j = i + 1; j < combinations.length; j++) {
+				// Verifica las parejas de las combinaciones
+				const isLocated = combinations[j]?.some((item) => idElements.includes(item.id));
+
+				if (!isLocated) right.push(...combinations[j]);
+			}
+
+			if (right.length > 0) {
+				matches.push({
+					left,
+					right,
+				});
+			}
+		}
+
+		return matches;
+	};
+
 	return {
 		currentDay,
 		createGroups,
 		handleJoinMatch,
 		handleLeaveMatch,
+		generateMatches,
 	};
 };

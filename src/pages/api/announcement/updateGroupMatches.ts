@@ -1,52 +1,40 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { db } from '@/db/dbconfig';
 import { IResponseUnauthorized } from '@/components/admin/interfaces';
-import { IGroups, IResponseGroup, ISummoned } from '@/components/announcement/interfaces';
+import { IGroups, IMatches, IResponseGroup } from '@/components/announcement/interfaces';
 
 dayjs.extend(utc);
 
 interface IBody {
-	idSeason: string | undefined;
-	idMatch: string | undefined;
-	groups: ISummoned[][];
+	idGroup: string;
+	matches: IMatches[];
 }
 
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>
 ) {
-	if (req.method === 'POST') {
+	if (req.method === 'PUT') {
 		try {
 			if (process.env.NEXT_PUBLIC_API_TOKEN !== req.headers.authorization) {
 				return res.status(401).json({ status: 401, error: 'Unauthorized' });
 			}
 
-			const { idSeason, idMatch, groups } = req.body as IBody;
+			const groupMatches = req.body as IBody[];
 
-			const dataGroups = groups.map((group, index) => ({
-				id: uuidv4(),
-				idSeason,
-				idMatch,
-				idCancha: index + 1,
-				groups: JSON.stringify(group),
-			}));
-
-			const data: IGroups[] = await db('Groups').returning('*').insert(dataGroups);
-
-			const groupsDB = data.map((item) => ({
-				...item,
-				groups: JSON.parse(item.groups as string),
-				matches: JSON.parse(item.matches as string) ?? [],
-			}));
+			for (const group of groupMatches) {
+				await db('Groups')
+					.where({ id: group.idGroup })
+					.update({ matches: JSON.stringify(group.matches) });
+			}
 
 			res.status(200).json({
 				status: 200,
-				message: `Grupos creados.`,
-				data: groupsDB,
+				message: `Partidos generados.`,
+				data: [],
 			});
 		} catch (error) {
 			console.log(error);
@@ -57,8 +45,8 @@ export default async function handler(
 			});
 		}
 	} else {
-		// Si no es una petición POST, retornar un error 405 (Método no permitido)
-		res.setHeader('Allow', ['POST']);
+		// Si no es una petición PUT, retornar un error 405 (Método no permitido)
+		res.setHeader('Allow', ['PUT']);
 		res.status(405).end(`Método ${req.method} no permitido.`);
 	}
 }

@@ -38,7 +38,9 @@ export interface IGroups {
 	id: string;
 	idSeason: string;
 	idMatch: string;
+	idCancha: number;
 	groups: IGroupItems[] | string;
+	matches: IMatches[] | string | null;
 	createAt: string;
 	updateAt: string;
 }
@@ -58,4 +60,9 @@ export interface IResponseGroup {
 	status: number;
 	message: string;
 	data: IGroups[];
+}
+
+export interface IMatches {
+	left: IGroupItems[];
+	right: IGroupItems[];
 }

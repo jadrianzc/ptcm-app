@@ -1,54 +1,11 @@
-import { IGroupItems } from '@/components/announcement/interfaces';
 import { FC } from 'react';
+import { IMatches } from '@/components/announcement/interfaces';
 
 interface IGroupItem {
-	players: IGroupItems[];
+	matches: IMatches[];
 }
 
-// Obtiene todas las combinacione posibles
-const generarCombinations = (players: IGroupItems[]) => {
-	const combinaciones = [];
-
-	for (let i = 0; i < players.length; i++) {
-		for (let j = i + 1; j < players.length; j++) {
-			combinaciones.push([players[i], players[j]]);
-		}
-	}
-	return combinaciones;
-};
-
-// Genera los partidos por grupo
-const generateMatches = (combinations: IGroupItems[][]) => {
-	const matches = [];
-
-	for (let i = 0; i < combinations.length; i++) {
-		const idElements = combinations[i].map((item) => item.id);
-		const left = combinations[i];
-		const right = [];
-
-		for (let j = i + 1; j < combinations.length; j++) {
-			// Verifica las parejas de las combinaciones
-			const isLocated = combinations[j]?.some((item) => idElements.includes(item.id));
-
-			if (!isLocated) right.push(...combinations[j]);
-		}
-
-		if (right.length > 0) {
-			matches.push({
-				left,
-				right,
-			});
-		}
-	}
-
-	return matches;
-};
-
-export const MatchContainer: FC<IGroupItem> = ({ players }) => {
-	const { idSeason, idMatch } = players[0];
-	const combinations = generarCombinations(players);
-	const matches = generateMatches(combinations);
-
+export const MatchContainer: FC<IGroupItem> = ({ matches }) => {
 	return (
 		<div className='bg-white rounded-md p-[18px] space-y-5'>
 			{matches.map((match, index) => (
