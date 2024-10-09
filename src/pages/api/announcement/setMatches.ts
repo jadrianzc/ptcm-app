@@ -4,31 +4,24 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { db } from '@/db/dbconfig';
 import { IResponseUnauthorized } from '@/components/admin/interfaces';
-import { IGroups, IMatches, IResponseGroup } from '@/components/announcement/interfaces';
+import { IMatches, IResponseGroup } from '@/components/announcement/interfaces';
 
 dayjs.extend(utc);
-
-interface IBody {
-	idGroup: string;
-	matches: IMatches[];
-}
 
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>
 ) {
-	if (req.method === 'PUT') {
+	if (req.method === 'POST') {
 		try {
 			if (process.env.NEXT_PUBLIC_API_TOKEN !== req.headers.authorization) {
 				return res.status(401).json({ status: 401, error: 'Unauthorized' });
 			}
 
-			const groupMatches = req.body as IBody[];
+			const groupMatches = req.body as IMatches[][];
 
 			for (const group of groupMatches) {
-				await db('Groups')
-					.where({ id: group.idGroup })
-					.update({ matches: JSON.stringify(group.matches) });
+				await db('Partidos').insert(group);
 			}
 
 			res.status(200).json({
@@ -45,8 +38,8 @@ export default async function handler(
 			});
 		}
 	} else {
-		// Si no es una petición PUT, retornar un error 405 (Método no permitido)
-		res.setHeader('Allow', ['PUT']);
+		// Si no es una petición POST, retornar un error 405 (Método no permitido)
+		res.setHeader('Allow', ['POST']);
 		res.status(405).end(`Método ${req.method} no permitido.`);
 	}
 }

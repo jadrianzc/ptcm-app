@@ -39,8 +39,7 @@ export default async function handler(
 
 			const groupsDB = data.map((item) => ({
 				...item,
-				groups: JSON.parse(item.groups as string),
-				matches: JSON.parse(item.matches as string) ?? [],
+				groups: JSON.parse(item.groups.toString()),
 			}));
 
 			res.status(200).json({

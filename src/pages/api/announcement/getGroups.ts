@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { db } from '@/db/dbconfig';
 import { IResponseUnauthorized } from '@/components/admin/interfaces';
-import { IGroups, IResponseGroup } from '@/components/announcement/interfaces';
+import { IGroups, IResponseGroup, ViewPartidos } from '@/components/announcement/interfaces';
 
 dayjs.extend(utc);
 
@@ -20,14 +20,20 @@ export default async function handler(
 
 			const { idSeason, idMatch } = req.query;
 
-			const data = await db
+			const groupsDb = await db
 				.select<IGroups[]>('*')
 				.from('Groups')
 				.where('idMatch', idMatch)
 				.andWhere('idSeason', idSeason)
-				.orderBy('createAt');
+				.orderBy('idCancha');
 
-			if (data.length === 0) {
+			const partidosView = await db
+				.select<ViewPartidos[]>('*')
+				.from('ViewPartidos')
+				.orderBy('idCancha')
+				.orderBy('name');
+
+			if (groupsDb.length === 0) {
 				res.status(200).json({
 					status: 404,
 					message: `No hay datos.`,
@@ -38,11 +44,15 @@ export default async function handler(
 			}
 
 			// const groups = JSON.parse(data[0]?.groups as string);
-			const groups = data.map((item) => ({
-				...item,
-				groups: JSON.parse(item.groups as string),
-				matches: JSON.parse(item.matches as string) ?? [],
-			}));
+			const groups = groupsDb.map((item) => {
+				const matches = partidosView.filter((party) => party.idGroup === item.id);
+
+				return {
+					...item,
+					groups: JSON.parse(item.groups.toString()),
+					matches,
+				};
+			});
 
 			res.status(200).json({
 				status: 200,

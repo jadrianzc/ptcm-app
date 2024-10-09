@@ -1,7 +1,9 @@
+import { v4 as uuidv4 } from 'uuid';
 import { localApi } from '@/axios';
 import { useStoreAuth, useStoreLoading, useStoreMessage, useStoreSummoned } from '@/store';
 import {
 	IGroupItems,
+	IMatches,
 	IResponseGroup,
 	IResponseSummoned,
 	ISummoned,
@@ -131,9 +133,14 @@ export const useDateMatchday = () => {
 	};
 
 	// Genera los partidos por grupo
-	const generateMatches = (players: IGroupItems[]) => {
+	const generateMatches = (
+		players: IGroupItems[],
+		idGroup: string,
+		idCancha: number
+	): IMatches[] => {
 		const combinations = generarCombinations(players);
-		const matches = [];
+		const matches: IMatches[] = [];
+		let totalMatches = 0;
 
 		for (let i = 0; i < combinations.length; i++) {
 			const idElements = combinations[i].map((item) => item.id);
@@ -148,10 +155,20 @@ export const useDateMatchday = () => {
 			}
 
 			if (right.length > 0) {
-				matches.push({
-					left,
-					right,
-				});
+				totalMatches++;
+
+				const dataParty = {
+					id: uuidv4(),
+					idGroup,
+					idCancha,
+					name: `Partido ${totalMatches}`,
+					idPlayerA1: left[0].idAthlete,
+					idPlayerA2: left[1].idAthlete,
+					idPlayerB1: right[0].idAthlete,
+					idPlayerB2: right[1].idAthlete,
+				};
+
+				matches.push(dataParty);
 			}
 		}
 

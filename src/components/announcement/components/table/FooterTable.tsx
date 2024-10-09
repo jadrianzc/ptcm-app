@@ -1,11 +1,12 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { dayjs } from '@/libs';
-import { ButtonCustom } from '@/components/ui/components';
-import { useStoreLoading, useStoreMessage, useStoreSummoned } from '@/store';
-import { useDateMatchday } from '@/hooks';
-import { IGroupItems, IMatches } from '../../interfaces';
 import { localApi } from '@/axios';
+import { useDateMatchday } from '@/hooks';
+import { ButtonCustom } from '@/components/ui/components';
+import { IGroupItems, IMatches, IResponseGroup } from '../../interfaces';
+import { useStoreLoading, useStoreMessage, useStoreSummoned } from '@/store';
 
 export const FooterTable = () => {
 	const { pathname } = useRouter();
@@ -18,20 +19,20 @@ export const FooterTable = () => {
 		try {
 			setLoading(true);
 
-			const matchesCreate = groups.map(({ id, groups }) => {
-				const matches: IMatches[] = generateMatches(groups as IGroupItems[]);
+			console.log(groups);
 
-				return {
-					idGroup: id,
-					matches,
-				};
+			const matchesCreate = groups.map(({ id, idCancha, groups }): IMatches[] => {
+				const matches: IMatches[] = generateMatches(groups, id, idCancha);
+
+				return matches;
 			});
 
-			console.log(matchesCreate);
+			const { data } = await localApi.post<IResponseGroup>(
+				'/announcement/setMatches',
+				matchesCreate
+			);
 
-			const { data } = await localApi.put('/announcement/updateGroupMatches', matchesCreate);
-
-			console.log(data);
+			message?.success(data.message);
 		} catch (error) {
 			console.log(error);
 			message?.error('Ocurrió un error al crear los partidos.');
@@ -55,13 +56,26 @@ export const FooterTable = () => {
 
 					{/* TODO: CUANDO LA FASE DE CREACIÓN DE GRUPOS FINALICE MOSTRAR BOTÓN PARA CREAR LOS PARTIDOS */}
 					{groups.length > 0 && (
-						<ButtonCustom
-							type='primary'
-							className='w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first'
-							color='#3F6380'
-							onClick={createMatchesForGroup}>
-							Generar partidos
-						</ButtonCustom>
+						<>
+							<ButtonCustom
+								type='primary'
+								className='w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first'
+								color='#43949E'
+								// disabled={groups[0].matches!.length > 0}
+								onClick={createMatchesForGroup}>
+								Generar partidos
+							</ButtonCustom>
+
+							<Link
+								href={`/admin/fechas/${currentDay?.name}+${currentDay?.id}+${currentDay?.idSeason}`}>
+								<ButtonCustom
+									type='primary'
+									className='w-full md:w-[328px] h-[57px] rounded-md order-last md:order-first'
+									color='#3c7b95'>
+									Ir a la fecha
+								</ButtonCustom>
+							</Link>
+						</>
 					)}
 				</div>
 			) : (

@@ -20,6 +20,7 @@ const config: Config = {
 				main: '#3F6380',
 				blue: '#146586',
 				skyBlue: '#C7D9E0',
+				turquoise: '#43849E',
 				green: '#1D9159',
 			},
 			backgroundColor: {

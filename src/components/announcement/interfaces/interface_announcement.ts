@@ -39,8 +39,8 @@ export interface IGroups {
 	idSeason: string;
 	idMatch: string;
 	idCancha: number;
-	groups: IGroupItems[] | string;
-	matches: IMatches[] | string | null;
+	groups: IGroupItems[];
+	matches: ViewPartidos[];
 	createAt: string;
 	updateAt: string;
 }
@@ -63,6 +63,30 @@ export interface IResponseGroup {
 }
 
 export interface IMatches {
-	left: IGroupItems[];
-	right: IGroupItems[];
+	id: string;
+	idGroup: string;
+	name: string;
+	idPlayerA1: string;
+	idPlayerA2: string;
+	idPlayerB1: string;
+	idPlayerB2: string;
+}
+
+export interface ViewPartidos {
+	id: string;
+	idGroup: string;
+	idCancha: number;
+	name: string;
+	idPlayerA1: string;
+	namePlayerA1: string;
+	idPlayerA2: string;
+	namePlayerA2: string;
+	resultA: number;
+	idPlayerB1: string;
+	namePlayerB1: string;
+	idPlayerB2: string;
+	namePlayerB2: string;
+	resultB: number;
+	createAt: string;
+	updateAt: string;
 }
