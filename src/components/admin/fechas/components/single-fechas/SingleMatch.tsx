@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Divider } from 'antd';
 
 import { localApi } from '@/axios';
+import { MatchContainer } from '../';
 import { useStoreSummoned } from '@/store';
 import { GroupListItem } from '@/components/groups';
-import { IGroupItems, IMatches } from '@/components/announcement/interfaces';
-import { MatchContainer } from '../';
 import { HeaderTable } from '@/components/announcement';
+import { IGroupItems } from '@/components/announcement/interfaces';
 
 interface IDataPlayer {
 	index: number;
@@ -39,8 +38,6 @@ export const SingleMatch = () => {
 	useEffect(() => {
 		if (router.query.id) getGroups();
 	}, [getGroups, router.query.id]);
-
-	console.log(groups);
 
 	return (
 		<div>

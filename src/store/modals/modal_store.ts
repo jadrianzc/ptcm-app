@@ -9,7 +9,9 @@ refModalOC.current = null;
 export const useStoreModal = create<IModalStore>()((set) => ({
 	isModalSeason: false,
 	isDrawer: false,
+	isPopover: false,
 
 	setIsSeason: (isModalSeason) => set({ isModalSeason }),
 	setIsDrawer: (isDrawer) => set({ isDrawer }),
+	setIsPopover: (isPopover) => set({ isPopover }),
 }));

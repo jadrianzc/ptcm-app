@@ -86,3 +86,11 @@ export interface IResponseAthetes {
 	status: number;
 	data: ITableAthete[];
 }
+
+export interface IResultMatch {
+	idParty: string;
+	resultA: number;
+	resultB: number;
+	idMatch: string;
+	idSeason: string;
+}
