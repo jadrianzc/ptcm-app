@@ -20,6 +20,7 @@ export interface ISummoned {
 	idAthlete: string;
 	type: string;
 	fullname?: string;
+	category: number;
 }
 
 export interface IResponseSummoned {

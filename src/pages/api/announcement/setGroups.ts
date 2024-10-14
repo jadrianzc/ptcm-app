@@ -17,7 +17,7 @@ interface IBody {
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>
+	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>,
 ) {
 	if (req.method === 'POST') {
 		try {
@@ -27,25 +27,35 @@ export default async function handler(
 
 			const { idSeason, idMatch, groups } = req.body as IBody;
 
-			const dataGroups = groups.map((group, index) => ({
-				id: uuidv4(),
-				idSeason,
-				idMatch,
-				idCancha: index + 1,
-				groups: JSON.stringify(group),
-			}));
+			for (const groupIndex in groups) {
+				const id = uuidv4();
+				const name = `Grupo ${Number(groupIndex) + 1}`;
+				const idCancha = Number(groupIndex) + 1;
 
-			const data: IGroups[] = await db('Groups').returning('*').insert(dataGroups);
+				const dataGroups = groups[groupIndex].map((player, index) => ({
+					id,
+					name,
+					idSeason,
+					idMatch,
+					idCancha,
+					idPlayer: player.idAthlete,
+					player: player.fullname,
+					category: player.category,
+				}));
 
-			const groupsDB = data.map((item) => ({
-				...item,
-				groups: JSON.parse(item.groups.toString()),
-			}));
+				const data: IGroups[] = await db('Groups').returning('*').insert(dataGroups);
+			}
+
+			// const groupsDB = data.map((item) => ({
+			// 	...item,
+			// 	groups: JSON.parse(item.groups.toString()),
+			// }));
 
 			res.status(200).json({
 				status: 200,
 				message: `Grupos creados.`,
-				data: groupsDB,
+				// data: groupsDB,
+				data: [],
 			});
 		} catch (error) {
 			console.log(error);

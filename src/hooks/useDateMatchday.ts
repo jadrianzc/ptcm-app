@@ -56,11 +56,12 @@ export const useDateMatchday = () => {
 
 				const { data: respGroup } = await localApi.post<IResponseGroup>(
 					'/announcement/setGroups',
-					data
+					data,
 				);
 
 				setGroups(respGroup.data);
 
+				message?.error(respGroup.message);
 				return;
 			}
 
@@ -83,7 +84,7 @@ export const useDateMatchday = () => {
 			};
 			const { data: respSummoned } = await localApi.post<IResponseSummoned>(
 				'/announcement/setSummoned',
-				summoned
+				summoned,
 			);
 
 			message?.success(respSummoned.message);
@@ -136,7 +137,7 @@ export const useDateMatchday = () => {
 	const generateMatches = (
 		players: IGroupItems[],
 		idGroup: string,
-		idCancha: number
+		idCancha: number,
 	): IMatches[] => {
 		const combinations = generarCombinations(players);
 		const matches: IMatches[] = [];
