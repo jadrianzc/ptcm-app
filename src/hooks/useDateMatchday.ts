@@ -61,7 +61,7 @@ export const useDateMatchday = () => {
 
 				setGroups(respGroup.data);
 
-				message?.error(respGroup.message);
+				message?.success(respGroup.message);
 				return;
 			}
 

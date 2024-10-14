@@ -5,7 +5,12 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { db } from '@/db/dbconfig';
 import { IResponseUnauthorized } from '@/components/admin/interfaces';
-import { IGroups, IResponseGroup, ISummoned } from '@/components/announcement/interfaces';
+import {
+	IGroups,
+	IGroupsDB,
+	IResponseGroup,
+	ISummoned,
+} from '@/components/announcement/interfaces';
 
 dayjs.extend(utc);
 
@@ -43,8 +48,34 @@ export default async function handler(
 					category: player.category,
 				}));
 
-				const data: IGroups[] = await db('Groups').returning('*').insert(dataGroups);
+				await db('Groups').insert(dataGroups);
 			}
+
+			const groupsDB = await db.select<IGroupsDB[]>('*').from('Groups');
+			console.log(groupsDB);
+
+			// const agrupados = groupsDB.reduce((group: IGroups[], objeto) => {
+			// 	// Buscamos si ya existe una entrada con este id
+			// 	const existente = group.find((item) => item.id === objeto.id);
+
+			// 	const groups = {
+			// 		idPlayer: objeto.idPlayer,
+			// 		player: objeto.player,
+			// 		category: objeto.category,
+			// 		createAt: objeto.createAt,
+			// 		updateAt: objeto.updateAt,
+			// 	};
+
+			// 	if (existente) {
+			// 		// Si ya existe, añadimos el nombre al array de nombres
+			// 		existente.groups.push(groups);
+			// 	} else {
+			// 		// Si no existe, creamos una nueva entrada con id y un array de nombres
+			// 		group.push({ id, groups: [...groups] });
+			// 	}
+
+			// 	return group;
+			// }, []);
 
 			// const groupsDB = data.map((item) => ({
 			// 	...item,

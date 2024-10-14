@@ -35,8 +35,22 @@ export interface IConvocationDates {
 	groupDate?: Dayjs | null;
 }
 
+export interface IGroupsDB {
+	id: string;
+	name: string;
+	idSeason: string;
+	idMatch: string;
+	idCancha: number;
+	idPlayer: string;
+	player: string;
+	category: string;
+	createAt: string;
+	updateAt: string;
+}
+
 export interface IGroups {
 	id: string;
+	name: string;
 	idSeason: string;
 	idMatch: string;
 	idCancha: number;
@@ -47,14 +61,11 @@ export interface IGroups {
 }
 
 export interface IGroupItems {
-	id: string;
-	idSeason: string;
-	idMatch: string;
-	idAthlete: string;
-	type: string;
+	idPlayer: string;
+	player: string;
+	category: string;
 	createAt: string;
 	updateAt: string;
-	fullname: string;
 }
 
 export interface IResponseGroup {
