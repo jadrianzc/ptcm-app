@@ -22,7 +22,7 @@ interface IBody {
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>,
+	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>
 ) {
 	if (req.method === 'POST') {
 		try {
@@ -33,12 +33,13 @@ export default async function handler(
 			const { idSeason, idMatch, groups } = req.body as IBody;
 
 			for (const groupIndex in groups) {
-				const id = uuidv4();
+				const idGroup = uuidv4();
 				const name = `Grupo ${Number(groupIndex) + 1}`;
 				const idCancha = Number(groupIndex) + 1;
 
-				const dataGroups = groups[groupIndex].map((player, index) => ({
-					id,
+				const dataGroups = groups[groupIndex].map((player) => ({
+					id: uuidv4(),
+					idGroup,
 					name,
 					idSeason,
 					idMatch,
@@ -51,42 +52,41 @@ export default async function handler(
 				await db('Groups').insert(dataGroups);
 			}
 
-			const groupsDB = await db.select<IGroupsDB[]>('*').from('Groups');
-			console.log(groupsDB);
+			const groupsDb = await db.select<IGroupsDB[]>('*').from('Groups');
 
-			// const agrupados = groupsDB.reduce((group: IGroups[], objeto) => {
-			// 	// Buscamos si ya existe una entrada con este id
-			// 	const existente = group.find((item) => item.id === objeto.id);
+			const groupsDbItem = Object.values(
+				groupsDb.reduce<Record<string, IGroups>>((acc, item) => {
+					const player = {
+						id: item.id,
+						idPlayer: item.idPlayer,
+						player: item.player,
+						category: item.category,
+					};
 
-			// 	const groups = {
-			// 		idPlayer: objeto.idPlayer,
-			// 		player: objeto.player,
-			// 		category: objeto.category,
-			// 		createAt: objeto.createAt,
-			// 		updateAt: objeto.updateAt,
-			// 	};
+					const dataGroup = {
+						idGroup: item.idGroup,
+						name: item.name,
+						idSeason: item.idSeason,
+						idMatch: item.idMatch,
+						idCancha: item.idCancha,
+						createAt: item.createAt,
+						updateAt: item.updateAt,
+					};
 
-			// 	if (existente) {
-			// 		// Si ya existe, añadimos el nombre al array de nombres
-			// 		existente.groups.push(groups);
-			// 	} else {
-			// 		// Si no existe, creamos una nueva entrada con id y un array de nombres
-			// 		group.push({ id, groups: [...groups] });
-			// 	}
+					if (!acc[item.idGroup]) {
+						acc[item.idGroup] = { ...dataGroup, groups: [], matches: [] };
+					}
 
-			// 	return group;
-			// }, []);
+					acc[item.idGroup].groups.push(player);
 
-			// const groupsDB = data.map((item) => ({
-			// 	...item,
-			// 	groups: JSON.parse(item.groups.toString()),
-			// }));
+					return acc;
+				}, {})
+			);
 
 			res.status(200).json({
 				status: 200,
 				message: `Grupos creados.`,
-				// data: groupsDB,
-				data: [],
+				data: groupsDbItem,
 			});
 		} catch (error) {
 			console.log(error);

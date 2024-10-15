@@ -1,12 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import { dayjs } from '@/libs';
 import { db } from '@/db/dbconfig';
 import { IResponseUnauthorized } from '@/components/admin/interfaces';
 import { IGroups, IResponseGroup } from '@/components/announcement/interfaces';
-
-dayjs.extend(utc);
 
 export default async function handler(
 	req: NextApiRequest,
@@ -21,9 +18,27 @@ export default async function handler(
 			const newGroups = req.body as IGroups[];
 
 			for (const group of newGroups) {
-				await db('Groups')
-					.where({ id: group.id })
-					.update({ ...group, groups: JSON.stringify(group.groups) });
+				const { groups } = group;
+				const existingRecords = await db
+					.select('id')
+					.from('Groups')
+					.where({ idGroup: group.idGroup });
+
+				// Iteramos sobre los registros existentes y los nuevos datos del array groups
+				for (let i = 0; i < groups.length; i++) {
+					const currentRecord = existingRecords[i];
+					const newGroupData = groups[i];
+
+					// Actualizamos cada registro con los datos del array groups
+					await db('Groups')
+						.where({ id: currentRecord.id }) // Se actualiza cada registro por su id único
+						.update({
+							idPlayer: newGroupData.idPlayer,
+							player: newGroupData.player,
+							category: newGroupData.category,
+							updateAt: dayjs().toISOString(),
+						});
+				}
 			}
 
 			res.status(200).json({

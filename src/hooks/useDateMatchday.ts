@@ -56,7 +56,7 @@ export const useDateMatchday = () => {
 
 				const { data: respGroup } = await localApi.post<IResponseGroup>(
 					'/announcement/setGroups',
-					data,
+					data
 				);
 
 				setGroups(respGroup.data);
@@ -84,7 +84,7 @@ export const useDateMatchday = () => {
 			};
 			const { data: respSummoned } = await localApi.post<IResponseSummoned>(
 				'/announcement/setSummoned',
-				summoned,
+				summoned
 			);
 
 			message?.success(respSummoned.message);
@@ -137,20 +137,22 @@ export const useDateMatchday = () => {
 	const generateMatches = (
 		players: IGroupItems[],
 		idGroup: string,
-		idCancha: number,
+		idCancha: number
 	): IMatches[] => {
 		const combinations = generarCombinations(players);
 		const matches: IMatches[] = [];
 		let totalMatches = 0;
 
 		for (let i = 0; i < combinations.length; i++) {
-			const idElements = combinations[i].map((item) => item.id);
+			const idElements = combinations[i].map((item) => item.idPlayer);
 			const left = combinations[i];
 			const right = [];
 
 			for (let j = i + 1; j < combinations.length; j++) {
 				// Verifica las parejas de las combinaciones
-				const isLocated = combinations[j]?.some((item) => idElements.includes(item.id));
+				const isLocated = combinations[j]?.some((item) =>
+					idElements.includes(item.idPlayer)
+				);
 
 				if (!isLocated) right.push(...combinations[j]);
 			}
@@ -163,10 +165,10 @@ export const useDateMatchday = () => {
 					idGroup,
 					idCancha,
 					name: `Partido ${totalMatches}`,
-					idPlayerA1: left[0].idAthlete,
-					idPlayerA2: left[1].idAthlete,
-					idPlayerB1: right[0].idAthlete,
-					idPlayerB2: right[1].idAthlete,
+					idPlayerA1: left[0].idPlayer,
+					idPlayerA2: left[1].idPlayer,
+					idPlayerB1: right[0].idPlayer,
+					idPlayerB2: right[1].idPlayer,
 				};
 
 				matches.push(dataParty);

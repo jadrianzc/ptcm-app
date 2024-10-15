@@ -5,12 +5,11 @@ import { localApi } from '@/axios';
 import { useStoreLoading, useStoreMessage, useStoreSummoned } from '@/store';
 import { ButtonCustom } from '@/components/ui/components';
 import { IResultMatch } from '@/components/admin/interfaces';
-import { IResponseGroup } from '@/components/announcement/interfaces';
+import { IResponseGroup, ViewPartidos } from '@/components/announcement/interfaces';
 
 interface IProps {
-	idParty: string;
+	match: ViewPartidos;
 }
-
 const rulesInput = [
 	{ required: true, message: '* Requerido' },
 	{
@@ -23,7 +22,7 @@ const rulesInput = [
 	},
 ];
 
-export const FormResults = ({ idParty }: IProps) => {
+export const FormResults = ({ match }: IProps) => {
 	// Hooks
 	const router = useRouter();
 	const { message } = useStoreMessage();
@@ -52,10 +51,12 @@ export const FormResults = ({ idParty }: IProps) => {
 				idSeason,
 			};
 			// TODO: CALCULAR LOS VALORES DE LA TABLA DE EXCEL LOS PARTIDOS GANADOS Y EFECTIVIDAD, AGREGAR ESOS CAMPOS EN LA TABLA Y ACTUALIZARLA
+			console.log(match);
+			console.log(dataMatchUpdate);
 
 			const { data: respInsertResults } = await localApi.post<IResponseGroup>(
 				'/admin/setResultMatch',
-				dataMatchUpdate,
+				dataMatchUpdate
 			);
 
 			setGroups(respInsertResults.data);
@@ -72,18 +73,17 @@ export const FormResults = ({ idParty }: IProps) => {
 		<Form
 			onFinish={onFinish}
 			initialValues={{
-				idParty,
+				idParty: match.id,
 			}}
-			className="flex flex-col justify-center items-center gap-5"
-		>
-			<div className="flex justify-center items-center gap-5">
-				<Form.Item<IResultMatch> name="resultA" className="!m-0" rules={rulesInput}>
+			className='flex flex-col justify-center items-center gap-5'>
+			<div className='flex justify-center items-center gap-5'>
+				<Form.Item<IResultMatch> name='resultA' className='!m-0' rules={rulesInput}>
 					<Input
-						type="number"
+						type='number'
 						maxLength={1}
 						min={0}
 						max={4}
-						className="w-10 h-10 text-center"
+						className='w-10 h-10 text-center'
 						onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
 							const { value } = e.target;
 							if (!/^[0-4]$/.test(value)) {
@@ -93,17 +93,17 @@ export const FormResults = ({ idParty }: IProps) => {
 					/>
 				</Form.Item>
 
-				<Form.Item<IResultMatch> name="idParty" className="!m-0">
-					<div className="font-bold italic text-base">VS</div>
+				<Form.Item<IResultMatch> name='idParty' className='!m-0'>
+					<div className='font-bold italic text-base'>VS</div>
 				</Form.Item>
 
-				<Form.Item<IResultMatch> name="resultB" className="!m-0" rules={rulesInput}>
+				<Form.Item<IResultMatch> name='resultB' className='!m-0' rules={rulesInput}>
 					<Input
-						type="number"
+						type='number'
 						maxLength={1}
 						min={0}
 						max={4}
-						className="w-10 h-10 text-center"
+						className='w-10 h-10 text-center'
 						onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
 							const { value } = e.target;
 							if (!/^[0-4]$/.test(value)) {
@@ -114,12 +114,11 @@ export const FormResults = ({ idParty }: IProps) => {
 				</Form.Item>
 			</div>
 
-			<div className="flex justify-center items-center">
+			<div className='flex justify-center items-center'>
 				<ButtonCustom
-					color="#43849E"
-					htmlType="submit"
-					className="not-italic font-medium text-lg border-[#43849E] text-turquoise"
-				>
+					color='#43849E'
+					htmlType='submit'
+					className='not-italic font-medium text-lg border-[#43849E] text-turquoise'>
 					Guardar
 				</ButtonCustom>
 			</div>

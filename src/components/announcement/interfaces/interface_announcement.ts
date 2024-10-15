@@ -37,6 +37,7 @@ export interface IConvocationDates {
 
 export interface IGroupsDB {
 	id: string;
+	idGroup: string;
 	name: string;
 	idSeason: string;
 	idMatch: string;
@@ -49,7 +50,7 @@ export interface IGroupsDB {
 }
 
 export interface IGroups {
-	id: string;
+	idGroup: string;
 	name: string;
 	idSeason: string;
 	idMatch: string;
@@ -61,11 +62,12 @@ export interface IGroups {
 }
 
 export interface IGroupItems {
+	id: string;
 	idPlayer: string;
 	player: string;
 	category: string;
-	createAt: string;
-	updateAt: string;
+	createAt?: string;
+	updateAt?: string;
 }
 
 export interface IResponseGroup {

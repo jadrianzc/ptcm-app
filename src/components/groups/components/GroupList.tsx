@@ -19,6 +19,7 @@ export const GroupList = () => {
 		try {
 			const idSeason = currentDay?.idSeason;
 			const idMatch = currentDay?.id;
+
 			const { data: respGroup } = await localApi.get(
 				`/announcement/getGroups?idSeason=${idSeason}&idMatch=${idMatch}`
 			);
@@ -45,7 +46,7 @@ export const GroupList = () => {
 					<div className='w-full flex flex-wrap justify-center items-center gap-y-5 lg:justify-between md:gap-y-10'>
 						{groups?.map((group, index) => (
 							<GroupListItem
-								key={group.id}
+								key={group.idGroup}
 								group={group}
 								index={index}
 								firstDataPlayer={firstDataPlayer}

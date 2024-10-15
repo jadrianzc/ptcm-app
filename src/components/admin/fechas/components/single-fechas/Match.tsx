@@ -8,15 +8,14 @@ interface IProps {
 }
 export const Match = ({ match }: IProps) => {
 	return (
-		<div className="space-y-2">
-			<span className="text-base font-medium">{match.name}</span>
+		<div className='space-y-2'>
+			<span className='text-base font-medium'>{match.name}</span>
 			<Popover
-				placement="bottom"
-				className="cursor-pointer"
-				trigger="click"
-				content={<FormResults idParty={match.id} />}
-			>
-				<div className="w-full flex justify-between items-center">
+				placement='bottom'
+				className='cursor-pointer'
+				trigger='click'
+				content={<FormResults match={match} />}>
+				<div className='w-full flex justify-between items-center'>
 					<Result
 						namePlayer1={match.namePlayerA1}
 						namePlayer2={match.namePlayerA2}
@@ -24,7 +23,7 @@ export const Match = ({ match }: IProps) => {
 						isFirst={false}
 					/>
 
-					<div className="font-bold italic text-base">VS</div>
+					<div className='font-bold italic text-base'>VS</div>
 
 					<Result
 						namePlayer1={match.namePlayerB1}

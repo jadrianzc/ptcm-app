@@ -4,11 +4,16 @@ import { db } from '@/db/dbconfig';
 
 import { dayjs } from '@/libs';
 import { IResponseUnauthorized, IResultMatch } from '@/components/admin/interfaces';
-import { IGroups, IResponseGroup, ViewPartidos } from '@/components/announcement/interfaces';
+import {
+	IGroups,
+	IGroupsDB,
+	IResponseGroup,
+	ViewPartidos,
+} from '@/components/announcement/interfaces';
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>,
+	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>
 ) {
 	if (req.method === 'POST') {
 		try {
@@ -22,7 +27,7 @@ export default async function handler(
 			await db('Partidos').where('id', idParty).update({ resultA, resultB, updateAt });
 
 			const groupsDb = await db
-				.select<IGroups[]>('*')
+				.select<IGroupsDB[]>('*')
 				.from('Groups')
 				.where('idMatch', idMatch)
 				.andWhere('idSeason', idSeason)
@@ -44,13 +49,41 @@ export default async function handler(
 				return;
 			}
 
+			const groupsDbItem = Object.values(
+				groupsDb.reduce<Record<string, IGroups>>((acc, item) => {
+					const player = {
+						id: item.id,
+						idPlayer: item.idPlayer,
+						player: item.player,
+						category: item.category,
+					};
+
+					const dataGroup = {
+						idGroup: item.idGroup,
+						name: item.name,
+						idSeason: item.idSeason,
+						idMatch: item.idMatch,
+						idCancha: item.idCancha,
+						createAt: item.createAt,
+						updateAt: item.updateAt,
+					};
+
+					if (!acc[item.idGroup]) {
+						acc[item.idGroup] = { ...dataGroup, groups: [], matches: [] };
+					}
+
+					acc[item.idGroup].groups.push(player);
+
+					return acc;
+				}, {})
+			);
+
 			// const groups = JSON.parse(data[0]?.groups as string);
-			const groups = groupsDb.map((item) => {
-				const matches = partidosView.filter((party) => party.idGroup === item.id);
+			const groups = groupsDbItem.map((item) => {
+				const matches = partidosView.filter((party) => party.idGroup === item.idGroup);
 
 				return {
 					...item,
-					groups: JSON.parse(item.groups.toString()),
 					matches,
 				};
 			});
