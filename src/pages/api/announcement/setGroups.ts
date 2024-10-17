@@ -1,8 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 import { db } from '@/db/dbconfig';
 import { IResponseUnauthorized } from '@/components/admin/interfaces';
 import {
@@ -12,8 +10,6 @@ import {
 	ISummoned,
 } from '@/components/announcement/interfaces';
 
-dayjs.extend(utc);
-
 interface IBody {
 	idSeason: string | undefined;
 	idMatch: string | undefined;
@@ -22,7 +18,7 @@ interface IBody {
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>
+	res: NextApiResponse<IResponseGroup | IResponseUnauthorized>,
 ) {
 	if (req.method === 'POST') {
 		try {
@@ -80,7 +76,7 @@ export default async function handler(
 					acc[item.idGroup].groups.push(player);
 
 					return acc;
-				}, {})
+				}, {}),
 			);
 
 			res.status(200).json({
